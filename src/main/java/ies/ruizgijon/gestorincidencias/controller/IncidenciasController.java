@@ -102,60 +102,6 @@ public class IncidenciasController {
         return "redirect:/"; // Redirigir a la lista de incidencias después de guardar
     }
 
-    // Método para eliminar una incidencia por su ID
-    @GetMapping("/admin/eliminarIncidencia/{id}")
-    public String eliminarIncidencia(@PathVariable("id") int id, RedirectAttributes attributes) {
-        // Llamar al servicio para eliminar la incidencia por su ID
-        incidenciasService.eliminarIncidencia(id);
-
-        // Agregar un mensaje de éxito al redirigir a la página después de eliminar la incidencia
-        attributes.addFlashAttribute("confirmacionEliminar", "Incidencia eliminada con éxito.");
-
-        return "redirect:/"; // Redirigir a la lista de incidencias después de eliminar
-    }
-
-    // Método para editar una incidencia por su ID
-    @GetMapping("/admin/editarIncidenciaPendiente/{id}")
-    public String editarIncidencia(@PathVariable("id") int id, Model model) {
-        // Llamar al servicio para obtener la incidencia por su ID
-        Incidencia incidencia = incidenciasService.buscarIncidenciaPorId(id);
-        
-        // Obtener la lista de usuarios para el formulario de edición
-        List<Usuario> usuarios = usuarioService.buscarTodos();
-
-        // Agregar la incidencia y la lista de usuarios al modelo para la vista de edición
-        model.addAttribute("incidencia", incidencia);
-        model.addAttribute("usuarios", usuarios); // Agregar la lista de usuarios al modelo para el formulario
-        return "crearIncidenciaForm"; // Devuelve la vista para editar una incidencia existente
-    }
-
-    // Método para editar una incidencia en progreso por su ID
-    @GetMapping("/admin/editarIncidencia/{id}")
-    public String editarIncidenciaProgreso(@PathVariable("id") int id, Model model) {
-        // Llamar al servicio para obtener la incidencia por su ID
-        Incidencia incidencia = incidenciasService.buscarIncidenciaPorId(id);
-        
-        // Obtener la lista de usuarios para el formulario de edición
-        List<Usuario> usuarios = usuarioService.buscarTodos();
-
-        // Agregar la incidencia y la lista de usuarios al modelo para la vista de edición
-        model.addAttribute("incidencia", incidencia);
-        model.addAttribute("usuarios", usuarios); // Agregar la lista de usuarios al modelo para el formulario
-        return "editarIncidenciaForm"; // Devuelve la vista para editar una incidencia existente
-    }
-
-    // Método para guardar la edición de una incidencia
-    @PostMapping("/admin/incidencia/edit")
-    public String editarIncidencia(Incidencia incidencia, RedirectAttributes attributes) {
-        // Llamar al servicio para guardar la incidencia editada
-        incidenciasService.guardarIncidencia(incidencia);
-
-        // Agregar un mensaje de éxito al redirigir a la página después de editar la incidencia
-        attributes.addFlashAttribute("confirmacion", "Incidencia editada con éxito.");
-
-        return "redirect:/"; // Redirigir a la lista de incidencias después de editar
-    }
-
     // Método para cambiar el estado de una incidencia a "En Progreso"
     @GetMapping("/incidencia/asignar/{id}")
     public String cambiarEstadoIncidenciaProgreso(@PathVariable("id") int idIncidencia, RedirectAttributes attributes) {
