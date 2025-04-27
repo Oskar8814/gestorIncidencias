@@ -16,6 +16,14 @@
     <header th:insert="~{fragments/header :: header}"></header>
     <nav th:insert="~{fragments/navigation :: nav}" class="navbar navbar-expand-lg border-top border-bottom py-4 bg-body-secondary fw-bolder"></nav>
 
+    <!-- Mostrar alerta de confirmación para la asignacion de incidencia si existe -->
+    <div th:if="${confirmacion != null}"
+        class="alert alert-success mt-3 w-50 mx-auto text-center p-4 rounded shadow d-flex align-items-center"
+        role="alert">
+        <i class="bi bi-check-circle-fill me-2 fs-3"></i>
+        <span th:text="${confirmacion}" class="fs-5"></span>
+    </div>
+
     <!-- Mostrar alerta de confirmación si existe -->
     <div th:if="${mensajeNoProgreso != null}"
         class="alert alert-warning mt-3 w-50 mx-auto text-center p-4 rounded shadow d-flex align-items-center"
@@ -68,10 +76,10 @@
                     <td th:text="${incidencia.estado}"></td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a class="btn btn-warning btn-sm">Editar</a>
+                            <a class="btn btn-warning btn-sm" role="button" th:href="@{/admin/editarIncidencia/{id}(id=${incidencia.id})}">Editar</a>
                             <a class="btn btn-danger btn-sm confirmar" role="button" th:href="@{/admin/eliminarIncidencia/{id}(id=${incidencia.id})}">Eliminar</a>
-                            <a class="btn btn-success btn-sm">Desasignar</a>
-                            <a class="btn btn-success btn-sm">Finalizar</a>
+                            <a class="btn btn-success btn-sm" role="button" th:href="@{/incidencia/desasignar/{id} (id=${incidencia.id})}">Desasignar</a>
+                            <a class="btn btn-success btn-sm" role="button" th:href="@{/incidencia/resolver/{id} (id=${incidencia.id})}">Finalizar</a>
                         </div>
                     </td>
                 </tr>
