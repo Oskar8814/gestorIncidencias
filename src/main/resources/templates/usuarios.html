@@ -125,7 +125,7 @@
                     <td th:text="${usuario.rol.name}"></td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a class="btn btn-warning btn-sm" role="button">Editar</a>
+                            <a class="btn btn-warning btn-sm" role="button" th:href="@{/usuario/edit/{id} (id=${usuario.id})} ">Editar</a>
                             <a class="btn btn-danger btn-sm confirmarDeleteUsuario" role="button"
                                 th:href="@{/usuario/delete/{id} (id=${usuario.id})} ">Eliminar</a>
                         </div>

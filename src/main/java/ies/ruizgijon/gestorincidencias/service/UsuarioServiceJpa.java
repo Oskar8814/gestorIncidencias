@@ -17,14 +17,10 @@ public class UsuarioServiceJpa implements IUsuarioService {
     // Método para guardar un usuario en la base de datos
     @Override
     public void guardarUsuario(Usuario usuario) {
-        // Verifica si el usuario ya existe en la base de datos
-        if (usuario.getId() != null && usuarioRepository.existsById(usuario.getId())) {
-            // Si el usuario ya existe, lanza una excepción o maneja el caso según sea necesario
-            throw new IllegalArgumentException("El usuario ya existe con ID: " + usuario.getId());
-        }
+        // Verifica si el usuario ya existe en la base de datos antes de guardarlo
         usuarioRepository.save(usuario);
     }
-    
+
     // Método para eliminar un usuario por su ID
     @Override
     public void eliminarUsuario(Integer idUsuario) {

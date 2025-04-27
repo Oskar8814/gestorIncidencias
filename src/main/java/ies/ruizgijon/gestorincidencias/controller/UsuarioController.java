@@ -86,4 +86,24 @@ public class UsuarioController {
 
         return "redirect:/usuario/listar"; // Redirigir a la lista de usuarios después de guardar
     }
+
+    //Metodo para editar un usuario por su id
+    @GetMapping("/usuario/edit/{id}")
+    public String editarUsuario(@PathVariable("id") Integer idUsuario, Model model) {
+        // Buscar el usuario por su ID
+        Usuario usuario = usuarioService.buscarUsuarioPorId(idUsuario);
+        if (usuario == null) {
+            // Si el usuario no existe, redirigir a la lista de usuarios y mostrar un mensaje de error
+            model.addAttribute("mensajeError", "Usuario no encontrado con ID: " + idUsuario);
+            return "redirect:/usuario/listar"; // Redirigir a la lista de usuarios si no se encuentra el usuario
+        }
+
+        //Listado de roles para el formulario de edición de usuario
+        List<Rol> roles = rolService.buscarTodos(); // Obtener la lista de roles desde el servicio
+
+        model.addAttribute("roles", roles); // Agregar la lista de roles al modelo para que esté disponible en la vista
+        model.addAttribute("usuario", usuario); // Agregar el usuario al modelo para que esté disponible en la vista
+        return "crearUsuarioForm"; // Devuelve la vista para editar un usuario existente
+    }
+
 }
