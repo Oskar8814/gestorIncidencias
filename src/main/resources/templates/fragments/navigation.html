@@ -1,7 +1,7 @@
 <!-- NAVEGADOR -->
     <div th:fragment="nav" class="container-fluid">
         <a class="navbar-brand text-primary fs-2 fw-bold text-uppercase d-lg-none" th:href="@{/incidenciasPendientes}"><img
-                th:src="@{img/logo_RG_480_azul.png}" class="img-fluid w-25" alt="Logo IES Ruiz Gijon"></a>
+                th:src="@{/img/logo_RG_480_azul.png}" class="img-fluid w-25" alt="Logo IES Ruiz Gijon"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
             aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -21,7 +21,7 @@
                         Usuario
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" th:href="@{/usuarios}">Listado de Usuarios</a></li>
+                        <li><a class="dropdown-item" th:href="@{/usuario/listar}">Listado de Usuarios</a></li>
                         <li><a class="dropdown-item">Nuevo Usuario</a></li>
                     </ul>
                 </li>

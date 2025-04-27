@@ -74,7 +74,12 @@
         <span th:text="${mensajeNoUsuarios}" class="fs-5"></span>
     </div>
 
-    <!-- Tabla de incidencias pendientes -->
+    <!-- Mostrar alerta de confirmación para la asignacion de incidencia si existe -->
+    <div th:if="${mensajeError != null}" class="alert alert-success mt-3 w-50 mx-auto text-center p-4 rounded shadow d-flex align-items-center" role="alert">
+        <i class="bi bi-check-circle-fill me-2 fs-3"></i>
+        <span th:text="${mensajeError}" class="fs-5"></span>
+    </div>
+    <!-- Tabla de usuarios -->
 
     <!-- Mostrar tabla solo si no existe mensaje -->
     <div th:if="${mensajeNoUsuarios == null}" class="table-responsive mx-auto w-75 mt-3">
@@ -110,14 +115,14 @@
                     <td>
                         <div class="d-flex gap-2">
                             <a class="btn btn-warning btn-sm" role="button">Editar</a>
-                            <a class="btn btn-danger btn-sm confirmar">Eliminar</a>
+                            <a class="btn btn-danger btn-sm confirmarDeleteUsuario" role="button"
+                                th:href="@{/usuario/delete/{id} (id=${usuario.id})} ">Eliminar</a>
                         </div>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-
 
     <footer th:insert="~{fragments/footer :: footer}"></footer>
 
