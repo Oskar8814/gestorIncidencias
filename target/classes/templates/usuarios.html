@@ -66,6 +66,14 @@
         </div>
     </section>
 
+    <!-- Mostrar alerta de confirmación para el guardado de usuario si existe -->
+    <div th:if="${confirmacion != null}"
+        class="alert alert-success mt-3 w-50 mx-auto text-center p-4 rounded shadow d-flex align-items-center"
+        role="alert">
+        <i class="bi bi-check-circle-fill me-2 fs-3"></i>
+        <span th:text="${confirmacion}" class="fs-5"></span>
+    </div>
+
     <!-- Mostrar alerta de confirmación si existe -->
     <div th:if="${mensajeNoUsuarios != null}"
         class="alert alert-warning mt-3 w-50 mx-auto text-center p-4 rounded shadow d-flex align-items-center"
@@ -75,10 +83,13 @@
     </div>
 
     <!-- Mostrar alerta de confirmación para la asignacion de incidencia si existe -->
-    <div th:if="${mensajeError != null}" class="alert alert-success mt-3 w-50 mx-auto text-center p-4 rounded shadow d-flex align-items-center" role="alert">
+    <div th:if="${mensajeError != null}"
+        class="alert alert-success mt-3 w-50 mx-auto text-center p-4 rounded shadow d-flex align-items-center"
+        role="alert">
         <i class="bi bi-check-circle-fill me-2 fs-3"></i>
         <span th:text="${mensajeError}" class="fs-5"></span>
     </div>
+
     <!-- Tabla de usuarios -->
 
     <!-- Mostrar tabla solo si no existe mensaje -->

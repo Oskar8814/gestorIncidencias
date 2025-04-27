@@ -8,8 +8,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
+import ies.ruizgijon.gestorincidencias.service.IRolService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 
 @Controller
@@ -17,6 +21,9 @@ public class UsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
+
+    @Autowired
+    private IRolService rolService; // Inyección de dependencias para el servicio de roles
 
     //Metodo para listar los usuarios 
     @GetMapping("/usuario/listar")
@@ -37,7 +44,7 @@ public class UsuarioController {
 
     //Metodo para eliminar un usuario por su id
     @GetMapping("/usuario/delete/{id}")
-    public String eliminarUsuario(@PathVariable("id") Integer idUsuario, Model model) {
+    public String eliminarUsuario(@PathVariable("id") Integer idUsuario, Model model, RedirectAttributes attributes) {
         // Verificar si el ID del usuario existe antes de intentar eliminarlo
         Usuario usuario = usuarioService.buscarUsuarioPorId(idUsuario);
         if (usuario == null) {
@@ -47,7 +54,36 @@ public class UsuarioController {
         }
         // Llamar al servicio para eliminar el usuario por su ID
         usuarioService.eliminarUsuario(idUsuario);
+
+        // Agregar un mensaje de éxito al redirigir a la página después de eliminar el usuario
+        attributes.addFlashAttribute("confirmacion", "Usuario eliminado con éxito.");
+
         return "redirect:/usuario/listar"; // Redirigir a la lista de usuarios después de eliminar
     }
 
+    //Metodo para crear un nuevo usuario
+    @GetMapping("/usuario/crear")
+    public String crearUsuario(Model model) {
+        // Crear un nuevo objeto Usuario y agregarlo al modelo para que esté disponible en la vista
+        Usuario nuevoUsuario = new Usuario();
+
+        //Listado de roles para el formulario de creación de usuario
+        List<Rol> roles = rolService.buscarTodos(); // Obtener la lista de roles desde el servicio
+
+        model.addAttribute("roles", roles); // Agregar la lista de roles al modelo para que esté disponible en la vista
+        model.addAttribute("usuario", nuevoUsuario);
+        return "crearUsuarioForm"; // Devuelve la vista para crear un nuevo usuario
+    }
+
+    //Metodo para guardar un nuevo usuario
+    @PostMapping("/usuario/save")
+    public String guardarUsuario(Usuario usuario, Model model, RedirectAttributes attributes) {
+        // Llamar al servicio para guardar el nuevo usuario
+        usuarioService.guardarUsuario(usuario);
+
+        // Agregar un mensaje de éxito al redirigir a la página después de guardar el usuario
+        attributes.addFlashAttribute("confirmacion", "Usuario creado o modificado con éxito.");
+
+        return "redirect:/usuario/listar"; // Redirigir a la lista de usuarios después de guardar
+    }
 }
