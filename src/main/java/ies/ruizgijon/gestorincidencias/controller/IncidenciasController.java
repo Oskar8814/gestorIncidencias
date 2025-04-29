@@ -3,8 +3,11 @@ package ies.ruizgijon.gestorincidencias.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -25,6 +28,8 @@ public class IncidenciasController {
     private IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
 
     // Aquí vamos a agregar métodos para manejar las solicitudes HTTP y llamar a los métodos del servicio de incidencias
+
+    // Método para listar incidencias pendientes
     @GetMapping("/")
     public String listarIncidenciasPendientes(Model model) {
         // Llamar al servicio para obtener la lista de incidencias y devolverla a la vista
@@ -34,6 +39,29 @@ public class IncidenciasController {
         if (incidenciasPendientes.isEmpty()) {
             // Si la lista está vacía, puedes agregar un mensaje al modelo para mostrarlo en la vista
             model.addAttribute("mensajeNoPendientes", "No hay incidencias pendientes.");
+        }
+
+        // Agregar la lista de incidencias al modelo para que esté disponible en la vista
+        model.addAttribute("incidenciasPendientes", incidenciasPendientes);
+        return "incidenciasPendientes"; // Devuelve la vista de listar incidencias pendientes
+    }
+
+    //Metodo para listar la busqueda en las incidencias pendientes 
+    @PostMapping("/incidenciasPendientes/buscar")
+    public String buscarIncidenciasPendientes(@ModelAttribute ("search") Incidencia busqueda, Model model) {
+        // Llamar al servicio para obtener la lista de incidencias pendientes que coinciden con la búsqueda
+        busqueda.setEstado(EstadoIncidencia.PENDIENTE); // Establecer el estado de búsqueda a PENDIENTE
+        
+        //Personaliza el tipo de busqueda
+        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("titulo", ExampleMatcher.GenericPropertyMatchers.contains());
+
+        Example<Incidencia> example = Example.of(busqueda, matcher);
+        List<Incidencia> incidenciasPendientes = incidenciasService.buscarByExample(example); // Buscar incidencias pendientes que coinciden con el ejemplo
+
+        // Verificar si la lista de incidencias pendientes está vacía
+        if (incidenciasPendientes.isEmpty()) {
+            // Si la lista está vacía, agregar un mensaje al modelo para mostrarlo en la vista
+            model.addAttribute("mensajeNoPendientes", "No hay incidencias pendientes con el título indicado.");
         }
 
         // Agregar la lista de incidencias al modelo para que esté disponible en la vista
@@ -58,6 +86,29 @@ public class IncidenciasController {
         return "incidenciasProgreso"; // Devuelve la vista de listar incidencias en progreso
     }
 
+    //Metodo para listar la busqueda en las incidencias en progreso 
+    @PostMapping("/incidenciasProgreso/buscar")
+    public String buscarIncidenciasProgreso(@ModelAttribute ("search") Incidencia busqueda, Model model) {
+
+        busqueda.setEstado(EstadoIncidencia.REPARACION); // Establecer el estado de búsqueda a PENDIENTE
+        
+        //Personalizar el tipo de busqueda
+        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("titulo", ExampleMatcher.GenericPropertyMatchers.contains());
+
+        Example<Incidencia> example = Example.of(busqueda, matcher);
+        List<Incidencia> incidenciasProgreso = incidenciasService.buscarByExample(example); // Buscar incidencias en progreso que coinciden con el ejemplo
+
+        // Verificar si la lista de incidencias en progreso está vacía
+        if (incidenciasProgreso.isEmpty()) {
+            // Si la lista está vacía, agregar un mensaje al modelo para mostrarlo en la vista
+            model.addAttribute("mensajeNoProgreso", "No hay incidencias en reparación con el título indicado.");
+        }
+
+        // Agregar la lista de incidencias al modelo para que esté disponible en la vista
+        model.addAttribute("incidenciasProgreso", incidenciasProgreso);
+        return "incidenciasProgreso"; // Devuelve la vista de listar incidencias en progreso
+    }
+
     // Método para listar incidencias cerradas
     @GetMapping("/incidenciasResueltas")
     public String listarIncidenciasResueltas(Model model) {
@@ -73,6 +124,29 @@ public class IncidenciasController {
         // Agregar la lista de incidencias al modelo para que esté disponible en la vista
         model.addAttribute("incidenciasResueltas", incidenciasResueltas);
         return "incidenciasResueltas"; // Devuelve la vista de listar incidencias cerradas
+    }
+
+    //Metodo para listar la busqueda en las incidencias en progreso 
+    @PostMapping("/incidenciasResueltas/buscar")
+    public String buscarIncidenciasResueltas(@ModelAttribute ("search") Incidencia busqueda, Model model) {
+
+        busqueda.setEstado(EstadoIncidencia.RESUELTA); // Establecer el estado de búsqueda a RESUELTA
+        
+        //Personalizar el tipo de busqueda
+        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("titulo", ExampleMatcher.GenericPropertyMatchers.contains());
+
+        Example<Incidencia> example = Example.of(busqueda, matcher);
+        List<Incidencia> incidenciasResueltas = incidenciasService.buscarByExample(example); // Buscar incidencias resueltas que coinciden con el ejemplo
+
+        // Verificar si la lista de incidencias en progreso está vacía
+        if (incidenciasResueltas.isEmpty()) {
+            // Si la lista está vacía, agregar un mensaje al modelo para mostrarlo en la vista
+            model.addAttribute("mensajeNoResueltas", "No hay incidencias resueltas con el título indicado.");
+        }
+
+        // Agregar la lista de incidencias al modelo para que esté disponible en la vista
+        model.addAttribute("incidenciasResueltas", incidenciasResueltas);
+        return "incidenciasResueltas"; // Devuelve la vista de listar incidencias resueltas
     }
 
     // Metodo para añadir una incidencia
@@ -143,5 +217,10 @@ public class IncidenciasController {
     }
 
     
+    @ModelAttribute()
+    public void setGenericos(Model model) {
+        Incidencia incidenciaSearch = new Incidencia();
+        model.addAttribute("search", incidenciaSearch); // Agregar el objeto de búsqueda al modelo para la vista
+    }
     
 }

@@ -3,6 +3,7 @@ package ies.ruizgijon.gestorincidencias.service;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service; 
 
 import ies.ruizgijon.gestorincidencias.model.EstadoIncidencia;
@@ -127,4 +128,11 @@ public class IncidenciaServiceJpa implements IIncidenciasService {
             throw new IllegalArgumentException("Incidencia no encontrada con ID: " + idIncidencia);
         }
     }
+
+    // Método para buscar incidencias por ejemplo (usando Spring Data JPA)
+    @Override
+    public List<Incidencia> buscarByExample(Example<Incidencia> example) {
+        return incidenciasRepository.findAll(example);
+    }
+
 }

@@ -37,13 +37,12 @@
 
     <!-- Mostrar tabla solo si no existe mensaje -->
     <div th:if="${mensajeNoResueltas == null}" class="table-responsive mx-auto w-75 mt-3">
-        <h3 class="text-center mb-3">Listado de incidencias en progreso</h3>
+        <h3 class="text-center mb-3">Listado de incidencias Resueltas</h3>
 
         <!-- Buscador -->
         <div class="container w-50">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Título de la incidencia"
-                    aria-label="Buscar">
+            <form class="d-flex" role="search" th:action="@{/incidenciasResueltas/buscar}" th:object="${search}" method="post">
+                <input th:field="*{titulo}" class="form-control me-2" type="text" placeholder="Título de la incidencia" aria-label="Buscar">
                 <button class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
         </div>
