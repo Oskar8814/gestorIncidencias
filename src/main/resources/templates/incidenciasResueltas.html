@@ -14,7 +14,8 @@
 
 <body>
     <header th:insert="~{fragments/header :: header}"></header>
-    <nav th:insert="~{fragments/navigation :: nav}" class="navbar navbar-expand-lg border-top border-bottom py-4 bg-body-secondary fw-bolder"></nav>
+    <nav th:insert="~{fragments/navigation :: nav}"
+        class="navbar navbar-expand-lg border-top border-bottom py-4 bg-body-secondary fw-bolder"></nav>
 
     <!-- Mostrar alerta de confirmación para la asignacion resuelta de incidencia si existe -->
     <div th:if="${confirmacion != null}"
@@ -41,9 +42,25 @@
         <!-- Buscador -->
         <div class="container w-50">
             <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Título de la incidencia" aria-label="Buscar">
+                <input class="form-control me-2" type="search" placeholder="Título de la incidencia"
+                    aria-label="Buscar">
                 <button class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
+        </div>
+
+        <!-- Modal que aparece (el codigo puede estar en cualquier sitio) -->
+        <div id="modal-imagen" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- IMAGEN -->
+                    <div class="modal-body">
+
+                    </div>
+                    <!-- CONTENIDO -->
+                    <h3 id="tittleModal" class="px-4 "></h3>
+                    <p id="descripcionModal" class="px-4"></p>
+                </div>
+            </div>
         </div>
 
         <!-- Tabla -->
@@ -52,7 +69,6 @@
                 <tr>
                     <th scope="col">Identificador</th>
                     <th scope="col">Título</th>
-                    <th scope="col">Descripción</th>
                     <th scope="col">Aula</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Imagen</th>
@@ -64,18 +80,21 @@
                 <tr class="align-middle" th:each="incidencia : ${incidenciasResueltas}">
                     <td th:text="${incidencia.id}" class="text-center"></td>
                     <td th:text="${incidencia.titulo}"></td>
-                    <td th:text="${incidencia.descripcion}"></td>
                     <td th:text="${incidencia.aula}"></td>
                     <td th:text="${incidencia.fecha}"></td>
                     <td>
-                        <img th:src="@{${incidencia.imagen}}" alt="Imagen de la incidencia" class="img-fluid"
-                            style="width: 100px; height: auto;">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-imagen"
+                            th:attr="data-bs-imagen=${incidencia.imagen}, data-bs-descripcion=${incidencia.descripcion}">
+                            <img th:src="@{${incidencia.imagen}}" class="img-fluid img-custom-s"
+                                alt="Imagen de la incidencia">
+                        </a>
                     </td>
                     <td th:text="|${incidencia.usuario.nombre} ${incidencia.usuario.apellido1}|"></td>
                     <td>
                         <div class="d-flex gap-2">
                             <!-- Posibilidad de editar una incidencia resuelta? -->
-                            <a class="btn btn-danger btn-sm confirmar" role="button" th:href="@{/admin/eliminarIncidencia/{id}(id=${incidencia.id})}">Eliminar</a>
+                            <a class="btn btn-danger btn-sm confirmar" role="button"
+                                th:href="@{/admin/eliminarIncidencia/{id}(id=${incidencia.id})}">Eliminar</a>
                         </div>
                     </td>
                 </tr>

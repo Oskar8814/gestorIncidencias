@@ -97,13 +97,27 @@
             </form>
         </div>
 
+        <!-- Modal que aparece (el codigo puede estar en cualquier sitio) -->
+        <div id="modal-imagen" class="modal fade">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <!-- IMAGEN -->
+                    <div class="modal-body">
+
+                    </div>
+                    <!-- CONTENIDO -->
+                    <h3 id="tittleModal" class="px-4 "></h3>
+                    <p id="descripcionModal" class="px-4"></p>
+                </div>
+            </div>
+        </div>
+
         <!-- Tabla -->
         <table class="table table-striped mt-3 table-custom">
             <thead class="table-success">
                 <tr>
                     <th scope="col">Identificador</th>
                     <th scope="col">Título</th>
-                    <th scope="col">Descripción</th>
                     <th scope="col">Aula</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Imagen</th>
@@ -116,20 +130,24 @@
                 <tr class="align-middle" th:each="incidencia : ${incidenciasPendientes}">
                     <td th:text="${incidencia.id}" class="text-center"></td>
                     <td th:text="${incidencia.titulo}"></td>
-                    <td th:text="${incidencia.descripcion}"></td>
                     <td th:text="${incidencia.aula}"></td>
                     <td th:text="${incidencia.fecha}"></td>
                     <td>
-                        <img th:src="@{${incidencia.imagen}}" alt="Imagen de la incidencia" class="img-fluid"
-                            style="width: 100px; height: auto;">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#modal-imagen"
+                            th:attr="data-bs-imagen=${incidencia.imagen}, data-bs-descripcion=${incidencia.descripcion}">
+                            <img th:src="@{${incidencia.imagen}}" class="img-fluid img-custom-s" alt="Imagen de la incidencia">
+                        </a>
                     </td>
                     <td>Sin Asignación</td>
                     <td th:text="${incidencia.estado}"></td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a class="btn btn-warning btn-sm" role="button" th:href="@{/admin/editarIncidenciaPendiente/{id} (id=${incidencia.id})}">Editar</a>
-                            <a class="btn btn-danger btn-sm confirmar" role="button" th:href="@{/admin/eliminarIncidencia/{id} (id=${incidencia.id})}">Eliminar</a>
-                            <a class="btn btn-success btn-sm" role="button" th:href="@{/incidencia/asignar/{id} (id=${incidencia.id}) }">Asignar</a>
+                            <a class="btn btn-warning btn-sm" role="button"
+                                th:href="@{/admin/editarIncidenciaPendiente/{id} (id=${incidencia.id})}">Editar</a>
+                            <a class="btn btn-danger btn-sm confirmar" role="button"
+                                th:href="@{/admin/eliminarIncidencia/{id} (id=${incidencia.id})}">Eliminar</a>
+                            <a class="btn btn-success btn-sm" role="button"
+                                th:href="@{/incidencia/asignar/{id} (id=${incidencia.id}) }">Asignar</a>
                         </div>
                     </td>
                 </tr>
