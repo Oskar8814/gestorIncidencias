@@ -1,4 +1,5 @@
-//Modal imÃ¡genes
+//Modal imagenes 
+// Se utiliza para mostrar la imagen, titulo y descripcion de la incidencia en un modal al hacer clic en el enlace correspondiente
 const modalImagen = document.querySelector('#modal-imagen');
     
 modalImagen.addEventListener('show.bs.modal', function(event) {
@@ -12,6 +13,7 @@ modalImagen.addEventListener('show.bs.modal', function(event) {
     const imagen = document.createElement('IMG');
     imagen.src = `${rutaImagen}`; // Asignar la ruta de la imagen
     imagen.classList.add('img-fluid');
+    imagen.classList.add('img-custom-m');
     imagen.alt = 'Imagen incidencia';
 
     // Obtener elementos del modal
