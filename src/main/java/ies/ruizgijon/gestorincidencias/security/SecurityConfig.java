@@ -25,12 +25,23 @@ public class SecurityConfig {
 		// Configuración de autorizaciones
 		http.authorizeHttpRequests(auth -> auth
 				// 1) Recursos estáticos
-				.requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
+				.requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
 
 				// 2) Endpoints públicos
 				.requestMatchers("/", "/login").permitAll()
 
 				.requestMatchers("/usuario/**").hasRole("ADMIN")
+
+				.requestMatchers("/index/**").hasAnyRole("TECNICO", "ADMIN")
+
+				// Revisar todas las rutas y dar los persmisos pertinentes de forma adecuada.
+				.requestMatchers("/incidenciasProgreso/**").hasAnyRole("TECNICO", "ADMIN")
+				.requestMatchers("/incidenciasPendientes/**").hasAnyRole("TECNICO", "ADMIN")
+				.requestMatchers("/incidenciasResueltas/**").hasAnyRole("TECNICO", "ADMIN")
+				.requestMatchers("/crearIncidencia/**").hasAnyRole("TECNICO", "ADMIN", "AUXILIAR")
+				.requestMatchers("/admin/**").hasAnyRole("TECNICO", "ADMIN")
+				
+
 
 				// 3) Endpoints para ambos (TECNICO y ADMIN)
 				// .requestMatchers("/incidenciasProgreso/**").hasAnyRole("TECNICO", "ADMIN")
@@ -41,7 +52,7 @@ public class SecurityConfig {
                 // 6) Cualquier otra ruta que no hayas mapeado => denegada o autenticada
                 //    - .denyAll() para bloquear lo que no esté contemplado
                 //    - .authenticated() para requerir cualquier usuario
-                .anyRequest().permitAll()
+                // .anyRequest().permitAll()
             )
 
 				// Configuración de login
