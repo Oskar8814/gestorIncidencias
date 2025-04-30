@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 import ies.ruizgijon.gestorincidencias.model.EstadoIncidencia;
@@ -19,6 +20,7 @@ import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 
 @Controller
+@RequestMapping(value="/incidencias")
 public class IncidenciasController {
     
     @Autowired
@@ -28,12 +30,6 @@ public class IncidenciasController {
     private IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
 
     // Aquí vamos a agregar métodos para manejar las solicitudes HTTP y llamar a los métodos del servicio de incidencias
-
-    // Método para mostrar la página de inicio de sesión
-    @GetMapping("/")
-	public String showLogin() {
-		return "login"; // Retorna la vista de inicio de sesión.
-	}
 
     // Método para listar incidencias pendientes
     @GetMapping("/index")
@@ -178,7 +174,7 @@ public class IncidenciasController {
         // Agregar un mensaje de éxito al redirigir a la página después de guardar la incidencia
         attributes.addFlashAttribute("confirmacion", "Incidencia creada o modificada con éxito.");
 
-        return "redirect:/"; // Redirigir a la lista de incidencias después de guardar
+        return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de guardar
     }
 
     // Método para cambiar el estado de una incidencia a "En Progreso"
@@ -194,7 +190,7 @@ public class IncidenciasController {
         // Agregar un mensaje de éxito al redirigir a la página después de cambiar el estado
         attributes.addFlashAttribute("confirmacion", "Incidencia " + idIncidencia + " en progreso.");
 
-        return "redirect:/incidenciasProgreso"; // Redirigir a la lista de incidencias en progreso
+        return "redirect:/incidencias/incidenciasProgreso"; // Redirigir a la lista de incidencias en progreso
     }
 
     // Método para desasignar una incidencia (cambiar su estado a "Pendiente")
@@ -206,7 +202,7 @@ public class IncidenciasController {
         // Agregar un mensaje de éxito al redirigir a la página después de desasignar la incidencia
         attributes.addFlashAttribute("confirmacion", "Incidencia " + idIncidencia + " desasignada.");
 
-        return "redirect:/"; // Redirigir a la lista de incidencias después de desasignar
+        return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de desasignar
     }
 
     // Método para cambiar el estado de una incidencia a "Resuelta"
@@ -218,7 +214,7 @@ public class IncidenciasController {
         // Agregar un mensaje de éxito al redirigir a la página después de cambiar el estado
         attributes.addFlashAttribute("confirmacion", "Incidencia  " + idIncidencia + "  resuelta.");
 
-        return "redirect:/incidenciasResueltas"; // Redirigir a la lista de incidencias resueltas
+        return "redirect:/incidencias/incidenciasResueltas"; // Redirigir a la lista de incidencias resueltas
     }
 
     

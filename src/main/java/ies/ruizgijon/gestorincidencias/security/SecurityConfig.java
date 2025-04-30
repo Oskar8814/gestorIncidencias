@@ -25,29 +25,23 @@ public class SecurityConfig {
 		// Configuración de autorizaciones
 		http.authorizeHttpRequests(auth -> auth
 				// 1) Recursos estáticos
-				.requestMatchers("/css/**", "/js/**", "/img/**").permitAll()
+				.requestMatchers("/css/**", "/js/**", "/img/**","/font/**").permitAll()
 
 				// 2) Endpoints públicos
 				.requestMatchers("/", "/login").permitAll()
 
 				.requestMatchers("/usuario/**").hasRole("ADMIN")
+				.requestMatchers("/admin/**").hasRole("ADMIN")
 
-				.requestMatchers("/index/**").hasAnyRole("TECNICO", "ADMIN")
-
-				// Revisar todas las rutas y dar los persmisos pertinentes de forma adecuada.
-				.requestMatchers("/incidenciasProgreso/**").hasAnyRole("TECNICO", "ADMIN")
-				.requestMatchers("/incidenciasPendientes/**").hasAnyRole("TECNICO", "ADMIN")
-				.requestMatchers("/incidenciasResueltas/**").hasAnyRole("TECNICO", "ADMIN")
-				.requestMatchers("/crearIncidencia/**").hasAnyRole("TECNICO", "ADMIN", "AUXILIAR")
-				.requestMatchers("/admin/**").hasAnyRole("TECNICO", "ADMIN")
+				.requestMatchers("/incidencias/**").hasAnyRole("TECNICO", "ADMIN")
 				
-
-
-				// 3) Endpoints para ambos (TECNICO y ADMIN)
+				// Revisar todas las rutas y dar los persmisos pertinentes de forma adecuada.
+				// .requestMatchers("/index/**").hasAnyRole("TECNICO", "ADMIN")
 				// .requestMatchers("/incidenciasProgreso/**").hasAnyRole("TECNICO", "ADMIN")
-
-				// 5) Endpoints solo para ADMIN
-				// .requestMatchers("/admin/**").hasRole("ADMIN")
+				// .requestMatchers("/incidenciasPendientes/**").hasAnyRole("TECNICO", "ADMIN")
+				// .requestMatchers("/incidenciasResueltas/**").hasAnyRole("TECNICO", "ADMIN")
+				// .requestMatchers("/crearIncidencia/**").hasAnyRole("TECNICO", "ADMIN", "AUXILIAR")
+				// .requestMatchers("/admin/**").hasAnyRole("TECNICO", "ADMIN")
 
                 // 6) Cualquier otra ruta que no hayas mapeado => denegada o autenticada
                 //    - .denyAll() para bloquear lo que no esté contemplado
@@ -59,7 +53,7 @@ public class SecurityConfig {
 				.formLogin(form -> form.loginPage("/") // Indica que la ruta GET "/" muestra tu plantilla login
 						.usernameParameter("mail") // name del input en tu formulario
 						.passwordParameter("password") // name del input password
-						.defaultSuccessUrl("/index", true) // Redirección al hacer login exitoso
+						.defaultSuccessUrl("/incidencias/index", true) // Redirección al hacer login exitoso
 						.permitAll())
 				.logout(logout -> logout.logoutUrl("/logout").logoutSuccessUrl("/") // A dónde se redirige tras hacer logout
 						.permitAll());

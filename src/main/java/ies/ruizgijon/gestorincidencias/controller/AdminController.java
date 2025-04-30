@@ -33,7 +33,7 @@ public class AdminController {
         // Agregar un mensaje de éxito al redirigir a la página después de eliminar la incidencia
         attributes.addFlashAttribute("confirmacionEliminar", "Incidencia eliminada con éxito.");
 
-        return "redirect:/"; // Redirigir a la lista de incidencias después de eliminar
+        return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de eliminar
     }
 
     // Método para editar una incidencia por su ID
@@ -75,7 +75,7 @@ public class AdminController {
         // Agregar un mensaje de éxito al redirigir a la página después de editar la incidencia
         attributes.addFlashAttribute("confirmacion", "Incidencia editada con éxito.");
 
-        return "redirect:/"; // Redirigir a la lista de incidencias después de editar
+        return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de editar
     }
 
     @ModelAttribute()

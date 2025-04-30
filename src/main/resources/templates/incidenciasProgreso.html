@@ -42,7 +42,7 @@
 
         <!-- Buscador -->
         <div class="container w-50">
-            <form class="d-flex" role="search" th:action="@{/incidenciasProgreso/buscar}" th:object="${search}" method="post">
+            <form class="d-flex" role="search" th:action="@{/incidencias/incidenciasProgreso/buscar}" th:object="${search}" method="post">
                 <input th:field="*{titulo}" class="form-control me-2" type="text" placeholder="Título de la incidencia" aria-label="Buscar">
                 <select th:field="*{usuario.id}" id="" class="form-select me-2 w-50" >
                     <option th:value="${null}" selected >Seleccione un usuario</option>
@@ -105,9 +105,9 @@
                             <a class="btn btn-danger btn-sm confirmar" role="button"
                                 th:href="@{/admin/eliminarIncidencia/{id}(id=${incidencia.id})}">Eliminar</a>
                             <a class="btn btn-success btn-sm" role="button"
-                                th:href="@{/incidencia/desasignar/{id} (id=${incidencia.id})}">Desasignar</a>
+                                th:href="@{/incidencias/incidencia/desasignar/{id} (id=${incidencia.id})}">Desasignar</a>
                             <a class="btn btn-success btn-sm" role="button"
-                                th:href="@{/incidencia/resolver/{id} (id=${incidencia.id})}">Finalizar</a>
+                                th:href="@{/incidencias/incidencia/resolver/{id} (id=${incidencia.id})}">Finalizar</a>
                         </div>
                     </td>
                 </tr>

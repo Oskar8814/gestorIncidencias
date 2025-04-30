@@ -19,10 +19,10 @@
 
                 <h1 class="text-center my-3 p-2 bg-body-secondary rounded opacity-75">Formulario de Incidencias</h1>
                 <!-- Formulario  -->
-                <form th:action="@{/creaIncidencia/save}" class=" bg-white p-3 rounded needs-validation" th:object="${incidencia}" method="post" novalidate>
+                <form th:action="@{/incidencias/creaIncidencia/save}" class=" bg-white p-3 rounded needs-validation" th:object="${incidencia}" method="post" novalidate>
 
                     <div>
-                        <a th:href="@{/index}" class="d-flex justify-content-center"><img
+                        <a th:href="@{/incidencias/index}" class="d-flex justify-content-center"><img
                                 th:src="@{/img/logo_RG_formularios.png}" class="img-fluid w-50" alt="Logo del IES"></a>
                     </div>
                     <!-- Datos del creador -->
