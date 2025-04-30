@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import ies.ruizgijon.gestorincidencias.model.Incidencia;
 import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IRolService;
@@ -110,6 +112,13 @@ public class UsuarioController {
         model.addAttribute("roles", roles); // Agregar la lista de roles al modelo para que esté disponible en la vista
         model.addAttribute("usuario", usuario); // Agregar el usuario al modelo para que esté disponible en la vista
         return "crearUsuarioForm"; // Devuelve la vista para editar un usuario existente
+    }
+
+    @ModelAttribute()
+    public void setGenericos(Model model) {
+        Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
+
+        model.addAttribute("usuario", usuario); // Agregar el usuario actual al modelo para la vista
     }
 
 }

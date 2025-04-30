@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -75,6 +76,13 @@ public class AdminController {
         attributes.addFlashAttribute("confirmacion", "Incidencia editada con éxito.");
 
         return "redirect:/"; // Redirigir a la lista de incidencias después de editar
+    }
+
+    @ModelAttribute()
+    public void setGenericos(Model model) {
+        Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
+
+        model.addAttribute("usuario", usuario); // Agregar el usuario actual al modelo para la vista
     }
 
 }

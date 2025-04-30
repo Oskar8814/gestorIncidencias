@@ -232,5 +232,4 @@ public class IncidenciasController {
         model.addAttribute("search", incidenciaSearch); // Agregar el objeto de búsqueda al modelo para la vista
         model.addAttribute("usuarios", usuarios); // Agregar la lista de usuarios al modelo para el formulario
     }
-    
 }
