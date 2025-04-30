@@ -30,11 +30,13 @@ public class SecurityConfig {
 				// 2) Endpoints públicos
 				.requestMatchers("/", "/login").permitAll()
 
-				// 3) Endpoints para ambos (USER y ADMIN)
-				.requestMatchers("/incidenciasProgreso").hasAnyRole("USER", "ADMIN")
+				.requestMatchers("/usuario/**").hasRole("ADMIN")
+
+				// 3) Endpoints para ambos (TECNICO y ADMIN)
+				// .requestMatchers("/incidenciasProgreso/**").hasAnyRole("TECNICO", "ADMIN")
 
 				// 5) Endpoints solo para ADMIN
-				.requestMatchers("/admin/**").hasRole("ADMIN")
+				// .requestMatchers("/admin/**").hasRole("ADMIN")
 
                 // 6) Cualquier otra ruta que no hayas mapeado => denegada o autenticada
                 //    - .denyAll() para bloquear lo que no esté contemplado
@@ -63,8 +65,7 @@ public class SecurityConfig {
 	@Bean
 	public AuthenticationManager authManager(HttpSecurity http) throws Exception {
 	    AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-	    authBuilder.userDetailsService(customUserDetailsService)
-	                .passwordEncoder(passwordEncoder());
+	    authBuilder.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 
 	    return authBuilder.build();
 	}

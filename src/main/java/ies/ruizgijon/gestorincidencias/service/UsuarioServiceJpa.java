@@ -3,6 +3,9 @@ package ies.ruizgijon.gestorincidencias.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +16,8 @@ import ies.ruizgijon.gestorincidencias.util.Validaciones;
 
 @Service
 public class UsuarioServiceJpa implements IUsuarioService {
-    // Aquí se implementan los métodos de la interfaz IUsuarioService utilizando el repositorio de usuarios
+    // Aquí se implementan los métodos de la interfaz IUsuarioService utilizando el
+    // repositorio de usuarios
     // Inyección de dependencias para el repositorio de usuarios
     @Autowired
     private UsuarioRepository usuarioRepository;
@@ -46,7 +50,7 @@ public class UsuarioServiceJpa implements IUsuarioService {
         }
         // Verifica si el usuario ya existe en la base de datos antes de modificarlo
         if (usuarioRepository.existsById(usuario.getId())) {
-            // Codifica la  contraseña del usuario antes de guardarlo
+            // Codifica la contraseña del usuario antes de guardarlo
             String contrasenaCodificada = passwordEncoder.encode(usuario.getPassword());
             usuario.setPassword(contrasenaCodificada);
             usuarioRepository.save(usuario);
@@ -55,7 +59,7 @@ public class UsuarioServiceJpa implements IUsuarioService {
         }
     }
 
-    //Metodo para modificar la contraseña de un usuario
+    // Metodo para modificar la contraseña de un usuario
     @Override
     public void modificarContrasena(Usuario usuario) {
         // Verifica si el usuario es válido antes de modificarlo
@@ -84,7 +88,8 @@ public class UsuarioServiceJpa implements IUsuarioService {
     @Override
     public Usuario buscarUsuarioPorId(Integer idUsuario) {
         // Busca el usuario por su ID y devuelve el resultado
-        return usuarioRepository.findById(idUsuario).orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + idUsuario));
+        return usuarioRepository.findById(idUsuario)
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + idUsuario));
     }
 
     // Método para buscar un usuario por su nombre
@@ -115,10 +120,23 @@ public class UsuarioServiceJpa implements IUsuarioService {
     }
 
     private void comprobarCorreoExistente(Usuario usuario) {
-		if(usuarioRepository.findByMail(usuario.getMail()).isPresent()) {
-			// logger.error("Se intenta registrar un usuario con un correo ya existente");
-			throw new UsuarioNoValidoException("El correo ya existe");
-		}
-	}
+        if (usuarioRepository.findByMail(usuario.getMail()).isPresent()) {
+            // logger.error("Se intenta registrar un usuario con un correo ya existente");
+            throw new UsuarioNoValidoException("El correo ya existe");
+        }
+    }
+
+    @Override
+    public Usuario getCurrentUser() {
+        // Obtiene el contexto de seguridad actual
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        // Verifica si el usuario está autenticado y no es anónimo
+        String correo = authentication.getName(); // el username es el correo
+        
+        Usuario usuario = usuarioRepository.findByMail(correo).orElse(null);
+
+        return usuario;
+    }
 
 }

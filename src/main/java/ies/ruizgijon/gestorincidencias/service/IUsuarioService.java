@@ -13,4 +13,5 @@ public interface IUsuarioService {
     List<Usuario> buscarTodos(); // Cambiado a String para que coincida con el tipo de nombre en la clase Usuario
     public void modificarContrasena(Usuario usuario);
     Usuario buscarUsuarioPorMail(String mail);
+    public Usuario getCurrentUser();
 }
