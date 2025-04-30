@@ -91,7 +91,7 @@ public class IncidenciasController {
     public String buscarIncidenciasProgreso(@ModelAttribute ("search") Incidencia busqueda, Model model) {
 
         busqueda.setEstado(EstadoIncidencia.REPARACION); // Establecer el estado de búsqueda a PENDIENTE
-        
+
         //Personalizar el tipo de busqueda
         ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("titulo", ExampleMatcher.GenericPropertyMatchers.contains());
 
@@ -101,7 +101,7 @@ public class IncidenciasController {
         // Verificar si la lista de incidencias en progreso está vacía
         if (incidenciasProgreso.isEmpty()) {
             // Si la lista está vacía, agregar un mensaje al modelo para mostrarlo en la vista
-            model.addAttribute("mensajeNoProgreso", "No hay incidencias en reparación con el título indicado.");
+            model.addAttribute("mensajeNoProgreso", "No hay incidencias en reparación con el título y/o encargado indicado.");
         }
 
         // Agregar la lista de incidencias al modelo para que esté disponible en la vista
@@ -154,10 +154,9 @@ public class IncidenciasController {
     public String crearIncidencia(Model model) {
         // Crear una nueva instancia de Incidencia y agregarla al modelo
         Incidencia nuevaIncidencia = new Incidencia();
-        List<Usuario> usuarios = usuarioService.buscarTodos(); // Obtener la lista de usuarios para el formulario
 
         model.addAttribute("incidencia", nuevaIncidencia);
-        model.addAttribute("usuarios", usuarios); // Agregar la lista de usuarios al modelo para el formulario
+
         return "crearIncidenciaForm"; // Devuelve la vista para crear una nueva incidencia
     }
 
@@ -220,7 +219,10 @@ public class IncidenciasController {
     @ModelAttribute()
     public void setGenericos(Model model) {
         Incidencia incidenciaSearch = new Incidencia();
+        List<Usuario> usuarios = usuarioService.buscarTodos(); // Obtener la lista de usuarios para el formulario
+        
         model.addAttribute("search", incidenciaSearch); // Agregar el objeto de búsqueda al modelo para la vista
+        model.addAttribute("usuarios", usuarios); // Agregar la lista de usuarios al modelo para el formulario
     }
     
 }

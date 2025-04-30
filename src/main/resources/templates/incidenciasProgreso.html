@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Página de Incidencias Pendientes</title>
+    <title>Incidencias en Progreso</title>
     <link rel="icon" href="/img/logo_RG_180_mono_new_nohalo.ico" type="image/x-icon">
     <link rel="stylesheet" th:href="@{/css/customStyles.css}">
     <link rel="stylesheet"
@@ -44,7 +44,12 @@
         <div class="container w-50">
             <form class="d-flex" role="search" th:action="@{/incidenciasProgreso/buscar}" th:object="${search}" method="post">
                 <input th:field="*{titulo}" class="form-control me-2" type="text" placeholder="Título de la incidencia" aria-label="Buscar">
-                <button class="btn btn-outline-success" type="submit">Buscar</button>
+                <select th:field="*{usuario.id}" id="" class="form-select me-2 w-50" >
+                    <option th:value="${null}" selected >Seleccione un usuario</option>
+                    <option th:each="usuario : ${usuarios}" th:value="${usuario.id}"
+                        th:text="${usuario.nombre} + ' ' + ${usuario.apellido1}"></option>
+                </select>
+                <button class="btn btn-outline-success " type="submit">Buscar</button>
             </form>
         </div>
 

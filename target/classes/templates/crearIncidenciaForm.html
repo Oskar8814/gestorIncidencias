@@ -27,7 +27,7 @@
                     </div>
                     <!-- Datos del creador -->
                     <div class="mt-3">
-                        <label class="form-label fw-bold" for="input-creador">Datos del Creador</label>
+                        <label class="form-label fw-bold" for="input-creador">Datos de la Incidencia</label>
                         <!-- <input class="form-control"  type="text" name="text" id="input-nombre" required /> -->
                         <!-- id de la incidencia -->
                         <input type="hidden" th:field="*{id}">
@@ -46,7 +46,7 @@
                         <div class="row">
                             <div class="col">
                                 <label class="form-label fw-bold" for="input-aula">Aula</label>
-                                <input class="form-control" type="text" name="aula" id="input-aula" th:field="*{aula}" required />
+                                <input class="form-control" type="text" name="aula" id="input-aula" th:field="*{aula}" placeholder="Aula de la incidencia" required />
                                 <div class="valid-feedback">Campo valido</div>
                                 <div class="invalid-feedback">Debes completar el Aula</div>
                             </div>
@@ -80,7 +80,7 @@
                     <!-- imagen -->
                     <div class="mt-3">
                         <label for="formFile" class="form-label ms-3 mt-2">Imagen de la incidencia</label>
-                        <input class="form-control" type="text" id="imagen" name="imagen" th:field="*{imagen}" required>
+                        <input class="form-control" type="text" id="imagen" name="imagen" th:field="*{imagen}" placeholder="Introduce la URL de la imagen" required>
                         <div class="valid-feedback">Campo valido</div>
                         <div class="invalid-feedback">Debes añadir la imagen</div>
                     </div>
