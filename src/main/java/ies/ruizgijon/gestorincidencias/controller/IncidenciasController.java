@@ -29,8 +29,14 @@ public class IncidenciasController {
 
     // Aquí vamos a agregar métodos para manejar las solicitudes HTTP y llamar a los métodos del servicio de incidencias
 
-    // Método para listar incidencias pendientes
+    // Método para mostrar la página de inicio de sesión
     @GetMapping("/")
+	public String showLogin() {
+		return "login"; // Retorna la vista de inicio de sesión.
+	}
+
+    // Método para listar incidencias pendientes
+    @GetMapping("/index")
     public String listarIncidenciasPendientes(Model model) {
         // Llamar al servicio para obtener la lista de incidencias y devolverla a la vista
         List<Incidencia> incidenciasPendientes = incidenciasService.buscarPorEstado(EstadoIncidencia.PENDIENTE);

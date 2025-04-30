@@ -79,11 +79,17 @@ public class UsuarioController {
     @PostMapping("/usuario/save")
     public String guardarUsuario(Usuario usuario, Model model, RedirectAttributes attributes) {
         // Llamar al servicio para guardar el nuevo usuario
-        usuarioService.guardarUsuario(usuario);
-
-        // Agregar un mensaje de éxito al redirigir a la página después de guardar el usuario
-        attributes.addFlashAttribute("confirmacion", "Usuario creado o modificado con éxito.");
-
+        // Verificar si el usuario se encuentra en la base de datos
+        Usuario usuarioExistente = usuarioService.buscarUsuarioPorMail(usuario.getMail());
+        if (usuarioExistente != null) {
+            usuarioService.modificarUsuario(usuario); // Si el usuario ya existe, se modifica;
+            // Agregar un mensaje de éxito al redirigir a la página después de modificar el usuario
+            attributes.addFlashAttribute("confirmacion", "Usuario modificado con éxito.");
+        }else {
+            // Si el usuario no existe, se guarda como un nuevo usuario
+            usuarioService.guardarUsuario(usuario);
+            attributes.addFlashAttribute("confirmacion", "Usuario guardado con éxito.");
+        }
         return "redirect:/usuario/listar"; // Redirigir a la lista de usuarios después de guardar
     }
 

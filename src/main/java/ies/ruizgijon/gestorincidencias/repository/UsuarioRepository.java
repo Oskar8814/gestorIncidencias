@@ -7,4 +7,5 @@ import ies.ruizgijon.gestorincidencias.model.Usuario;
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     // Aquí se puede agregar métodos personalizados si es necesario
     Optional<Usuario> findByNombre(String nombreUsuario);
+    Optional<Usuario> findByMail(String mail); // Método para buscar por correo electrónico
 }

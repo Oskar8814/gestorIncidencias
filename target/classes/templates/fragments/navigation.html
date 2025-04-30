@@ -1,39 +1,45 @@
 <!-- NAVEGADOR -->
-    <div th:fragment="nav" class="container-fluid">
-        <a class="navbar-brand text-primary fs-2 fw-bold text-uppercase d-lg-none" th:href="@{/incidenciasPendientes}"><img
-                th:src="@{/img/logo_RG_480_azul.png}" class="img-fluid w-25" alt="Logo IES Ruiz Gijon"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav container-lg justify-content-around">
-                <a class="nav-link" aria-current="page" th:href="@{/}">Inicio</a>
-                <!--  -->
-                <a class="nav-link" th:href="@{/crearIncidencia}">Nueva incidencia</a>
-                <!--  -->
-                <a class="nav-link" th:href="@{/incidenciasProgreso}">Incidencias en progreso</a>
-                <!--  -->
-                <a class="nav-link" th:href="@{/incidenciasResueltas}">Incidencias resueltas</a>
-                
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Usuario
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item" th:href="@{/usuario/listar}">Listado de Usuarios</a></li>
-                        <li><a class="dropdown-item" th:href="@{/usuario/crear}">Nuevo Usuario</a></li>
-                    </ul>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Perfil
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li><a class="dropdown-item">Modificar contraseña</a></li>
-                        <li><a class="dropdown-item" th:href="@{/logout}">Cerrar Sesión</a></li>
-                    </ul>
-                </li>
-            </div>
+<div th:fragment="nav" class="container-fluid">
+    <a class="navbar-brand text-primary fs-2 fw-bold text-uppercase d-lg-none" th:href="@{/incidenciasPendientes}"><img
+            th:src="@{/img/logo_RG_480_azul.png}" class="img-fluid w-25" alt="Logo IES Ruiz Gijon"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav container-lg justify-content-around">
+            <a class="nav-link" aria-current="page" th:href="@{/index}">Inicio</a>
+            <!--  -->
+            <a class="nav-link" th:href="@{/crearIncidencia}">Nueva incidencia</a>
+            <!--  -->
+            <a class="nav-link" th:href="@{/incidenciasProgreso}">Incidencias en progreso</a>
+            <!--  -->
+            <a class="nav-link" th:href="@{/incidenciasResueltas}">Incidencias resueltas</a>
+
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Usuario
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item" th:href="@{/usuario/listar}">Listado de Usuarios</a></li>
+                    <li><a class="dropdown-item" th:href="@{/usuario/crear}">Nuevo Usuario</a></li>
+                </ul>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                    Perfil
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                    <li><a class="dropdown-item">Modificar contraseña</a></li>
+                    <li>
+                        <form th:action="@{/logout}" method="post">
+                            <button class="dropdown-item" type="submit">Cerrar sesión</button>
+                        </form>
+                    </li>
+                </ul>
+            </li>
         </div>
     </div>
+</div>

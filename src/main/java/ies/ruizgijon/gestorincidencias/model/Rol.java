@@ -1,5 +1,8 @@
 package ies.ruizgijon.gestorincidencias.model;
 
+import java.util.Objects;
+
+import org.springframework.security.core.GrantedAuthority;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -7,12 +10,31 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Rol {
+public class Rol implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(length = 50, nullable = false)
     private String name;
+
+    @Override
+    public String getAuthority() {
+        return "ROLE_" + name; // Prefijo que Spring Security espera
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Rol other = (Rol) obj;
+        return Objects.equals(id, other.id) && Objects.equals(name, other.name);
+    }
+
 }
 

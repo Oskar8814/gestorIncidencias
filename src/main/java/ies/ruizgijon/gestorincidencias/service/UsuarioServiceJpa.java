@@ -3,9 +3,13 @@ package ies.ruizgijon.gestorincidencias.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import ies.ruizgijon.gestorincidencias.exceptions.UsuarioNoValidoException;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.repository.UsuarioRepository;
+import ies.ruizgijon.gestorincidencias.util.Validaciones;
 
 @Service
 public class UsuarioServiceJpa implements IUsuarioService {
@@ -14,10 +18,54 @@ public class UsuarioServiceJpa implements IUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    // Inyección de dependencias para el codificador de contraseñas
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     // Método para guardar un usuario en la base de datos
     @Override
     public void guardarUsuario(Usuario usuario) {
+        comprobarCorreoExistente(usuario);
+        // Verifica si el usuario es válido antes de guardarlo
+        if (!Validaciones.validarUsuario(usuario)) {
+            throw new UsuarioNoValidoException("El usuario no es válido");
+        }
+        // Codifica la contraseña del usuario antes de guardarlo
+        String contrasenaCodificada = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(contrasenaCodificada);
         // Verifica si el usuario ya existe en la base de datos antes de guardarlo
+        usuarioRepository.save(usuario);
+    }
+
+    // Método para modificar un usuario en la base de datos
+    @Override
+    public void modificarUsuario(Usuario usuario) {
+        // Verifica si el usuario es válido antes de modificarlo
+        if (!Validaciones.validarUsuario(usuario)) {
+            throw new UsuarioNoValidoException("El usuario no es válido");
+        }
+        // Verifica si el usuario ya existe en la base de datos antes de modificarlo
+        if (usuarioRepository.existsById(usuario.getId())) {
+            // Codifica la  contraseña del usuario antes de guardarlo
+            String contrasenaCodificada = passwordEncoder.encode(usuario.getPassword());
+            usuario.setPassword(contrasenaCodificada);
+            usuarioRepository.save(usuario);
+        } else {
+            throw new IllegalArgumentException("Usuario no encontrado con ID: " + usuario.getId());
+        }
+    }
+
+    //Metodo para modificar la contraseña de un usuario
+    @Override
+    public void modificarContrasena(Usuario usuario) {
+        // Verifica si el usuario es válido antes de modificarlo
+        if (!Validaciones.validarUsuario(usuario)) {
+            throw new UsuarioNoValidoException("El usuario no es válido");
+        }
+        // Codifica la nueva contraseña del usuario antes de guardarlo
+        String contrasenaCodificada = passwordEncoder.encode(usuario.getPassword());
+        usuario.setPassword(contrasenaCodificada);
+        // Guarda el usuario modificado en la base de datos
         usuarioRepository.save(usuario);
     }
 
@@ -57,5 +105,20 @@ public class UsuarioServiceJpa implements IUsuarioService {
         // Devuelve todos los usuarios de la base de datos
         return usuarioRepository.findAll();
     }
+
+    // Método para buscar un usuario por su correo electrónico
+    @Override
+    public Usuario buscarUsuarioPorMail(String mail) {
+        // Busca el usuario por su correo electrónico y devuelve el resultado
+        Usuario usuario = usuarioRepository.findByMail(mail).orElse(null);
+        return usuario;
+    }
+
+    private void comprobarCorreoExistente(Usuario usuario) {
+		if(usuarioRepository.findByMail(usuario.getMail()).isPresent()) {
+			// logger.error("Se intenta registrar un usuario con un correo ya existente");
+			throw new UsuarioNoValidoException("El correo ya existe");
+		}
+	}
 
 }
