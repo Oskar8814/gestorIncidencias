@@ -138,4 +138,18 @@ public class UsuarioServiceJpa implements IUsuarioService {
         return usuario;
     }
 
+    @Override
+    public void cambiarContrasena(Integer id, String contrasena) {
+        // Busca el usuario por su ID
+        Usuario usuario = usuarioRepository.findById(id).orElse(null);
+        if (usuario == null) {
+            throw new IllegalArgumentException("Usuario no encontrado con ID: " + id);
+        }
+        // Codifica la nueva contraseña del usuario antes de guardarlo
+        String contrasenaCodificada = passwordEncoder.encode(contrasena);
+        usuario.setPassword(contrasenaCodificada);
+        // Guarda el usuario modificado en la base de datos
+        usuarioRepository.save(usuario);
+    }
+
 }

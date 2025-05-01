@@ -32,8 +32,8 @@ public class SecurityConfig {
 
 				.requestMatchers("/usuario/**").hasRole("ADMIN")
 				.requestMatchers("/admin/**").hasRole("ADMIN")
-
 				.requestMatchers("/incidencias/**").hasAnyRole("TECNICO", "ADMIN")
+				.requestMatchers("/modificarContrasena/**").hasAnyRole("ADMIN","TECNICO","AUXILIAR")
 				.requestMatchers("/error").permitAll()
             	.anyRequest().authenticated()
 				// Revisar todas las rutas y dar los persmisos pertinentes de forma adecuada.

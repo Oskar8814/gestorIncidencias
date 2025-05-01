@@ -14,4 +14,5 @@ public interface IUsuarioService {
     public void modificarContrasena(Usuario usuario);
     Usuario buscarUsuarioPorMail(String mail);
     public Usuario getCurrentUser();
+    void cambiarContrasena(Integer id, String contrasena);
 }
