@@ -7,12 +7,12 @@
         <h1 class="fw-bolder">Incidencias <span class="text-amarillo">Informáticas</span></h1>
 
         <!-- Si el usuario existe -->
-        <p th:if="${usuario != null}">
-            Bienvenido [[${usuario.nombre}]]&nbsp;[[${usuario.apellido1}]]
+        <p th:if="${currentUser != null}">
+            Bienvenido [[${currentUser.nombre}]]&nbsp;[[${currentUser.apellido1}]]
         </p>
 
         <!-- Si el usuario no existe -->
-        <p th:unless="${usuario != null}">
+        <p th:unless="${currentUser != null}">
             Bienvenido invitado
         </p>
     </div>

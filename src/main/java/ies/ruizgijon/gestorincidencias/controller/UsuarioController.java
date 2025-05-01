@@ -117,7 +117,7 @@ public class UsuarioController {
     public void setGenericos(Model model) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
 
-        model.addAttribute("usuario", usuario); // Agregar el usuario actual al modelo para la vista
+        model.addAttribute("currentUser", usuario); // Agregar el usuario actual al modelo para la vista
     }
 
 }

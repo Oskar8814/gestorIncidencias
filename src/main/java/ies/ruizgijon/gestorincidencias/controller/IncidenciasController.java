@@ -224,7 +224,7 @@ public class IncidenciasController {
         List<Usuario> usuarios = usuarioService.buscarTodos(); // Obtener la lista de usuarios para el formulario
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
 
-        model.addAttribute("usuario", usuario); // Agregar el usuario actual al modelo para la vista
+        model.addAttribute("currentUser", usuario); // Agregar el usuario actual al modelo para la vista
         model.addAttribute("search", incidenciaSearch); // Agregar el objeto de búsqueda al modelo para la vista
         model.addAttribute("usuarios", usuarios); // Agregar la lista de usuarios al modelo para el formulario
     }
