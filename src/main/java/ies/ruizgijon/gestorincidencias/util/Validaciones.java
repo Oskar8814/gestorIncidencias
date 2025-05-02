@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import ies.ruizgijon.gestorincidencias.model.Incidencia;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 
 public class Validaciones {
@@ -53,6 +54,62 @@ public class Validaciones {
 
 		return errores;
 	}
+
+	/**
+	 * Valida si un objeto Incidencia cumple con los requisitos de la base de datos y
+	 * los criterios de seguridad.
+	 * 
+	 * @param incidencia El objeto Incidencia a validar.
+	 * @return Una lista de errores de validación. Si la lista está vacía, la incidencia es valida
+	 */
+
+	public static List<String> obtenerErroresValidacionIncidencia(Incidencia incidencia) {
+		List<String> errores = new ArrayList<>();
+
+		if (incidencia == null) {
+			errores.add("La incidencia no puede ser nula.");
+			return errores;
+		}
+
+		if (!esTextoValido(incidencia.getTitulo(), 100)) {
+			errores.add("El título de la incidencia no es válido o excede los 100 caracteres.");
+		}
+		
+		if (incidencia.getFecha() == null) {
+			errores.add("La fecha de creación no puede ser nula.");
+		}
+
+		if (!esTextoValido(incidencia.getDescripcion(), 4500)) {
+			errores.add("La descripción de la incidencia no es válida o excede los 4500 caracteres.");
+		}
+
+
+		if (!esTextoValido(incidencia.getAula(), 20)) {
+			errores.add("El aula no es válida o excede los 20 caracteres.");
+		}
+
+		if (!esTextoValido(incidencia.getImagen(), 255)) {
+			errores.add("La imagen no es válida o excede los 255 caracteres.");
+		}
+
+		if (incidencia.getEstado() == null) {
+			errores.add("El estado de la incidencia no puede ser nulo.");
+		}
+
+		if (incidencia.getCreador() == null) {
+			errores.add("El creador de la incidencia no puede ser nulo.");
+		}
+
+		return errores;
+	}
+
+	/**
+	 * Valida si un texto es válido según los criterios establecidos.
+	 * 
+	 * @param valor     El texto a validar.
+	 * @param maxLength La longitud máxima permitida.
+	 * @return true si el texto es válido, false en caso contrario.
+	 */
 
 	private static boolean esTextoValido(String valor, int maxLength) {
 		return valor != null && !valor.trim().isEmpty() && valor.length() <= maxLength;

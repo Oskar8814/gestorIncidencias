@@ -31,7 +31,7 @@ public class AdminController {
         incidenciasService.eliminarIncidencia(id);
 
         // Agregar un mensaje de éxito al redirigir a la página después de eliminar la incidencia
-        attributes.addFlashAttribute("confirmacionEliminar", "Incidencia eliminada con éxito.");
+        attributes.addFlashAttribute("confirmacion", "Incidencia "+ id +" eliminada con éxito.");
 
         return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de eliminar
     }

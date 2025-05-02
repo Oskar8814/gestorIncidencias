@@ -4,13 +4,15 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
-import org.springframework.stereotype.Service; 
+import org.springframework.stereotype.Service;
 
+import ies.ruizgijon.gestorincidencias.exceptions.IncidenciaNoValidoException;
 import ies.ruizgijon.gestorincidencias.model.EstadoIncidencia;
 import ies.ruizgijon.gestorincidencias.model.Incidencia;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.repository.IncidenciasRepository;
 import ies.ruizgijon.gestorincidencias.repository.UsuarioRepository;
+import ies.ruizgijon.gestorincidencias.util.Validaciones;
 
 @Service
 public class IncidenciaServiceJpa implements IIncidenciasService {
@@ -27,6 +29,13 @@ public class IncidenciaServiceJpa implements IIncidenciasService {
     // Método para guardar una incidencia en la base de datos
     @Override
     public void guardarIncidencia(Incidencia incidencia) {
+
+        // Verifica si la incidencia es válida antes de guardarla
+        List<String> errores = Validaciones.obtenerErroresValidacionIncidencia(incidencia);
+        if (!errores.isEmpty()) {
+            throw new IncidenciaNoValidoException(errores);
+        }
+
         incidenciasRepository.save(incidencia);
     }
 

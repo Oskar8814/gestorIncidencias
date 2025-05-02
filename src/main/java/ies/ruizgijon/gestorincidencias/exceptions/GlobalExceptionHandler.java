@@ -14,5 +14,12 @@ public class GlobalExceptionHandler {
         model.addAttribute("errores", ex.getErrores());
         return "error"; // Usa error.html
     }
+    @ExceptionHandler(IncidenciaNoValidoException.class)
+    public String handleIncidenciaNoValidoException(IncidenciaNoValidoException ex, Model model) {
+        model.addAttribute("statusCode", 400);
+        model.addAttribute("errorMessage", "La incidencia no es válida:");
+        model.addAttribute("errores", ex.getErrores());
+        return "error"; // Usa error.html
+    }
 }
 
