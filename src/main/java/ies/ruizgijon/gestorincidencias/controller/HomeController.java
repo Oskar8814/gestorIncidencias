@@ -40,7 +40,7 @@ public class HomeController {
 
 	// Metodo para guardar la nueva contraseña
 	@PostMapping("/cambiarContrasena/save")
-	public String cambiarContrasena (@RequestParam("mailLogeado") String mail, @RequestParam("contrasena") String contrasena, RedirectAttributes attributes) {
+	public String cambiarContrasena (@RequestParam("mailLogeado") String mail, @RequestParam("password") String contrasena, RedirectAttributes attributes) {
 		// Obtener el usuario actualmente logeado
 		Usuario usuarioLogeado = usuarioService.getCurrentUser(); // Obtener el usuario actualmente logeado
 		if (usuarioLogeado == null) {

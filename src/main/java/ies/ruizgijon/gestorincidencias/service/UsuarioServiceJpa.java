@@ -60,7 +60,7 @@ public class UsuarioServiceJpa implements IUsuarioService {
 
     // Metodo para modificar la contraseña de un usuario
     @Override
-    public void modificarContrasena(Usuario usuario) {
+    public void modificarContrasenaDeprecated(Usuario usuario) {
         // Verifica si el usuario es válido antes de modificarlo
         if (!Validaciones.validarUsuario(usuario)) {
             throw new UsuarioNoValidoException("El usuario no es válido");
@@ -145,9 +145,18 @@ public class UsuarioServiceJpa implements IUsuarioService {
         if (usuario == null) {
             throw new IllegalArgumentException("Usuario no encontrado con ID: " + id);
         }
+
+        usuario.setPassword(contrasena); // Establece la nueva contraseña
+
+        // Verifica si el usuario es válido antes de modificarlo
+        if (!Validaciones.validarUsuario(usuario)) {
+            throw new UsuarioNoValidoException("El usuario no es válido");
+        }
+
         // Codifica la nueva contraseña del usuario antes de guardarlo
         String contrasenaCodificada = passwordEncoder.encode(contrasena);
         usuario.setPassword(contrasenaCodificada);
+
         // Guarda el usuario modificado en la base de datos
         usuarioRepository.save(usuario);
     }

@@ -30,8 +30,8 @@ public class Validaciones {
 		if (usuario != null) {
 			esValido = esTextoValido(usuario.getNombre(), 50)
 					&& esTextoValido(usuario.getApellido1(), 50)
-					&& esTextoValido(usuario.getMail(), 100);
-					// && esPasswordValida(usuario.getPassword()); // Descomentado para evitar que falle la validación de contraseña
+					&& esTextoValido(usuario.getMail(), 100)
+					&& esPasswordValida(usuario.getPassword()); // Descomentado para evitar que falle la validación de contraseña
 		}
 		return esValido;
 

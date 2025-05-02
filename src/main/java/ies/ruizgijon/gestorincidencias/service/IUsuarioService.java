@@ -11,7 +11,7 @@ public interface IUsuarioService {
     Usuario buscarUsuarioPorId(Integer idUsuario);
     Usuario buscarUsuarioPorNombre(String nombreUsuario); // Cambiado a String para que coincida con el tipo de nombre en la clase Usuario
     List<Usuario> buscarTodos(); // Cambiado a String para que coincida con el tipo de nombre en la clase Usuario
-    public void modificarContrasena(Usuario usuario);
+    public void modificarContrasenaDeprecated(Usuario usuario);
     Usuario buscarUsuarioPorMail(String mail);
     public Usuario getCurrentUser();
     void cambiarContrasena(Integer id, String contrasena);

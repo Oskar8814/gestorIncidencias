@@ -32,6 +32,7 @@ public class SecurityConfig {
 
 				.requestMatchers("/usuario/**").hasRole("ADMIN")
 				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/incidencias/crearIncidencia/**").hasAnyRole("TECNICO", "ADMIN","AUXILIAR") //Al ser mas especifica que la posterior Auxiliar solo se le permite crear incidecias
 				.requestMatchers("/incidencias/**").hasAnyRole("TECNICO", "ADMIN")
 				.requestMatchers("/modificarContrasena/**").hasAnyRole("ADMIN","TECNICO","AUXILIAR")
 				.requestMatchers("/error").permitAll()
