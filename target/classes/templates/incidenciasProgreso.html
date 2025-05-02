@@ -100,13 +100,15 @@
                     <td th:text="${incidencia.estado}"></td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a class="btn btn-warning btn-sm" role="button"
+                            <a class="btn btn-warning btn-sm" role="button" sec:authorize="hasRole('ADMIN')"
                                 th:href="@{/admin/editarIncidencia/{id}(id=${incidencia.id})}">Editar</a>
-                            <a class="btn btn-danger btn-sm confirmar" role="button"
+                            <a class="btn btn-danger btn-sm confirmar" role="button" sec:authorize="hasRole('ADMIN')"
                                 th:href="@{/admin/eliminarIncidencia/{id}(id=${incidencia.id})}">Eliminar</a>
-                            <a class="btn btn-success btn-sm" role="button"
+                            <!-- Mostrar solo si el usuario actual es el asignado a la incidencia -->
+                            <a class="btn btn-success btn-sm" role="button" th:if="${incidencia.usuario.id == currentUser.id}"
                                 th:href="@{/incidencias/incidencia/desasignar/{id} (id=${incidencia.id})}">Desasignar</a>
-                            <a class="btn btn-success btn-sm" role="button"
+                            <!-- Mostrar solo si el usuario actual es el asignado a la incidencia -->
+                            <a class="btn btn-success btn-sm" role="button" th:if="${incidencia.usuario.id == currentUser.id}"
                                 th:href="@{/incidencias/incidencia/resolver/{id} (id=${incidencia.id})}">Finalizar</a>
                         </div>
                     </td>

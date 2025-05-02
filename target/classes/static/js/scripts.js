@@ -17,3 +17,17 @@ document.querySelectorAll(".confirmar").forEach(function (elemento) {
 document.querySelectorAll(".confirmarDeleteUsuario").forEach(function (elemento) {
     elemento.addEventListener("click", dialogoConfirmDeleteUsuario, false);
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+
+    togglePassword.addEventListener("click", function () {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        this.classList.toggle("bi-eye");
+        this.classList.toggle("bi-eye-slash");
+        this.classList.toggle("text-primary");
+    });
+});
+

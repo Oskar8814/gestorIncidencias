@@ -29,10 +29,15 @@
                 </div>
                 <div class="row mt-2">
                     <div class="col">
-                        <label class="form-label fw-bold" for="password">Nueva contraseña</label>
-                        <input type="password" name="contrasena" class="form-control" placeholder="Password" id="password" required>
-                        <div class="valid-feedback">Campo válido</div>
-                        <div class="invalid-feedback">Debes completar la contraseña</div>
+                        <label class="form-label fw-bold" for="password">Password</label>
+                        <div class="position-relative">
+                            <input type="password" name="password" class="form-control pe-5" placeholder="Password" id="password" required>
+                            <i class="bi bi-eye-slash position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
+                                id="togglePassword"
+                                style="cursor: pointer;"></i>
+                            <div class="valid-feedback">Campo válido</div>
+                            <div class="invalid-feedback">Debes completar la contraseña</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,6 +49,7 @@
     </div>
     <script th:src="@{js/bs5-validation.js}"></script>
     <script th:src="@{js/bootstrap.bundle.js}"></script>
+    <script th:src="@{js/scripts.js}"></script>
 </body>
 
 </html>

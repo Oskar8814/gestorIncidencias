@@ -182,7 +182,9 @@ public class IncidenciasController {
     public String cambiarEstadoIncidenciaProgreso(@PathVariable("id") int idIncidencia, RedirectAttributes attributes) {
 
         // Obtener el ID del usuario que está asignando la incidencia (esto debería ser parte de la sesión o contexto actual)
-        Integer idUsuario = 1; // Cambia esto por el ID del usuario actual (por ejemplo, desde la sesión
+        Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
+
+        Integer idUsuario = usuario.getId(); // Cambia esto por el ID del usuario actual (por ejemplo, desde la sesión
         
         // Llamar al servicio para cambiar el estado de la incidencia a "En Progreso"
         incidenciasService.asignarIncidencia(idIncidencia, idUsuario);

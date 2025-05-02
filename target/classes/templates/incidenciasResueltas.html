@@ -73,7 +73,7 @@
                     <th scope="col">Fecha</th>
                     <th scope="col">Imagen</th>
                     <th scope="col">Encargado</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col" sec:authorize="hasRole('ADMIN')">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -90,10 +90,10 @@
                         </a>
                     </td>
                     <td th:text="|${incidencia.usuario.nombre} ${incidencia.usuario.apellido1}|"></td>
-                    <td>
+                    <td sec:authorize="hasRole('ADMIN')">
                         <div class="d-flex gap-2">
                             <!-- Posibilidad de editar una incidencia resuelta? -->
-                            <a class="btn btn-danger btn-sm confirmar" role="button"
+                            <a class="btn btn-danger btn-sm confirmar" role="button" 
                                 th:href="@{/admin/eliminarIncidencia/{id}(id=${incidencia.id})}">Eliminar</a>
                         </div>
                     </td>

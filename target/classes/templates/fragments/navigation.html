@@ -16,7 +16,7 @@
             <!--  -->
             <a class="nav-link" th:href="@{/incidencias/incidenciasResueltas}">Incidencias resueltas</a>
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
                     data-bs-toggle="dropdown" aria-expanded="false">
                     Usuario
