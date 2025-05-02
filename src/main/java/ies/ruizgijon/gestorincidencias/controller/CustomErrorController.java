@@ -28,7 +28,7 @@ public class CustomErrorController implements ErrorController {
 
             if (statusCode == 404) {
                 model.addAttribute("errorMessage", "Página no encontrada.");
-            } else if (statusCode == 500) {
+            } else if (statusCode == 500) { 
                 model.addAttribute("errorMessage", "Error interno del servidor.");
             } else if (statusCode == 403) {
                 model.addAttribute("errorMessage", "Acceso denegado.");
