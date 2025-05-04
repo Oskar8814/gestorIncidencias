@@ -100,6 +100,22 @@
                 </tr>
             </tbody>
         </table>
+
+        <nav th:if="${incidenciasResueltas.totalPages > 0}" aria-label="Page navigation" >
+            <ul class="pagination justify-content-center">
+                <li class="page-item" th:classappend="${incidenciasResueltas.number == 0 ? 'disabled' : ''}">
+                    <a th:href="@{/incidencias/incidenciasResueltas(page=${incidenciasResueltas.number - 1})}" class="page-link">Anterior</a>
+                </li>
+                            
+                <li class="page-item" th:classappend="${i eq incidenciasResueltas.number + 1} ? 'active'" th:each="i : ${#numbers.sequence( 1, incidenciasResueltas.totalPages, 1)}">
+                    <a class="page-link" th:href="@{/incidencias/incidenciasResueltas?page={tmpPag} (tmpPag=${i-1}) }" th:text="${i}" th:title="${'Page '+ i}" data-toggle="tooltip"></a>
+                </li>
+                <li class="page-item" th:classappend="${incidenciasResueltas.number == (incidenciasResueltas.totalPages - 1) ? 'disabled' : ''}">
+                    <a th:href="@{/incidencias/incidenciasResueltas(page=${incidenciasResueltas.number + 1})}" class="page-link">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+
     </div>
 
 

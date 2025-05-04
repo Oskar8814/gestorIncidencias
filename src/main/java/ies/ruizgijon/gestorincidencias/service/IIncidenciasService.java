@@ -2,7 +2,10 @@ package ies.ruizgijon.gestorincidencias.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Pageable;
+
 
 import ies.ruizgijon.gestorincidencias.model.EstadoIncidencia;
 import ies.ruizgijon.gestorincidencias.model.Incidencia; // Import Incidencia class
@@ -16,7 +19,8 @@ public interface IIncidenciasService {
     public void asignarIncidencia(Integer idIncidencia, Integer idUsuario);
     public void desasignarIncidencia(Integer idIncidencia);
     public void cerrarIncidencia(Integer idIncidencia);
-    // Page<Incidencia> buscarPorEstadoPaginado(Pageable page);
-    // Page<Incidencia> buscarTodasPaginado(Pageable page); // Cambiado a String para que coincida con el tipo de nombre en la clase Usuario
     List<Incidencia> buscarByExample(Example<Incidencia> example);
+    Page<Incidencia> buscarIncidenciasPaginadas(Pageable pageable);
+    public Page<Incidencia> buscarIncidenciasPorEstadoPaginadas(EstadoIncidencia estado, Pageable pageable);
+    public Page<Incidencia> buscarIncidenciasByExamplePaginadas(Example<Incidencia> example, Pageable pageable); 
 }

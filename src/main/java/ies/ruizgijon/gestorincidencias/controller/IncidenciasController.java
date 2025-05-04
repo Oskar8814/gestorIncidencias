@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -113,10 +115,10 @@ public class IncidenciasController {
 
     // Método para listar incidencias cerradas
     @GetMapping("/incidenciasResueltas")
-    public String listarIncidenciasResueltas(Model model) {
+    public String listarIncidenciasResueltas(Model model,Pageable page) {
         // Llamar al servicio para obtener la lista de incidencias cerradas y devolverla a la vista
-        List<Incidencia> incidenciasResueltas = incidenciasService.buscarPorEstado(EstadoIncidencia.RESUELTA);
-        
+        // List<Incidencia> incidenciasResueltas = incidenciasService.buscarPorEstado(EstadoIncidencia.RESUELTA);
+        Page<Incidencia> incidenciasResueltas = incidenciasService.buscarIncidenciasPorEstadoPaginadas(EstadoIncidencia.RESUELTA, page);
         // Verificar si la lista de incidencias cerradas está vacía
         if (incidenciasResueltas.isEmpty()) {
             // Si la lista está vacía, puedes agregar un mensaje al modelo para mostrarlo en la vista
@@ -130,16 +132,16 @@ public class IncidenciasController {
 
     //Metodo para listar la busqueda en las incidencias en progreso 
     @PostMapping("/incidenciasResueltas/buscar")
-    public String buscarIncidenciasResueltas(@ModelAttribute ("search") Incidencia busqueda, Model model) {
+    public String buscarIncidenciasResueltas(@ModelAttribute ("search") Incidencia busqueda, Model model,Pageable page) {
 
         busqueda.setEstado(EstadoIncidencia.RESUELTA); // Establecer el estado de búsqueda a RESUELTA
         
         //Personalizar el tipo de busqueda
         ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("titulo", ExampleMatcher.GenericPropertyMatchers.contains());
-
+        
         Example<Incidencia> example = Example.of(busqueda, matcher);
-        List<Incidencia> incidenciasResueltas = incidenciasService.buscarByExample(example); // Buscar incidencias resueltas que coinciden con el ejemplo
-
+        
+        Page<Incidencia> incidenciasResueltas = incidenciasService.buscarIncidenciasByExamplePaginadas(example, page);// Buscar incidencias resueltas que coinciden con el ejemplo
         // Verificar si la lista de incidencias en progreso está vacía
         if (incidenciasResueltas.isEmpty()) {
             // Si la lista está vacía, agregar un mensaje al modelo para mostrarlo en la vista

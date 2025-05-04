@@ -2,8 +2,11 @@ package ies.ruizgijon.gestorincidencias.service;
 
 import java.util.List;
 import java.util.Optional;
+
+import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import ies.ruizgijon.gestorincidencias.exceptions.IncidenciaNoValidoException;
@@ -142,6 +145,24 @@ public class IncidenciaServiceJpa implements IIncidenciasService {
     @Override
     public List<Incidencia> buscarByExample(Example<Incidencia> example) {
         return incidenciasRepository.findAll(example);
+    }
+
+    // Metodo para buscar incidencias paginadas
+    @Override
+    public Page<Incidencia> buscarIncidenciasPaginadas(Pageable pageable) {
+        return incidenciasRepository.findAll(pageable);
+    }
+
+    // Método para buscar incidencias por estado y paginación
+    @Override
+    public Page<Incidencia> buscarIncidenciasPorEstadoPaginadas(EstadoIncidencia estado, Pageable pageable) {
+        return incidenciasRepository.findByEstado(estado, pageable);
+    }
+
+    //Metodo para buscar incidencias por ejemplo y paginación
+    @Override
+    public Page<Incidencia> buscarIncidenciasByExamplePaginadas(Example<Incidencia> example, Pageable pageable) {
+        return incidenciasRepository.findAll(example, pageable);
     }
 
 }
