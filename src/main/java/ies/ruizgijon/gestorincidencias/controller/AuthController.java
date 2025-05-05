@@ -42,7 +42,7 @@ public class AuthController {
         if (usuario != null) {
             String token = UUID.randomUUID().toString();
             usuarioService.guardarTokenDeRecuperacion(usuario, token);
-            emailService.enviarRecuperacion(email, baseUrl + "/reset-password?token=" + token); // URL local,cambiar por la real
+            emailService.enviarRecuperacion(email, baseUrl.trim() + "/reset-password?token=" + token); // URL local,cambiar por la real
         }
         attrs.addFlashAttribute("confirmacion", "Si el correo existe, se enviaron instrucciones.");
         return "redirect:/";
