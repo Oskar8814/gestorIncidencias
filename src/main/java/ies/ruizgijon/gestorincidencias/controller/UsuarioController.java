@@ -113,6 +113,8 @@ public class UsuarioController {
         return "crearUsuarioForm"; // Devuelve la vista para editar un usuario existente
     }
 
+    
+
     @ModelAttribute()
     public void setGenericos(Model model) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado

@@ -14,4 +14,7 @@ public interface IUsuarioService {
     Usuario buscarUsuarioPorMail(String mail);
     public Usuario getCurrentUser();
     void cambiarContrasena(Integer id, String contrasena);
+    public boolean validarToken(String token);
+    public boolean actualizarPasswordConToken(String token, String nuevaPassword);
+    public void guardarTokenDeRecuperacion(Usuario usuario, String token);
 }

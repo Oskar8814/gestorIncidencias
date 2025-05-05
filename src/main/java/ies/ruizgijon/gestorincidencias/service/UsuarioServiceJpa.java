@@ -1,7 +1,9 @@
 package ies.ruizgijon.gestorincidencias.service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -10,9 +12,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ies.ruizgijon.gestorincidencias.exceptions.UsuarioNoValidoException;
+import ies.ruizgijon.gestorincidencias.model.PasswordResetToken;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
+import ies.ruizgijon.gestorincidencias.repository.PasswordResetTokenRepository;
 import ies.ruizgijon.gestorincidencias.repository.UsuarioRepository;
 import ies.ruizgijon.gestorincidencias.util.Validaciones;
+import jakarta.transaction.Transactional;
 
 @Service
 public class UsuarioServiceJpa implements IUsuarioService {
@@ -25,6 +30,9 @@ public class UsuarioServiceJpa implements IUsuarioService {
     // Inyección de dependencias para el codificador de contraseñas
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PasswordResetTokenRepository tokenRepository;
 
     // Método para guardar un usuario en la base de datos
     @Override
@@ -152,6 +160,47 @@ public class UsuarioServiceJpa implements IUsuarioService {
 
         // Guarda el usuario modificado en la base de datos
         usuarioRepository.save(usuario);
+    }
+
+    @Override
+    @Transactional
+    public void guardarTokenDeRecuperacion(Usuario usuario, String token) {
+        tokenRepository.deleteByUsuario(usuario); // Elimina cualquier token existente del user
+        PasswordResetToken prt = new PasswordResetToken();
+        prt.setToken(token); // Asignacion del token 
+        prt.setUsuario(usuario); // Asignamos el usuario al token
+        prt.setFechaExpiracion(LocalDateTime.now().plusHours(1)); // Token valido para 1 hora
+        tokenRepository.save(prt);
+    }
+
+    @Override
+    public boolean validarToken(String token) {
+        return tokenRepository.findByToken(token) 
+                .map(t -> !t.isExpirado()) 
+                .orElse(false); 
+    }
+
+    @Override
+    @Transactional
+    public boolean actualizarPasswordConToken(String token, String nuevaPassword) {
+        Optional<PasswordResetToken> optional = tokenRepository.findByToken(token);
+        // Verificamos si el token existe y no ha expirado
+        if (optional.isPresent() && !optional.get().isExpirado()) {
+            Usuario usuario = optional.get().getUsuario(); // Obtener el usuario asociado al token
+
+            usuario.setPassword(nuevaPassword);
+            // Verifica si el usuario es válido antes de modificarlo
+            List<String> errores = Validaciones.obtenerErroresValidacionUsuario(usuario);
+            if (!errores.isEmpty()) {
+                throw new UsuarioNoValidoException(errores);
+            }
+
+            usuario.setPassword(passwordEncoder.encode(nuevaPassword));
+            usuarioRepository.save(usuario);
+            tokenRepository.delete(optional.get()); // Elimina el token tras usarlo
+            return true;
+        }
+        return false;
     }
 
 }

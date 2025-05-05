@@ -28,8 +28,9 @@ public class SecurityConfig {
 				.requestMatchers("/css/**", "/js/**", "/img/**","/font/**").permitAll()
 
 				// 2) Endpoints públicos
-				.requestMatchers("/", "/login").permitAll()
+				.requestMatchers("/", "/login","/recuperar-password","/reset-password").permitAll()
 
+				// 3) Endpoints privados
 				.requestMatchers("/usuario/**").hasRole("ADMIN")
 				.requestMatchers("/admin/**").hasRole("ADMIN")
 				.requestMatchers("/incidencias/crearIncidencia/**").hasAnyRole("TECNICO", "ADMIN","AUXILIAR") //Al ser mas especifica que la posterior Auxiliar solo se le permite crear incidecias
@@ -37,15 +38,8 @@ public class SecurityConfig {
 				.requestMatchers("/modificarContrasena/**").hasAnyRole("ADMIN","TECNICO","AUXILIAR")
 				.requestMatchers("/error").permitAll()
             	.anyRequest().authenticated()
-				// Revisar todas las rutas y dar los persmisos pertinentes de forma adecuada.
-				// .requestMatchers("/index/**").hasAnyRole("TECNICO", "ADMIN")
-				// .requestMatchers("/incidenciasProgreso/**").hasAnyRole("TECNICO", "ADMIN")
-				// .requestMatchers("/incidenciasPendientes/**").hasAnyRole("TECNICO", "ADMIN")
-				// .requestMatchers("/incidenciasResueltas/**").hasAnyRole("TECNICO", "ADMIN")
-				// .requestMatchers("/crearIncidencia/**").hasAnyRole("TECNICO", "ADMIN", "AUXILIAR")
-				// .requestMatchers("/admin/**").hasAnyRole("TECNICO", "ADMIN")
 
-                // 6) Cualquier otra ruta que no hayas mapeado => denegada o autenticada
+                // Cualquier otra ruta que no hayas mapeado => denegada o autenticada
                 //    - .denyAll() para bloquear lo que no esté contemplado
                 //    - .authenticated() para requerir cualquier usuario
                 // .anyRequest().permitAll()
