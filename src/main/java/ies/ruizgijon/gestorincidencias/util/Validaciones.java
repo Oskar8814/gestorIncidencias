@@ -48,8 +48,10 @@ public class Validaciones {
 			errores.add("El correo electrónico no es válido o excede los 100 caracteres.");
 		}
 
-		if (!esPasswordValida(usuario.getPassword())) {
-			errores.add("La contraseña no cumple con los requisitos de seguridad. Debe tener entre 12 y 16 caracteres, al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.");
+		if (usuario.getId() == null || (usuario.getPassword() != null && !usuario.getPassword().startsWith("$2a$"))) {
+			if (!esPasswordValida(usuario.getPassword())) {
+				errores.add("La contraseña no cumple con los requisitos de seguridad. Debe tener entre 12 y 16 caracteres, al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.");
+			}
 		}
 
 		return errores;

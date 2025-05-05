@@ -34,9 +34,3 @@ bin/
 # === OS / Misc files ===
 .DS_Store
 Thumbs.db
-
-# === Docker ===
-*.pid
-*.tar
-*.bak
-docker-compose.override.yml

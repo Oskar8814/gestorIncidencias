@@ -115,7 +115,7 @@ public class UsuarioController {
 
         model.addAttribute(GConstants.ATTRIBUTE_ROLES, roles); // Agregar la lista de roles al modelo para que esté disponible en la vista
         model.addAttribute("usuario", usuario); // Agregar el usuario al modelo para que esté disponible en la vista
-        return "crearUsuarioForm"; // Devuelve la vista para editar un usuario existente
+        return "editUsuarioForm"; // Devuelve la vista para editar un usuario existente
     }
 
     
