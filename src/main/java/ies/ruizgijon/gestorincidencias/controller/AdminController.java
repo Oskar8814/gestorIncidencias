@@ -15,14 +15,19 @@ import ies.ruizgijon.gestorincidencias.model.Incidencia;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
+import ies.ruizgijon.gestorincidencias.util.GConstants;
 
 @Controller // Anotación para indicar que esta clase es un controlador de Spring
 public class AdminController {
-    @Autowired
-    private IIncidenciasService incidenciasService; // Inyección de dependencias para el servicio de incidencias
+    
+    private final IIncidenciasService incidenciasService; // Inyección de dependencias para el servicio de incidencias
+    private final IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
 
     @Autowired
-    private IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
+    public AdminController( IIncidenciasService incidenciasService, IUsuarioService usuarioService){
+        this.incidenciasService = incidenciasService;
+        this.usuarioService = usuarioService;
+    }
 
     // Método para eliminar una incidencia por su ID
     @GetMapping("/admin/eliminarIncidencia/{id}")
@@ -31,7 +36,7 @@ public class AdminController {
         incidenciasService.eliminarIncidencia(id);
 
         // Agregar un mensaje de éxito al redirigir a la página después de eliminar la incidencia
-        attributes.addFlashAttribute("confirmacion", "Incidencia "+ id +" eliminada con éxito.");
+        attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Incidencia "+ id +" eliminada con éxito.");
 
         return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de eliminar
     }
@@ -46,8 +51,8 @@ public class AdminController {
         List<Usuario> usuarios = usuarioService.buscarTodos();
 
         // Agregar la incidencia y la lista de usuarios al modelo para la vista de edición
-        model.addAttribute("incidencia", incidencia);
-        model.addAttribute("usuarios", usuarios); // Agregar la lista de usuarios al modelo para el formulario
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIA, incidencia);
+        model.addAttribute(GConstants.ATTRIBUTE_USUARIOS, usuarios); // Agregar la lista de usuarios al modelo para el formulario
         return "crearIncidenciaForm"; // Devuelve la vista para editar una incidencia existente
     }
 
@@ -61,8 +66,8 @@ public class AdminController {
         List<Usuario> usuarios = usuarioService.buscarTodos();
 
         // Agregar la incidencia y la lista de usuarios al modelo para la vista de edición
-        model.addAttribute("incidencia", incidencia);
-        model.addAttribute("usuarios", usuarios); // Agregar la lista de usuarios al modelo para el formulario
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIA, incidencia);
+        model.addAttribute(GConstants.ATTRIBUTE_USUARIOS, usuarios); // Agregar la lista de usuarios al modelo para el formulario
         return "editarIncidenciaForm"; // Devuelve la vista para editar una incidencia existente
     }
 
@@ -73,7 +78,7 @@ public class AdminController {
         incidenciasService.guardarIncidencia(incidencia);
 
         // Agregar un mensaje de éxito al redirigir a la página después de editar la incidencia
-        attributes.addFlashAttribute("confirmacion", "Incidencia editada con éxito.");
+        attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Incidencia editada con éxito.");
 
         return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de editar
     }
@@ -82,7 +87,7 @@ public class AdminController {
     public void setGenericos(Model model) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
 
-        model.addAttribute("currentUser", usuario); // Agregar el usuario actual al modelo para la vista
+        model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
     }
 
 }

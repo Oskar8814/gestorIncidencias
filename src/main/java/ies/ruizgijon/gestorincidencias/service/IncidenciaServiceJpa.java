@@ -20,13 +20,15 @@ import ies.ruizgijon.gestorincidencias.util.Validaciones;
 @Service
 public class IncidenciaServiceJpa implements IIncidenciasService {
     
-    // Inyección de dependencias para el repositorio de incidencias y usuarios
-    @Autowired
-    private IncidenciasRepository incidenciasRepository;
-    
-    @Autowired
-    private UsuarioRepository usuarioRepository;
+    private final IncidenciasRepository incidenciasRepository;
+    private final UsuarioRepository usuarioRepository;
 
+    // Constructor para la inyección de dependencias
+    @Autowired
+    public IncidenciaServiceJpa(IncidenciasRepository incidenciasRepository, UsuarioRepository usuarioRepository) {
+        this.incidenciasRepository = incidenciasRepository; // Inicializa el repositorio de incidencias
+        this.usuarioRepository = usuarioRepository; // Inicializa el repositorio de usuarios
+    }
 
 
     // Método para guardar una incidencia en la base de datos

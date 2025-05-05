@@ -21,13 +21,15 @@ public class AuthController {
     @Value("${app.url.base}")
     private String baseUrl;
 
-    // Inyeccion de dependencias del servicio de usuarios
-    @Autowired
-    private IUsuarioService usuarioService;
+    private final IUsuarioService usuarioService;
+    private final EmailService emailService;
 
+    //Constructor para la inyeccion de dependencias
     @Autowired
-    private EmailService emailService;
-    
+    public AuthController(IUsuarioService usuarioService, EmailService emailService) {
+        this.usuarioService = usuarioService;
+        this.emailService = emailService;
+    }
 
     @GetMapping("/recuperar-password")
     public String mostrarFormularioRecuperacion() {

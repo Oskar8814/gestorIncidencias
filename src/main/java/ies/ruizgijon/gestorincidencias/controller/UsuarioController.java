@@ -16,15 +16,20 @@ import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IRolService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
+import ies.ruizgijon.gestorincidencias.util.GConstants;
 
 @Controller
 public class UsuarioController {
 
-    @Autowired
-    private IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
+    private final IUsuarioService usuarioService; 
+    private final IRolService rolService;
 
+    //Constructor para la inyeccion de dependencias
     @Autowired
-    private IRolService rolService; // Inyección de dependencias para el servicio de roles
+    public UsuarioController(IUsuarioService usuarioService, IRolService rolService) {
+        this.usuarioService = usuarioService; // Inicializa el servicio de usuarios
+        this.rolService = rolService; // Inicializa el servicio de roles
+    }
 
     //Metodo para listar los usuarios 
     @GetMapping("/usuario/listar")
@@ -39,7 +44,7 @@ public class UsuarioController {
         }
 
         // Agregar la lista de usuarios al modelo para que esté disponible en la vista
-        model.addAttribute("usuarios", usuarios);
+        model.addAttribute(GConstants.ATTRIBUTE_USUARIOS, usuarios);
         return "usuarios"; // Devuelve la vista de listar usuarios
     }
 
@@ -50,16 +55,16 @@ public class UsuarioController {
         Usuario usuario = usuarioService.buscarUsuarioPorId(idUsuario);
         if (usuario == null) {
             // Si el usuario no existe, redirigir a la lista de usuarios y mostrar un mensaje de error
-            model.addAttribute("mensajeError", "Usuario no encontrado con ID: " + idUsuario);
-            return "redirect:/usuario/listar"; // Redirigir a la lista de usuarios si no se encuentra el usuario
+            model.addAttribute(GConstants.ATTRIBUTE_MESSAGEERROR, "Usuario no encontrado con ID: " + idUsuario);
+            return GConstants.REDIRECT_USUARIOLISTAR; // Redirigir a la lista de usuarios si no se encuentra el usuario
         }
         // Llamar al servicio para eliminar el usuario por su ID
         usuarioService.eliminarUsuario(idUsuario);
 
         // Agregar un mensaje de éxito al redirigir a la página después de eliminar el usuario
-        attributes.addFlashAttribute("confirmacion", "Usuario eliminado con éxito.");
+        attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Usuario eliminado con éxito.");
 
-        return "redirect:/usuario/listar"; // Redirigir a la lista de usuarios después de eliminar
+        return GConstants.REDIRECT_USUARIOLISTAR; // Redirigir a la lista de usuarios después de eliminar
     }
 
     //Metodo para crear un nuevo usuario
@@ -71,7 +76,7 @@ public class UsuarioController {
         //Listado de roles para el formulario de creación de usuario
         List<Rol> roles = rolService.buscarTodos(); // Obtener la lista de roles desde el servicio
 
-        model.addAttribute("roles", roles); // Agregar la lista de roles al modelo para que esté disponible en la vista
+        model.addAttribute(GConstants.ATTRIBUTE_ROLES, roles); // Agregar la lista de roles al modelo para que esté disponible en la vista
         model.addAttribute("usuario", nuevoUsuario);
         return "crearUsuarioForm"; // Devuelve la vista para crear un nuevo usuario
     }
@@ -83,15 +88,15 @@ public class UsuarioController {
         // Verificar si el usuario se encuentra en la base de datos
         Usuario usuarioExistente = usuarioService.buscarUsuarioPorMail(usuario.getMail());
         if (usuarioExistente != null) {
-            usuarioService.modificarUsuario(usuario); // Si el usuario ya existe, se modifica;
+            usuarioService.modificarUsuario(usuario); // Modificar el usuario existente
             // Agregar un mensaje de éxito al redirigir a la página después de modificar el usuario
-            attributes.addFlashAttribute("confirmacion", "Usuario modificado con éxito.");
+            attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Usuario modificado con éxito.");
         }else {
             // Si el usuario no existe, se guarda como un nuevo usuario
             usuarioService.guardarUsuario(usuario);
-            attributes.addFlashAttribute("confirmacion", "Usuario guardado con éxito.");
+            attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Usuario guardado con éxito.");
         }
-        return "redirect:/usuario/listar"; // Redirigir a la lista de usuarios después de guardar
+        return GConstants.REDIRECT_USUARIOLISTAR; // Redirigir a la lista de usuarios después de guardar
     }
 
     //Metodo para editar un usuario por su id
@@ -101,14 +106,14 @@ public class UsuarioController {
         Usuario usuario = usuarioService.buscarUsuarioPorId(idUsuario);
         if (usuario == null) {
             // Si el usuario no existe, redirigir a la lista de usuarios y mostrar un mensaje de error
-            model.addAttribute("mensajeError", "Usuario no encontrado con ID: " + idUsuario);
-            return "redirect:/usuario/listar"; // Redirigir a la lista de usuarios si no se encuentra el usuario
+            model.addAttribute(GConstants.ATTRIBUTE_MESSAGEERROR, "Usuario no encontrado con ID: " + idUsuario);
+            return GConstants.REDIRECT_USUARIOLISTAR; // Redirigir a la lista de usuarios si no se encuentra el usuario
         }
 
         //Listado de roles para el formulario de edición de usuario
         List<Rol> roles = rolService.buscarTodos(); // Obtener la lista de roles desde el servicio
 
-        model.addAttribute("roles", roles); // Agregar la lista de roles al modelo para que esté disponible en la vista
+        model.addAttribute(GConstants.ATTRIBUTE_ROLES, roles); // Agregar la lista de roles al modelo para que esté disponible en la vista
         model.addAttribute("usuario", usuario); // Agregar el usuario al modelo para que esté disponible en la vista
         return "crearUsuarioForm"; // Devuelve la vista para editar un usuario existente
     }
@@ -119,7 +124,7 @@ public class UsuarioController {
     public void setGenericos(Model model) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
 
-        model.addAttribute("currentUser", usuario); // Agregar el usuario actual al modelo para la vista
+        model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
     }
 
 }

@@ -9,6 +9,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import ies.ruizgijon.gestorincidencias.util.GConstants;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -31,11 +33,11 @@ public class SecurityConfig {
 				.requestMatchers("/", "/login","/recuperar-password","/reset-password").permitAll()
 
 				// 3) Endpoints privados
-				.requestMatchers("/usuario/**").hasRole("ADMIN")
-				.requestMatchers("/admin/**").hasRole("ADMIN")
-				.requestMatchers("/incidencias/crearIncidencia/**").hasAnyRole("TECNICO", "ADMIN","AUXILIAR") //Al ser mas especifica que la posterior Auxiliar solo se le permite crear incidecias
-				.requestMatchers("/incidencias/**").hasAnyRole("TECNICO", "ADMIN")
-				.requestMatchers("/modificarContrasena/**").hasAnyRole("ADMIN","TECNICO","AUXILIAR")
+				.requestMatchers("/usuario/**").hasRole(GConstants.ROLE_ADMIN)
+				.requestMatchers("/admin/**").hasRole(GConstants.ROLE_ADMIN)
+				.requestMatchers("/incidencias/crearIncidencia/**").hasAnyRole(GConstants.ROLE_TECNICO, GConstants.ROLE_ADMIN,GConstants.ROLE_AUXILIAR) //Al ser mas especifica que la posterior Auxiliar solo se le permite crear incidecias
+				.requestMatchers("/incidencias/**").hasAnyRole(GConstants.ROLE_TECNICO, GConstants.ROLE_ADMIN)
+				.requestMatchers("/modificarContrasena/**").hasAnyRole(GConstants.ROLE_ADMIN,GConstants.ROLE_TECNICO,GConstants.ROLE_AUXILIAR)
 				.requestMatchers("/error").permitAll()
             	.anyRequest().authenticated()
 

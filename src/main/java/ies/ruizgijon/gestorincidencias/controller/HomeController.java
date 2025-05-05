@@ -11,12 +11,18 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
+import ies.ruizgijon.gestorincidencias.util.GConstants;
 
 @Controller
 public class HomeController {
 
+	private final IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
+
+	// Constructor para la inyección de dependencias
 	@Autowired
-	private IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
+	public HomeController(IUsuarioService usuarioService) {
+		this.usuarioService = usuarioService; // Inicializa el servicio de usuarios
+	}
 
     // Método para mostrar la página de inicio de sesión
     @GetMapping("/")
@@ -31,7 +37,7 @@ public class HomeController {
         Usuario usuarioLogeado = usuarioService.getCurrentUser(); // Obtener el usuario actualmente logeado
 		if (usuarioLogeado == null) {
 			// Si no hay un usuario logeado, redirigir a la página de inicio de sesión
-			return "redirect:/";
+			return GConstants.REDIRECT_LOGIN;
 		}
 		String mail = usuarioLogeado.getMail(); // Obtener el correo electrónico del usuario logeado
         model.addAttribute("mailLogeado", mail);
@@ -45,25 +51,25 @@ public class HomeController {
 		Usuario usuarioLogeado = usuarioService.getCurrentUser(); // Obtener el usuario actualmente logeado
 		if (usuarioLogeado == null) {
 			// Si no hay un usuario logeado, redirigir a la página de inicio de sesión
-			return "redirect:/";
+			return GConstants.REDIRECT_LOGIN;
 		}
 		// Verificar si el correo electrónico coincide con el del usuario logeado
 		if (!usuarioLogeado.getMail().equals(mail)) {
 			// Si no coincide, redirigir a la página de inicio de sesión
-			return "redirect:/";
+			return GConstants.REDIRECT_LOGIN;
 		}
 		// Llamar al servicio para cambiar la contraseña del usuario
 		usuarioService.cambiarContrasena(usuarioLogeado.getId(), contrasena); // Cambiar la contraseña del usuario logeado
 		
 		// Agregar un mensaje de éxito al redirigir a la página después de cambiar la contraseña
 		attributes.addFlashAttribute("confirmacion", "Contraseña modificada con éxito.");
-		return "redirect:/"; 
+		return GConstants.REDIRECT_LOGIN; 
 	}
 
 	@ModelAttribute()
     public void setGenericos(Model model) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
 
-        model.addAttribute("currentUser", usuario); // Agregar el usuario actual al modelo para la vista
+        model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
     }
 }

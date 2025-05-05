@@ -11,8 +11,13 @@ import ies.ruizgijon.gestorincidencias.repository.RolRepository;
 @Service
 public class RolServiceJpa implements IRolService {
 
+    private final RolRepository rolRepository; // Inyección de dependencia del servicio de roles
+
+    // Constructor para la inyección de dependencias
     @Autowired
-    private RolRepository rolRepository; // Inyección de dependencia del servicio de roles
+    public RolServiceJpa(RolRepository rolRepository) {
+        this.rolRepository = rolRepository; // Inicializa el repositorio de roles
+    }
 
     @Override
     public void guardarRol(Rol rol) {

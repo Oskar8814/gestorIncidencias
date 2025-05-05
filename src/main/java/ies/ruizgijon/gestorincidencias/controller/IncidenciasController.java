@@ -20,19 +20,24 @@ import ies.ruizgijon.gestorincidencias.model.Incidencia;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
+import ies.ruizgijon.gestorincidencias.util.GConstants;
 
 @Controller
 @RequestMapping(value="/incidencias")
 public class IncidenciasController {
     
-    @Autowired
-    private IIncidenciasService incidenciasService; // Inyección de dependencias para el servicio de incidencias
 
+    private final IIncidenciasService incidenciasService; 
+    private final IUsuarioService usuarioService; 
+
+    // Constructor para la inyección de dependencias
     @Autowired
-    private IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
+    public IncidenciasController(IIncidenciasService incidenciasService, IUsuarioService usuarioService) {
+        this.incidenciasService = incidenciasService;
+        this.usuarioService = usuarioService;
+    }
 
     // Aquí vamos a agregar métodos para manejar las solicitudes HTTP y llamar a los métodos del servicio de incidencias
-
     // Método para listar incidencias pendientes
     @GetMapping("/index")
     public String listarIncidenciasPendientes(Model model) {
@@ -42,12 +47,12 @@ public class IncidenciasController {
         // Verificar si la lista de incidencias pendientes está vacía
         if (incidenciasPendientes.isEmpty()) {
             // Si la lista está vacía, puedes agregar un mensaje al modelo para mostrarlo en la vista
-            model.addAttribute("mensajeNoPendientes", "No hay incidencias pendientes.");
+            model.addAttribute(GConstants.ATTRIBUTE_MESSAGENOPENDIENTE, "No hay incidencias pendientes.");
         }
 
         // Agregar la lista de incidencias al modelo para que esté disponible en la vista
-        model.addAttribute("incidenciasPendientes", incidenciasPendientes);
-        return "incidenciasPendientes"; // Devuelve la vista de listar incidencias pendientes
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIASPENDIENTES, incidenciasPendientes);
+        return GConstants.VIEW_INCIDENCIASPENDIENTES; // Devuelve la vista de listar incidencias pendientes
     }
 
     //Metodo para listar la busqueda en las incidencias pendientes 
@@ -57,7 +62,7 @@ public class IncidenciasController {
         busqueda.setEstado(EstadoIncidencia.PENDIENTE); // Establecer el estado de búsqueda a PENDIENTE
         
         //Personaliza el tipo de busqueda
-        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("titulo", ExampleMatcher.GenericPropertyMatchers.contains());
+        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher(GConstants.FIELD_TITULO, ExampleMatcher.GenericPropertyMatchers.contains());
 
         Example<Incidencia> example = Example.of(busqueda, matcher);
         List<Incidencia> incidenciasPendientes = incidenciasService.buscarByExample(example); // Buscar incidencias pendientes que coinciden con el ejemplo
@@ -65,12 +70,12 @@ public class IncidenciasController {
         // Verificar si la lista de incidencias pendientes está vacía
         if (incidenciasPendientes.isEmpty()) {
             // Si la lista está vacía, agregar un mensaje al modelo para mostrarlo en la vista
-            model.addAttribute("mensajeNoPendientes", "No hay incidencias pendientes con el título indicado.");
+            model.addAttribute(GConstants.ATTRIBUTE_MESSAGENOPENDIENTE, "No hay incidencias pendientes con el título indicado.");
         }
 
         // Agregar la lista de incidencias al modelo para que esté disponible en la vista
-        model.addAttribute("incidenciasPendientes", incidenciasPendientes);
-        return "incidenciasPendientes"; // Devuelve la vista de listar incidencias pendientes
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIASPENDIENTES, incidenciasPendientes);
+        return GConstants.VIEW_INCIDENCIASPENDIENTES; // Devuelve la vista de listar incidencias pendientes
     }
 
     // Método para listar incidencias en progreso
@@ -82,12 +87,12 @@ public class IncidenciasController {
         // Verificar si la lista de incidencias en progreso está vacía
         if (incidenciasProgreso.isEmpty()) {
             // Si la lista está vacía, puedes agregar un mensaje al modelo para mostrarlo en la vista
-            model.addAttribute("mensajeNoProgreso", "No hay incidencias en progreso.");
+            model.addAttribute(GConstants.ATTRIBUTE_MESSAGENOPROGRESO, "No hay incidencias en progreso.");
         }
 
         // Agregar la lista de incidencias al modelo para que esté disponible en la vista
-        model.addAttribute("incidenciasProgreso", incidenciasProgreso);
-        return "incidenciasProgreso"; // Devuelve la vista de listar incidencias en progreso
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIASPROGRESO, incidenciasProgreso);
+        return GConstants.VIEW_INCIDENCIASPROGRESO ; // Devuelve la vista de listar incidencias en progreso
     }
 
     //Metodo para listar la busqueda en las incidencias en progreso 
@@ -97,7 +102,7 @@ public class IncidenciasController {
         busqueda.setEstado(EstadoIncidencia.REPARACION); // Establecer el estado de búsqueda a PENDIENTE
 
         //Personalizar el tipo de busqueda
-        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("titulo", ExampleMatcher.GenericPropertyMatchers.contains());
+        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher(GConstants.FIELD_TITULO, ExampleMatcher.GenericPropertyMatchers.contains());
 
         Example<Incidencia> example = Example.of(busqueda, matcher);
         List<Incidencia> incidenciasProgreso = incidenciasService.buscarByExample(example); // Buscar incidencias en progreso que coinciden con el ejemplo
@@ -105,29 +110,29 @@ public class IncidenciasController {
         // Verificar si la lista de incidencias en progreso está vacía
         if (incidenciasProgreso.isEmpty()) {
             // Si la lista está vacía, agregar un mensaje al modelo para mostrarlo en la vista
-            model.addAttribute("mensajeNoProgreso", "No hay incidencias en reparación con el título y/o encargado indicado.");
+            model.addAttribute(GConstants.ATTRIBUTE_MESSAGENOPROGRESO, "No hay incidencias en reparación con el título y/o encargado indicado.");
         }
 
         // Agregar la lista de incidencias al modelo para que esté disponible en la vista
-        model.addAttribute("incidenciasProgreso", incidenciasProgreso);
-        return "incidenciasProgreso"; // Devuelve la vista de listar incidencias en progreso
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIASPROGRESO, incidenciasProgreso);
+        return GConstants.VIEW_INCIDENCIASPROGRESO; // Devuelve la vista de listar incidencias en progreso
     }
 
     // Método para listar incidencias cerradas
     @GetMapping("/incidenciasResueltas")
     public String listarIncidenciasResueltas(Model model,Pageable page) {
         // Llamar al servicio para obtener la lista de incidencias cerradas y devolverla a la vista
-        // List<Incidencia> incidenciasResueltas = incidenciasService.buscarPorEstado(EstadoIncidencia.RESUELTA);
+        
         Page<Incidencia> incidenciasResueltas = incidenciasService.buscarIncidenciasPorEstadoPaginadas(EstadoIncidencia.RESUELTA, page);
         // Verificar si la lista de incidencias cerradas está vacía
         if (incidenciasResueltas.isEmpty()) {
             // Si la lista está vacía, puedes agregar un mensaje al modelo para mostrarlo en la vista
-            model.addAttribute("mensajeNoResueltas", "No hay incidencias resueltas.");
+            model.addAttribute(GConstants.ATTRIBUTE_MESSAGENORESUELTA, "No hay incidencias resueltas.");
         }
 
         // Agregar la lista de incidencias al modelo para que esté disponible en la vista
-        model.addAttribute("incidenciasResueltas", incidenciasResueltas);
-        return "incidenciasResueltas"; // Devuelve la vista de listar incidencias cerradas
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIASRESUELTAS, incidenciasResueltas);
+        return GConstants.VIEW_INCIDENCIASRESUELTAS; // Devuelve la vista de listar incidencias cerradas
     }
 
     //Metodo para listar la busqueda en las incidencias en progreso 
@@ -137,7 +142,7 @@ public class IncidenciasController {
         busqueda.setEstado(EstadoIncidencia.RESUELTA); // Establecer el estado de búsqueda a RESUELTA
         
         //Personalizar el tipo de busqueda
-        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("titulo", ExampleMatcher.GenericPropertyMatchers.contains());
+        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher(GConstants.FIELD_TITULO, ExampleMatcher.GenericPropertyMatchers.contains());
         
         Example<Incidencia> example = Example.of(busqueda, matcher);
         
@@ -145,12 +150,12 @@ public class IncidenciasController {
         // Verificar si la lista de incidencias en progreso está vacía
         if (incidenciasResueltas.isEmpty()) {
             // Si la lista está vacía, agregar un mensaje al modelo para mostrarlo en la vista
-            model.addAttribute("mensajeNoResueltas", "No hay incidencias resueltas con el título indicado.");
+            model.addAttribute(GConstants.ATTRIBUTE_MESSAGENORESUELTA, "No hay incidencias resueltas con el título indicado.");
         }
 
         // Agregar la lista de incidencias al modelo para que esté disponible en la vista
-        model.addAttribute("incidenciasResueltas", incidenciasResueltas);
-        return "incidenciasResueltas"; // Devuelve la vista de listar incidencias resueltas
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIASRESUELTAS, incidenciasResueltas);
+        return GConstants.VIEW_INCIDENCIASRESUELTAS; // Devuelve la vista de listar incidencias resueltas
     }
 
     // Metodo para añadir una incidencia
@@ -159,7 +164,7 @@ public class IncidenciasController {
         // Crear una nueva instancia de Incidencia y agregarla al modelo
         Incidencia nuevaIncidencia = new Incidencia();
 
-        model.addAttribute("incidencia", nuevaIncidencia);
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIA, nuevaIncidencia);
 
         return "crearIncidenciaForm"; // Devuelve la vista para crear una nueva incidencia
     }
@@ -174,7 +179,7 @@ public class IncidenciasController {
         incidenciasService.guardarIncidencia(incidencia);
 
         // Agregar un mensaje de éxito al redirigir a la página después de guardar la incidencia
-        attributes.addFlashAttribute("confirmacion", "Incidencia creada o modificada con éxito.");
+        attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Incidencia creada o modificada con éxito.");
 
         return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de guardar
     }
@@ -192,7 +197,7 @@ public class IncidenciasController {
         incidenciasService.asignarIncidencia(idIncidencia, idUsuario);
 
         // Agregar un mensaje de éxito al redirigir a la página después de cambiar el estado
-        attributes.addFlashAttribute("confirmacion", "Incidencia " + idIncidencia + " en progreso.");
+        attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Incidencia " + idIncidencia + " en progreso.");
 
         return "redirect:/incidencias/incidenciasProgreso"; // Redirigir a la lista de incidencias en progreso
     }
@@ -204,7 +209,7 @@ public class IncidenciasController {
         incidenciasService.desasignarIncidencia(idIncidencia);
 
         // Agregar un mensaje de éxito al redirigir a la página después de desasignar la incidencia
-        attributes.addFlashAttribute("confirmacion", "Incidencia " + idIncidencia + " desasignada.");
+        attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Incidencia " + idIncidencia + " desasignada.");
 
         return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de desasignar
     }
@@ -216,7 +221,7 @@ public class IncidenciasController {
         incidenciasService.cerrarIncidencia(idIncidencia);
 
         // Agregar un mensaje de éxito al redirigir a la página después de cambiar el estado
-        attributes.addFlashAttribute("confirmacion", "Incidencia  " + idIncidencia + "  resuelta.");
+        attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Incidencia  " + idIncidencia + "  resuelta.");
 
         return "redirect:/incidencias/incidenciasResueltas"; // Redirigir a la lista de incidencias resueltas
     }
@@ -228,8 +233,8 @@ public class IncidenciasController {
         List<Usuario> usuarios = usuarioService.buscarTodos(); // Obtener la lista de usuarios para el formulario
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
 
-        model.addAttribute("currentUser", usuario); // Agregar el usuario actual al modelo para la vista
+        model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
         model.addAttribute("search", incidenciaSearch); // Agregar el objeto de búsqueda al modelo para la vista
-        model.addAttribute("usuarios", usuarios); // Agregar la lista de usuarios al modelo para el formulario
+        model.addAttribute(GConstants.ATTRIBUTE_USUARIOS, usuarios); // Agregar la lista de usuarios al modelo para el formulario
     }
 }

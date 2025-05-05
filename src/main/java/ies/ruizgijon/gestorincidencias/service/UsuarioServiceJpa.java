@@ -23,16 +23,19 @@ import jakarta.transaction.Transactional;
 public class UsuarioServiceJpa implements IUsuarioService {
     // Aquí se implementan los métodos de la interfaz IUsuarioService utilizando el
     // repositorio de usuarios
-    // Inyección de dependencias para el repositorio de usuarios
-    @Autowired
-    private UsuarioRepository usuarioRepository;
 
-    // Inyección de dependencias para el codificador de contraseñas
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final UsuarioRepository usuarioRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final PasswordResetTokenRepository tokenRepository;
 
+    // Constructor para la inyección de dependencias
     @Autowired
-    private PasswordResetTokenRepository tokenRepository;
+    public UsuarioServiceJpa(UsuarioRepository usuarioRepository, BCryptPasswordEncoder passwordEncoder,
+            PasswordResetTokenRepository tokenRepository) {
+        this.usuarioRepository = usuarioRepository; // Inicializa el repositorio de usuarios
+        this.passwordEncoder = passwordEncoder; // Inicializa el codificador de contraseñas
+        this.tokenRepository = tokenRepository; // Inicializa el repositorio de tokens de restablecimiento de contraseña
+    }
 
     // Método para guardar un usuario en la base de datos
     @Override
@@ -111,19 +114,16 @@ public class UsuarioServiceJpa implements IUsuarioService {
     // Método para buscar un usuario por su correo electrónico
     @Override
     public Usuario buscarUsuarioPorMail(String mail) {
-        // Busca el usuario por su correo electrónico y devuelve el resultado
-        Usuario usuario = usuarioRepository.findByMail(mail).orElse(null);
-        return usuario;
+        return usuarioRepository.findByMail(mail).orElse(null);
     }
 
     private void comprobarCorreoExistente(Usuario usuario) {
-    if (usuarioRepository.findByMail(usuario.getMail()).isPresent()) {
-        List<String> errores = new ArrayList<>();
-        errores.add("El correo electrónico ya está registrado en el sistema.");
-        throw new UsuarioNoValidoException(errores);
+        if (usuarioRepository.findByMail(usuario.getMail()).isPresent()) {
+            List<String> errores = new ArrayList<>();
+            errores.add("El correo electrónico ya está registrado en el sistema.");
+            throw new UsuarioNoValidoException(errores);
+        }
     }
-}
-
 
     @Override
     public Usuario getCurrentUser() {
@@ -132,10 +132,8 @@ public class UsuarioServiceJpa implements IUsuarioService {
 
         // Verifica si el usuario está autenticado y no es anónimo
         String correo = authentication.getName(); // el username es el correo
-        
-        Usuario usuario = usuarioRepository.findByMail(correo).orElse(null);
 
-        return usuario;
+        return usuarioRepository.findByMail(correo).orElse(null);
     }
 
     @Override
@@ -167,7 +165,7 @@ public class UsuarioServiceJpa implements IUsuarioService {
     public void guardarTokenDeRecuperacion(Usuario usuario, String token) {
         tokenRepository.deleteByUsuario(usuario); // Elimina cualquier token existente del user
         PasswordResetToken prt = new PasswordResetToken();
-        prt.setToken(token); // Asignacion del token 
+        prt.setToken(token); // Asignacion del token
         prt.setUsuario(usuario); // Asignamos el usuario al token
         prt.setFechaExpiracion(LocalDateTime.now().plusHours(1)); // Token valido para 1 hora
         tokenRepository.save(prt);
@@ -175,9 +173,9 @@ public class UsuarioServiceJpa implements IUsuarioService {
 
     @Override
     public boolean validarToken(String token) {
-        return tokenRepository.findByToken(token) 
-                .map(t -> !t.isExpirado()) 
-                .orElse(false); 
+        return tokenRepository.findByToken(token)
+                .map(t -> !t.isExpirado())
+                .orElse(false);
     }
 
     @Override

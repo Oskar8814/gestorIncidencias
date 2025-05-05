@@ -8,8 +8,13 @@ import org.springframework.stereotype.Service;
 @Service
 public class EmailService {
 
+    private final JavaMailSender mailSender;
+
+    // Constructor para la inyección de dependencias
     @Autowired
-    private JavaMailSender mailSender;
+    public EmailService(JavaMailSender mailSender) {
+        this.mailSender = mailSender; // Inicializa el JavaMailSender
+    }
 
     public void enviarRecuperacion(String email, String enlace) {
         SimpleMailMessage msg = new SimpleMailMessage();
