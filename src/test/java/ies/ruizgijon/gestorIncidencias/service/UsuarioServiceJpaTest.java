@@ -100,8 +100,7 @@ class UsuarioServiceJpaTest {
 
         // Assert
         assertNotNull(result); // Verificamos que el resultado no sea null
-        assertEquals("juan.perez@example.com", result.getMail()); // Verificamos que el correo del nuevo usuario
-                                                                  // coincida con el correo registrado
+        assertEquals("juan.perez@example.com", result.getMail()); // Verificamos que el correo del nuevo usuario coincida con el correo registrado
         verify(usuarioRepository, times(1)).save(usuario); // Verificamos que se haya llamado a save en el repositorio
     }
 
@@ -111,8 +110,7 @@ class UsuarioServiceJpaTest {
         Usuario usuario = new Usuario();
         usuario.setMail("javier.gonzalez@example.com");
 
-        when(usuarioRepository.findByMail(usuario.getMail())).thenReturn(Optional.of(usuario)); // Simulamos que el
-                                                                                                // correo ya existe
+        when(usuarioRepository.findByMail(usuario.getMail())).thenReturn(Optional.of(usuario)); // Simulamos que el correo ya existe
 
         // Act & Assert
         assertThrows(UsuarioNoValidoException.class, () -> {
@@ -143,8 +141,7 @@ class UsuarioServiceJpaTest {
         // Assert
         assertNotNull(result);
         assertEquals(email, result.getMail());
-        verify(usuarioRepository, times(1)).findByMail(email); // Verificamos que se haya llamado al método del
-                                                               // repositorio
+        verify(usuarioRepository, times(1)).findByMail(email); // Verificamos que se haya llamado al método del repositorio
     }
 
     @Test
@@ -177,13 +174,9 @@ class UsuarioServiceJpaTest {
         usuario.setPassword("Qwerty1234$%!*");
         usuario.setRol(rol); // Asignar un rol válido es necesario
 
-        when(usuarioRepository.findById(usuario.getId())).thenReturn(Optional.of(usuario)); // Simula que el usuario
-                                                                                            // existe en la base de
-                                                                                            // datos
-        when(usuarioRepository.findByMail(email)).thenReturn(Optional.of(usuario)); // Simula que el usuario existe en
-                                                                                    // la base de datos
-        when(passwordEncoder.encode(newPassword)).thenReturn("encodedNewPassword"); // Simula que la pass se codifica de
-                                                                                    // forma correcta
+        when(usuarioRepository.findById(usuario.getId())).thenReturn(Optional.of(usuario)); // Simula que el usuario existe en la base de datos
+        when(usuarioRepository.findByMail(email)).thenReturn(Optional.of(usuario)); // Simula que el usuario existe en la base de datos
+        when(passwordEncoder.encode(newPassword)).thenReturn("encodedNewPassword"); // Simula que la pass se codifica de forma correcta
 
         usuarioServiceJpa.cambiarContrasena(usuario.getId(), newPassword); // Llamada al metodo para probar
 
