@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
 import lombok.*;
-// import java.util.List;
 
 @Entity
 @Data

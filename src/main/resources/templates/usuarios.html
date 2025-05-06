@@ -35,22 +35,22 @@
                 <div class="carousel-item active ">
                     <img class="d-block w-100"
                         src="https://res.cloudinary.com/dakrekb58/image/upload/v1741031394/technology-7978107_960_720_fr7yfi.jpg"
-                        alt="Imagen 1">
+                        alt="Foto 1">
                 </div>
                 <div class="carousel-item ">
                     <img class="d-block w-100"
                         src="https://res.cloudinary.com/dakrekb58/image/upload/v1741031385/server-7239721_960_720_a4hnr6.jpg"
-                        alt="Imagen 2">
+                        alt="Foto 2">
                 </div>
                 <div class="carousel-item ">
                     <img class="d-block w-100"
                         src="https://res.cloudinary.com/dakrekb58/image/upload/v1740860500/carrousel2_vf9bw3.jpg"
-                        alt="Imagen 3">
+                        alt="Foto 3">
                 </div>
                 <div class="carousel-item ">
                     <img class="d-block w-100"
                         src="https://res.cloudinary.com/dakrekb58/image/upload/v1741032020/reparacion_fixklg.jpg"
-                        alt="Imagen 4">
+                        alt="Foto 4">
                 </div>
             </div>
 
@@ -126,8 +126,8 @@
                     <td th:text="${usuario.rol.name}"></td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a class="btn btn-warning btn-sm" role="button" th:href="@{/usuario/edit/{id} (id=${usuario.id})} ">Editar</a>
-                            <a class="btn btn-danger btn-sm confirmarDeleteUsuario" role="button"
+                            <a class="btn btn-warning btn-sm"  th:href="@{/usuario/edit/{id} (id=${usuario.id})} ">Editar</a>
+                            <a class="btn btn-danger btn-sm confirmarDeleteUsuario" 
                                 th:href="@{/usuario/delete/{id} (id=${usuario.id})} ">Eliminar</a>
                         </div>
                     </td>

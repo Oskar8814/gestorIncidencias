@@ -93,22 +93,22 @@
                         <a href="#" data-bs-toggle="modal" data-bs-target="#modal-imagen"
                             th:attr="data-bs-imagen=${incidencia.imagen}, data-bs-descripcion=${incidencia.descripcion}">
                             <img th:src="@{${incidencia.imagen}}" class="img-fluid img-custom-s"
-                                alt="Imagen de la incidencia">
+                                alt="Foto de la incidencia">
                         </a>
                     </td>
                     <td th:text="|${incidencia.usuario.nombre} ${incidencia.usuario.apellido1}|"></td>
                     <td th:text="${incidencia.estado}"></td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a class="btn btn-warning btn-sm" role="button" sec:authorize="hasRole('ADMIN')"
+                            <a class="btn btn-warning btn-sm"  sec:authorize="hasRole('ADMIN')"
                                 th:href="@{/admin/editarIncidencia/{id}(id=${incidencia.id})}">Editar</a>
-                            <a class="btn btn-danger btn-sm confirmar" role="button" sec:authorize="hasRole('ADMIN')"
+                            <a class="btn btn-danger btn-sm confirmar"  sec:authorize="hasRole('ADMIN')"
                                 th:href="@{/admin/eliminarIncidencia/{id}(id=${incidencia.id})}">Eliminar</a>
                             <!-- Mostrar solo si el usuario actual es el asignado a la incidencia -->
-                            <a class="btn btn-success btn-sm" role="button" th:if="${incidencia.usuario.id == currentUser.id}"
+                            <a class="btn btn-success btn-sm"  th:if="${incidencia.usuario.id == currentUser.id}"
                                 th:href="@{/incidencias/incidencia/desasignar/{id} (id=${incidencia.id})}">Desasignar</a>
                             <!-- Mostrar solo si el usuario actual es el asignado a la incidencia -->
-                            <a class="btn btn-success btn-sm" role="button" th:if="${incidencia.usuario.id == currentUser.id}"
+                            <a class="btn btn-success btn-sm"  th:if="${incidencia.usuario.id == currentUser.id}"
                                 th:href="@{/incidencias/incidencia/resolver/{id} (id=${incidencia.id})}">Finalizar</a>
                         </div>
                     </td>

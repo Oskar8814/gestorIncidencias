@@ -7,7 +7,7 @@ package ies.ruizgijon.gestorincidencias.util;
 * de preguntas en los cuestionarios.
 */
 public class GConstants {
- 
+
 	/**
 	 * Constructor privado para evitar la instanciación de la clase utilitaria.
 	 */

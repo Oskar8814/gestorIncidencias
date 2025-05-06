@@ -1,10 +1,10 @@
 // Guardamos en una variable una funcion que muestra un cuadro de dialogo de tipo confirm para eliminar una incidencia
-var dialogoConfirm = function (e) {
+let dialogoConfirm = function (e) {
     if (!confirm("¿Realmente desea eliminar la incidencia?")) e.preventDefault();
 };
 
 // Guardamos en una variable una funcion que muestra un cuadro de dialogo de tipo confirm para eliminar un usuario
-var dialogoConfirmDeleteUsuario = function (e) {
+let dialogoConfirmDeleteUsuario = function (e) {
     if (!confirm("¿Realmente desea eliminar el Usuario?")) e.preventDefault();
 };
 
@@ -30,4 +30,3 @@ document.addEventListener("DOMContentLoaded", function () {
         this.classList.toggle("text-primary");
     });
 });
-

@@ -35,22 +35,22 @@
                 <div class="carousel-item active ">
                     <img class="d-block w-100"
                         src="https://res.cloudinary.com/dakrekb58/image/upload/v1741031394/technology-7978107_960_720_fr7yfi.jpg"
-                        alt="Imagen 1">
+                        alt="Foto 1">
                 </div>
                 <div class="carousel-item ">
                     <img class="d-block w-100"
                         src="https://res.cloudinary.com/dakrekb58/image/upload/v1741031385/server-7239721_960_720_a4hnr6.jpg"
-                        alt="Imagen 2">
+                        alt="Foto 2">
                 </div>
                 <div class="carousel-item ">
                     <img class="d-block w-100"
                         src="https://res.cloudinary.com/dakrekb58/image/upload/v1740860500/carrousel2_vf9bw3.jpg"
-                        alt="Imagen 3">
+                        alt="Foto 3">
                 </div>
                 <div class="carousel-item ">
                     <img class="d-block w-100"
                         src="https://res.cloudinary.com/dakrekb58/image/upload/v1741032020/reparacion_fixklg.jpg"
-                        alt="Imagen 4">
+                        alt="Foto 4">
                 </div>
             </div>
 
@@ -135,18 +135,18 @@
                     <td>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#modal-imagen"
                             th:attr="data-bs-imagen=${incidencia.imagen}, data-bs-descripcion=${incidencia.descripcion}">
-                            <img th:src="@{${incidencia.imagen}}" class="img-fluid img-custom-s" alt="Imagen de la incidencia">
+                            <img th:src="@{${incidencia.imagen}}" class="img-fluid img-custom-s" alt="Foto de la incidencia">
                         </a>
                     </td>
                     <td>Sin Asignación</td>
                     <td th:text="${incidencia.estado}"></td>
                     <td>
                         <div class="d-flex gap-2">
-                            <a class="btn btn-warning btn-sm" role="button" sec:authorize="hasRole('ADMIN')"
+                            <a class="btn btn-warning btn-sm"  sec:authorize="hasRole('ADMIN')"
                                 th:href="@{/admin/editarIncidenciaPendiente/{id} (id=${incidencia.id})}">Editar</a>
-                            <a class="btn btn-danger btn-sm confirmar" role="button" sec:authorize="hasRole('ADMIN')"
+                            <a class="btn btn-danger btn-sm confirmar"  sec:authorize="hasRole('ADMIN')"
                                 th:href="@{/admin/eliminarIncidencia/{id} (id=${incidencia.id})}">Eliminar</a>
-                            <a class="btn btn-success btn-sm" role="button"
+                            <a class="btn btn-success btn-sm" 
                                 th:href="@{/incidencias/incidencia/asignar/{id} (id=${incidencia.id}) }">Asignar</a>
                         </div>
                     </td>

@@ -16,7 +16,7 @@
 <body>
     <header th:insert="~{fragments/header :: header}"></header>
     <nav th:insert="~{fragments/navigation :: nav}"
-        class="navbar navbar-expand-lg border-top border-bottom py-4 bg-body-secondary fw-bolder"></nav>
+        class="navbar navbar-expand-lg border-top border-bottom py-4 bg-body-secondary fw-bolder" aria-label="navegación"></nav>
 
     <!-- Mostrar alerta de confirmación para la asignacion resuelta de incidencia si existe -->
     <div th:if="${confirmacion != null}"
@@ -86,14 +86,14 @@
                         <a href="#" data-bs-toggle="modal" data-bs-target="#modal-imagen"
                             th:attr="data-bs-imagen=${incidencia.imagen}, data-bs-descripcion=${incidencia.descripcion}">
                             <img th:src="@{${incidencia.imagen}}" class="img-fluid img-custom-s"
-                                alt="Imagen de la incidencia">
+                                alt="Foto de la incidencia">
                         </a>
                     </td>
                     <td th:text="|${incidencia.usuario.nombre} ${incidencia.usuario.apellido1}|"></td>
                     <td sec:authorize="hasRole('ADMIN')">
                         <div class="d-flex gap-2">
                             <!-- Posibilidad de editar una incidencia resuelta? -->
-                            <a class="btn btn-danger btn-sm confirmar" role="button" 
+                            <a class="btn btn-danger btn-sm confirmar" 
                                 th:href="@{/admin/eliminarIncidencia/{id}(id=${incidencia.id})}">Eliminar</a>
                         </div>
                     </td>
