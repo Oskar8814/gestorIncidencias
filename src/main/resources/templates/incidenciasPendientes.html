@@ -131,7 +131,7 @@
                     <td th:text="${incidencia.id}" class="text-center"></td>
                     <td th:text="${incidencia.titulo}"></td>
                     <td th:text="${incidencia.aula}"></td>
-                    <td th:text="${incidencia.fecha}"></td>
+                    <td th:text="${#temporals.format(incidencia.fecha, 'dd/MM/yyyy')}"></td>
                     <td>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#modal-imagen"
                             th:attr="data-bs-imagen=${incidencia.imagen}, data-bs-descripcion=${incidencia.descripcion}">
