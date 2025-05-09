@@ -4,6 +4,8 @@ package ies.ruizgijon.gestorincidencias.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,6 +43,28 @@ public class UsuarioController {
         if (usuarios.isEmpty()) {
             // Si la lista está vacía, puedes agregar un mensaje al modelo para mostrarlo en la vista
             model.addAttribute("mensajeNoUsuarios", "No hay usuarios registrados.");
+        }
+
+        // Agregar la lista de usuarios al modelo para que esté disponible en la vista
+        model.addAttribute(GConstants.ATTRIBUTE_USUARIOS, usuarios);
+        return "usuarios"; // Devuelve la vista de listar usuarios
+    }
+
+    //Metodo para buscar un usuario por su nombre
+    @PostMapping("/usuario/buscar")
+    public String buscarUsuario(@ModelAttribute ("search") Usuario busqueda, Model model) {
+        // Personalizar el tipo de busqueda
+        ExampleMatcher matcher = ExampleMatcher.matching().withMatcher("nombre", ExampleMatcher.GenericPropertyMatchers.contains());
+
+        // Crear un ejemplo de búsqueda utilizando el objeto Usuario
+        Example<Usuario> example = Example.of(busqueda, matcher);
+
+        List<Usuario> usuarios = usuarioService.buscarByExample(example); // Llamar al servicio para buscar usuarios por ejemplo
+
+        // Verificar si la lista de usuarios está vacía
+        if (usuarios.isEmpty()) {
+            // Si la lista está vacía, puedes agregar un mensaje al modelo para mostrarlo en la vista
+            model.addAttribute("mensajeNoUsuarios", "No se encontraron usuarios con ese nombre.");
         }
 
         // Agregar la lista de usuarios al modelo para que esté disponible en la vista
@@ -123,7 +147,9 @@ public class UsuarioController {
     @ModelAttribute()
     public void setGenericos(Model model) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
+        Usuario usuarioSearch = new Usuario();
 
+        model.addAttribute("search", usuarioSearch); // Agregar el objeto de búsqueda al modelo para la vista
         model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
     }
 

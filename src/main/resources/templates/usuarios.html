@@ -99,8 +99,8 @@
 
         <!-- Buscador -->
         <div class="container w-50">
-            <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Nombre de usuario" aria-label="Buscar">
+            <form class="d-flex" role="search" th:action="@{/usuario/buscar}" th:object="${search}" method="post">
+                <input th:field="*{nombre}" class="form-control me-2" type="text" placeholder="Nombre del usuario" aria-label="Buscar">
                 <button class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
         </div>

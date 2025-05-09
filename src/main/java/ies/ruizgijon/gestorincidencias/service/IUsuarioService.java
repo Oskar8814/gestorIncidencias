@@ -2,6 +2,7 @@ package ies.ruizgijon.gestorincidencias.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Example;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 
 public interface IUsuarioService {
@@ -17,4 +18,5 @@ public interface IUsuarioService {
     public boolean validarToken(String token);
     public boolean actualizarPasswordConToken(String token, String nuevaPassword);
     public void guardarTokenDeRecuperacion(Usuario usuario, String token);
-}
+    List<Usuario> buscarByExample(Example<Usuario> example);
+} 
