@@ -148,6 +148,9 @@
                                 th:href="@{/admin/eliminarIncidencia/{id} (id=${incidencia.id})}">Eliminar</a>
                             <a class="btn btn-success btn-sm" 
                                 th:href="@{/incidencias/incidencia/asignar/{id} (id=${incidencia.id}) }">Asignar</a>
+                            <!-- Mostrar Notas -->
+                            <a class="btn btn-primary btn-sm"  
+                                th:href="@{/incidencias/incidencia/crearNota/{id} (id=${incidencia.id})}">Notas</a>
                         </div>
                     </td>
                 </tr>

@@ -34,6 +34,21 @@
         </div>
     </div>
 
+    <!-- Mostrar alerta de confirmación si existe -->
+    <div th:if="${confirmacion != null}"
+        class="alert alert-warning mt-3 w-50 mx-auto text-center p-4 rounded shadow d-flex align-items-center"
+        role="alert">
+        <i class="bi bi-check-circle-fill me-2 fs-3"></i>
+        <span th:text="${confirmacion}" class="fs-5"></span>
+    </div>
+    <!-- Mostrar alerta de error si existe -->
+    <div th:if="${mensajeError != null}"
+        class="alert alert-warning mt-3 w-50 mx-auto text-center p-4 rounded shadow d-flex align-items-center"
+        role="alert">
+        <i class="bi bi-check-circle-fill me-2 fs-3"></i>
+        <span th:text="${mensajeError}" class="fs-5"></span>
+    </div>
+
     <!-- Historial de notas -->
     <div>
         <h2 class="h5 mb-3">Historial de notas</h2>

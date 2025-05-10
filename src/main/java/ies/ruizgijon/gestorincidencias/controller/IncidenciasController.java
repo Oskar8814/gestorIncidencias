@@ -266,21 +266,37 @@ public class IncidenciasController {
         return "redirect:/incidencias/incidencia/crearNota/" + idIncidencia; // Redirigir a la vista de notas de la incidencia
     }
 
-    // Método para eliminar una nota de una incidencia
     @GetMapping("/incidencia/eliminarNota/{id}")
     public String eliminarNota(@PathVariable("id") int idNota, RedirectAttributes attributes) {
-        // Obtener el id de la incidencia a la que pertenecía la nota eliminada
-        Nota nota = notaService.obtenerNotaPorId(idNota); // Obtener la nota por su ID
-        Integer idIncidencia = nota.getIncidencia().getId(); // Obtener el ID de la incidencia desde la nota
-        
-        // Llamar al servicio para eliminar la nota por su ID
+        // Obtener el usuario actualmente autenticado
+        Usuario usuarioActual = usuarioService.getCurrentUser();
+
+        // Obtener la nota a eliminar
+        Nota nota = notaService.obtenerNotaPorId(idNota);
+        if (nota == null) {
+            attributes.addFlashAttribute(GConstants.ATTRIBUTE_MESSAGEERROR, "Nota no encontrada.");
+            return "redirect:/incidencias";
+        }
+
+        // Verificar si el usuario es el autor o tiene rol ADMIN
+        boolean esAutor = nota.getAutor().getId().equals(usuarioActual.getId());
+        boolean esAdmin = usuarioActual.getRol().getName().equalsIgnoreCase("ADMIN");
+
+        if (!esAutor && !esAdmin) {
+            attributes.addFlashAttribute(GConstants.ATTRIBUTE_MESSAGEERROR, "No tienes permiso para eliminar esta nota.");
+            return "redirect:/incidencias/incidencia/crearNota/" + nota.getIncidencia().getId();
+        }
+
+        // Obtener el ID de la incidencia antes de eliminar
+        Integer idIncidencia = nota.getIncidencia().getId();
+
+        // Eliminar la nota
         notaService.eliminarNota(idNota);
 
-        // Agregar un mensaje de éxito al redirigir a la página después de eliminar la nota
         attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Nota eliminada con éxito.");
-
-        return "redirect:/incidencias/incidencia/crearNota/" + idIncidencia; // Redirigir a la vista de notas de la incidencia
+        return "redirect:/incidencias/incidencia/crearNota/" + idIncidencia;
     }
+
 
     
     @ModelAttribute()

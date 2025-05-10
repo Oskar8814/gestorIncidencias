@@ -95,6 +95,9 @@
                             <!-- Posibilidad de editar una incidencia resuelta? -->
                             <a class="btn btn-danger btn-sm confirmar" 
                                 th:href="@{/admin/eliminarIncidencia/{id}(id=${incidencia.id})}">Eliminar</a>
+                            <!-- Mostrar Notas -->
+                            <a class="btn btn-primary btn-sm"  
+                                th:href="@{/incidencias/incidencia/crearNota/{id} (id=${incidencia.id})}">Notas</a>
                         </div>
                     </td>
                 </tr>
