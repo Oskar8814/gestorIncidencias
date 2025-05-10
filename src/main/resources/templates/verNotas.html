@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <title>Notas de la Incidencia</title>
+    <title>Incidencias en Progreso</title>
+    <link rel="icon" href="/img/logo_RG_180_mono_new_nohalo.ico" type="image/x-icon">
+    <link rel="stylesheet" th:href="@{/css/customStyles.css}">
+    <link rel="stylesheet"
+        th:href="@{https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <header th:insert="~{fragments/header :: header}"></header>
+    <nav th:insert="~{fragments/navigation :: nav}"
+        class="navbar navbar-expand-lg border-top border-bottom py-4 bg-body-secondary fw-bolder"></nav>
+<div class="container mt-5">
+
+    <h1 class="mb-4">Notas de la incidencia <span class="text-primary" th:text="${incidencia.titulo}"></span></h1>
+
+    <!-- Formulario para añadir nueva nota -->
+    <div class="card mb-5">
+        <div class="card-header">
+            <h2 class="h5 mb-0">Añadir nueva nota</h2>
+        </div>
+        <div class="card-body">
+            <form th:action="@{/incidencias/incidencia/crearNota/save}" th:object="${nuevaNota}" method="post">
+                <input type="hidden" th:field="*{incidencia.id}" th:value="${incidencia.id}" />
+                <div class="mb-3">
+                    <label for="contenido" class="form-label">Contenido</label>
+                    <textarea th:field="*{contenido}" id="contenido" class="form-control" rows="5" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar nota</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Historial de notas -->
+    <div>
+        <h2 class="h5 mb-3">Historial de notas</h2>
+        <ul class="list-group">
+            <li class="list-group-item" th:each="nota : ${notas}">
+                <div class="d-flex justify-content-between">
+                    <strong th:text="${nota.autor.nombre + ' ' + nota.autor.apellido1}"></strong>
+                    <span class="text-muted small" th:text="${#temporals.format(nota.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></span>
+                </div>
+                <p class="mb-0" th:text="${nota.contenido}"></p>
+                <div class="d-flex justify-content-end mt-2"> 
+                <a th:if="${nota.autor.id == currentUser.id or currentUser.rol.name == 'ADMIN'}" th:href="@{/incidencias/incidencia/eliminarNota/{id}(id=${nota.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+            </li>
+        </ul>
+    </div>
+
+</div>
+
+    <footer th:insert="~{fragments/footer :: footer}"></footer>
+    <script th:src="@{/js/app-modal.js}"></script>
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+    <script th:src="@{/js/scripts.js}"></script>
+</body>
+</html>

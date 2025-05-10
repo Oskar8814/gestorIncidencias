@@ -31,12 +31,16 @@ import ies.ruizgijon.gestorincidencias.model.Incidencia;
 import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
+import ies.ruizgijon.gestorincidencias.service.INotaService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 
 class IncidenciasControllerTest {
 
     @Mock
     private IIncidenciasService incidenciasService; // Mock del servicio de incidencias
+    
+    @Mock
+    private INotaService notaService; // Mock del servicio de notas
 
     @Mock
     private IUsuarioService usuarioService; // Mock del servicio de usuarios
@@ -54,7 +58,7 @@ class IncidenciasControllerTest {
         // Inicializa los mocks
         MockitoAnnotations.openMocks(this);
         // Inicializa el controlador con los mocks
-        incidenciasController = new IncidenciasController(incidenciasService, usuarioService);
+        incidenciasController = new IncidenciasController(incidenciasService, usuarioService, notaService);
     }
 
     @Test

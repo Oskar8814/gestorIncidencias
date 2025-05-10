@@ -3,6 +3,7 @@ package ies.ruizgijon.gestorincidencias.model;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Data
@@ -39,5 +40,8 @@ public class Incidencia {
     @ManyToOne
     @JoinColumn(name = "creador_id", nullable = false)
     private Usuario creador; // Quien reportó
+
+    @OneToMany(mappedBy = "incidencia", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Nota> notas;
 }
 

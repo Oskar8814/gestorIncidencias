@@ -17,8 +17,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.ui.Model;
 import ies.ruizgijon.gestorincidencias.model.EstadoIncidencia;
 import ies.ruizgijon.gestorincidencias.model.Incidencia;
+import ies.ruizgijon.gestorincidencias.model.Nota;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
+import ies.ruizgijon.gestorincidencias.service.INotaService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 import ies.ruizgijon.gestorincidencias.util.GConstants;
 
@@ -29,12 +31,14 @@ public class IncidenciasController {
 
     private final IIncidenciasService incidenciasService; 
     private final IUsuarioService usuarioService; 
+    private final INotaService notaService;
 
     // Constructor para la inyección de dependencias
     @Autowired
-    public IncidenciasController(IIncidenciasService incidenciasService, IUsuarioService usuarioService) {
+    public IncidenciasController(IIncidenciasService incidenciasService, IUsuarioService usuarioService, INotaService notaService) {
         this.incidenciasService = incidenciasService;
         this.usuarioService = usuarioService;
+        this.notaService = notaService;
     }
 
     // Aquí vamos a agregar métodos para manejar las solicitudes HTTP y llamar a los métodos del servicio de incidencias
@@ -224,6 +228,58 @@ public class IncidenciasController {
         attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Incidencia  " + idIncidencia + "  resuelta.");
 
         return "redirect:/incidencias/incidenciasResueltas"; // Redirigir a la lista de incidencias resueltas
+    }
+
+    // Metodo para crear una nota en la incidencia
+    @GetMapping("/incidencia/crearNota/{id}")
+    public String crearNota(@PathVariable("id") int idIncidencia, Model model) {
+        // Crear una nueva instancia de Nota y agregarla al modelo
+        Nota nuevaNota = new Nota();
+        Incidencia incidencia = incidenciasService.buscarIncidenciaPorId(idIncidencia); // Obtener la incidencia por su ID
+
+        nuevaNota.setIncidencia(incidencia); // Establecer la incidencia en la nota
+
+        model.addAttribute("nuevaNota", nuevaNota); // Agregar la nueva nota al modelo
+        model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIA, incidencia); // Agregar la incidencia al modelo
+        model.addAttribute("notas", notaService.obtenerNotasPorIncidencia(idIncidencia)); // Obtener y agregar las notas de la incidencia al modelo
+
+        return "verNotas"; // Devuelve la vista para crear una nueva nota
+    }
+
+    // Método para guardar una nueva nota en la incidencia
+    @PostMapping("/incidencia/crearNota/save")
+    public String guardarNota(@ModelAttribute("nuevaNota") Nota nota, RedirectAttributes attributes) {
+        // Obtener el ID del usuario que está creando la nota (esto debería ser parte de la sesión o contexto actual)
+        Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
+
+        Integer idUsuario = usuario.getId(); // Cambia esto por el ID del usuario actual (por ejemplo, desde la sesión)
+
+        // Obtener la incidencia a la que se le va a agregar la nota
+        Integer idIncidencia = nota.getIncidencia().getId(); // Obtener el ID de la incidencia desde la nota
+        
+        // Llamar al servicio para guardar la nueva nota
+        notaService.crearNota(idIncidencia, nota.getContenido(), idUsuario);
+
+        // Agregar un mensaje de éxito al redirigir a la página después de guardar la nota
+        attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Nota creada con éxito.");
+
+        return "redirect:/incidencias/incidencia/crearNota/" + idIncidencia; // Redirigir a la vista de notas de la incidencia
+    }
+
+    // Método para eliminar una nota de una incidencia
+    @GetMapping("/incidencia/eliminarNota/{id}")
+    public String eliminarNota(@PathVariable("id") int idNota, RedirectAttributes attributes) {
+        // Obtener el id de la incidencia a la que pertenecía la nota eliminada
+        Nota nota = notaService.obtenerNotaPorId(idNota); // Obtener la nota por su ID
+        Integer idIncidencia = nota.getIncidencia().getId(); // Obtener el ID de la incidencia desde la nota
+        
+        // Llamar al servicio para eliminar la nota por su ID
+        notaService.eliminarNota(idNota);
+
+        // Agregar un mensaje de éxito al redirigir a la página después de eliminar la nota
+        attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Nota eliminada con éxito.");
+
+        return "redirect:/incidencias/incidencia/crearNota/" + idIncidencia; // Redirigir a la vista de notas de la incidencia
     }
 
     
