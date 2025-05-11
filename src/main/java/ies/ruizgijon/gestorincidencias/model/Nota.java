@@ -21,11 +21,11 @@ public class Nota {
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     @ManyToOne
-    @JoinColumn(name = "autor_id", nullable = false)
+    @JoinColumn(name = "autor_id", nullable = true)
     private Usuario autor;
 
     @ManyToOne
-    @JoinColumn(name = "incidencia_id", nullable = false)
+    @JoinColumn(name = "incidencia_id", nullable = true)
     private Incidencia incidencia;
 }
 

@@ -89,7 +89,7 @@
                                 alt="Foto de la incidencia">
                         </a>
                     </td>
-                    <td th:text="|${incidencia.usuario.nombre} ${incidencia.usuario.apellido1}|"></td>
+                    <td th:text="${incidencia.usuario != null ? incidencia.usuario.nombre + ' ' + incidencia.usuario.apellido1 : 'Sin asignar'}"></td>
                     <td sec:authorize="hasRole('ADMIN')">
                         <div class="d-flex gap-2">
                             <!-- Posibilidad de editar una incidencia resuelta? -->

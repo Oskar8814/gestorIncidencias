@@ -50,17 +50,22 @@
     </div>
 
     <!-- Historial de notas -->
-    <div>
+    <div th:if="${notas != null and !notas.isEmpty()}" class="mt-4">
         <h2 class="h5 mb-3">Historial de notas</h2>
         <ul class="list-group">
             <li class="list-group-item" th:each="nota : ${notas}">
                 <div class="d-flex justify-content-between">
-                    <strong th:text="${nota.autor.nombre + ' ' + nota.autor.apellido1}"></strong>
-                    <span class="text-muted small" th:text="${#temporals.format(nota.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></span>
+                    <strong
+                        th:text="${nota.autor != null ? nota.autor.nombre + ' ' + nota.autor.apellido1 : 'Autor desconocido'}"></strong>
+                    <span class="text-muted small"
+                        th:text="${#temporals.format(nota.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></span>
                 </div>
                 <p class="mb-0" th:text="${nota.contenido}"></p>
-                <div class="d-flex justify-content-end mt-2"> 
-                <a th:if="${nota.autor.id == currentUser.id or currentUser.rol.name == 'ADMIN'}" th:href="@{/incidencias/incidencia/eliminarNota/{id}(id=${nota.id})}" class="btn btn-danger btn-sm">Eliminar</a>
+                <div class="d-flex justify-content-end mt-2">
+                    <a th:if="${nota.autor != null and (nota.autor.id == currentUser.id or currentUser.rol.name == 'ADMIN')}"
+                        th:href="@{/incidencias/incidencia/eliminarNota/{id}(id=${nota.id})}"
+                        class="btn btn-danger btn-sm">Eliminar</a>
+                </div>
             </li>
         </ul>
     </div>

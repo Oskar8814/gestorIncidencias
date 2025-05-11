@@ -38,7 +38,7 @@ public class Incidencia {
     private Usuario usuario; // Quien gestiona
 
     @ManyToOne
-    @JoinColumn(name = "creador_id", nullable = false)
+    @JoinColumn(name = "creador_id", nullable = true)
     private Usuario creador; // Quien reportó
 
     @OneToMany(mappedBy = "incidencia", cascade = CascadeType.ALL, orphanRemoval = true)
