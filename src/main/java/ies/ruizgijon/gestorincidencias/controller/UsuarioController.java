@@ -20,20 +20,48 @@ import ies.ruizgijon.gestorincidencias.service.IRolService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 import ies.ruizgijon.gestorincidencias.util.GConstants;
 
+/**
+ * Controlador para la gestión de usuarios.
+ * Maneja las operaciones de creación, edición, eliminación y búsqueda de usuarios.
+ * 
+ * Utiliza los servicios de usuarios y roles para realizar estas operaciones.
+ * 
+ * @author [Óscar García]
+ */
+
+// Este controlador utiliza el servicio de usuarios y el servicio de roles para realizar las operaciones necesarias.
 @Controller
 public class UsuarioController {
 
+    /**
+     * Servicio para la gestión de usuarios.
+     * Este servicio proporciona métodos para realizar operaciones CRUD sobre usuarios.
+     */
     private final IUsuarioService usuarioService; 
+    /**
+     * Servicio para la gestión de roles.
+     * Este servicio proporciona métodos para realizar operaciones CRUD sobre roles.
+     */
     private final IRolService rolService;
 
-    //Constructor para la inyeccion de dependencias
+    /**
+     * Constructor del controlador UsuarioController.
+     * 
+     * @param usuarioService Servicio para la gestión de usuarios.
+     * @param rolService     Servicio para la gestión de roles.
+     */
     @Autowired
     public UsuarioController(IUsuarioService usuarioService, IRolService rolService) {
         this.usuarioService = usuarioService; // Inicializa el servicio de usuarios
         this.rolService = rolService; // Inicializa el servicio de roles
     }
 
-    //Metodo para listar los usuarios 
+    /**
+     * Muestra la lista de todos los usuarios registrados.
+     * 
+     * @param model Modelo para pasar datos a la vista.
+     * @return Nombre de la vista que lista los usuarios.
+     */
     @GetMapping("/usuario/listar")
     public String listarUsuarios(Model model) {
         // Llamar al servicio para obtener la lista de usuarios y devolverla a la vista
@@ -50,7 +78,13 @@ public class UsuarioController {
         return "usuarios"; // Devuelve la vista de listar usuarios
     }
 
-    //Metodo para buscar un usuario por su nombre
+    /**
+     * Busca usuarios por nombre utilizando coincidencia parcial (like).
+     * 
+     * @param busqueda Objeto Usuario con los criterios de búsqueda.
+     * @param model Modelo para pasar datos a la vista.
+     * @return Nombre de la vista con los resultados de la búsqueda.
+     */
     @PostMapping("/usuario/buscar")
     public String buscarUsuario(@ModelAttribute ("search") Usuario busqueda, Model model) {
         // Personalizar el tipo de busqueda
@@ -72,7 +106,14 @@ public class UsuarioController {
         return "usuarios"; // Devuelve la vista de listar usuarios
     }
 
-    //Metodo para eliminar un usuario por su id
+    /**
+     * Elimina un usuario por su ID. 
+     * 
+     * @param idUsuario ID del usuario a eliminar.
+     * @param model Modelo para pasar mensajes a la vista.
+     * @param attributes Atributos de redirección para mostrar mensajes.
+     * @return Redirección a la vista de lista de usuarios.
+     */
     @GetMapping("/usuario/delete/{id}")
     public String eliminarUsuario(@PathVariable("id") Integer idUsuario, Model model, RedirectAttributes attributes) {
         // Verificar si el ID del usuario existe antes de intentar eliminarlo
@@ -91,7 +132,14 @@ public class UsuarioController {
         return GConstants.REDIRECT_USUARIOLISTAR; // Redirigir a la lista de usuarios después de eliminar
     }
 
-    //Metodo para crear un nuevo usuario
+    /**
+     * Método para mostrar el formulario de creación de un nuevo usuario.
+     * 
+     * @param model El modelo para pasar datos a la vista.
+     * @return La vista del formulario de creación de un nuevo usuario.
+     * Este método utiliza el servicio de roles para obtener la lista de roles
+     * y mostrarlas en el formulario de creación de usuario.
+     */
     @GetMapping("/usuario/crear")
     public String crearUsuario(Model model) {
         // Crear un nuevo objeto Usuario y agregarlo al modelo para que esté disponible en la vista
@@ -105,7 +153,17 @@ public class UsuarioController {
         return "crearUsuarioForm"; // Devuelve la vista para crear un nuevo usuario
     }
 
-    //Metodo para guardar un nuevo usuario
+    /**
+     * Guarda un nuevo usuario o modifica uno existente según el correo electrónico.
+     * @param usuario    El objeto Usuario a guardar o modificar.
+     * @param model      El modelo para pasar datos a la vista.
+     * @param attributes Atributos para redirección.
+     * @return Redirección a la lista de usuarios después de guardar o modificar el usuario.
+     * Este método utiliza el servicio de usuarios para guardar o modificar un usuario
+     * y redirige a la lista de usuarios después de la operación.
+     * Si el usuario no existe, se guarda como un nuevo usuario.
+     * Si el usuario existe, se modifica y se muestra un mensaje de confirmación.
+     */
     @PostMapping("/usuario/save")
     public String guardarUsuario(Usuario usuario, Model model, RedirectAttributes attributes) {
         // Llamar al servicio para guardar el nuevo usuario
@@ -123,7 +181,16 @@ public class UsuarioController {
         return GConstants.REDIRECT_USUARIOLISTAR; // Redirigir a la lista de usuarios después de guardar
     }
 
-    //Metodo para editar un usuario por su id
+    /**
+     * Método para mostrar el formulario de edición de un usuario existente.
+     * 
+     * @param idUsuario El ID del usuario a editar.
+     * @param model     El modelo para pasar datos a la vista.
+     * @return La vista del formulario de edición de un usuario existente.
+     * Este método utiliza el servicio de usuarios para buscar el usuario por su ID
+     * y la lista de roles para mostrarlas en el formulario de edición de usuario.
+     * Si el usuario no existe, se muestra un mensaje de error en la vista.
+     */
     @GetMapping("/usuario/edit/{id}")
     public String editarUsuario(@PathVariable("id") Integer idUsuario, Model model) {
         // Buscar el usuario por su ID
@@ -142,7 +209,12 @@ public class UsuarioController {
         return "editUsuarioForm"; // Devuelve la vista para editar un usuario existente
     }
 
-    
+    /**
+     * Agrega atributos comunes al modelo para todas las vistas manejadas por este controlador.
+     * Incluye el usuario actual logueado y el objeto de búsqueda.
+     * 
+     * @param model Modelo para pasar datos a las vistas.
+     */
 
     @ModelAttribute()
     public void setGenericos(Model model) {

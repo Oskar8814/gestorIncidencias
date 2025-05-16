@@ -116,6 +116,20 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.6.0</version>
+				<executions>
+					<execution>
+						<id>generate-docs</id>
+						<goals>
+							<goal>javadoc</goal> <!-- genera la doc HTML -->
+							<goal>jar</goal>     <!-- opcional: empaqueta en javadoc.jar -->
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

@@ -23,19 +23,40 @@ import ies.ruizgijon.gestorincidencias.repository.RolRepository;
 import ies.ruizgijon.gestorincidencias.service.IRolService;
 import ies.ruizgijon.gestorincidencias.service.RolServiceJpa;
 
+/**
+ * Clase de prueba para la clase RolServiceJpa.
+ * Esta clase contiene pruebas unitarias para los métodos de la clase RolServiceJpa.
+ * 
+ * @author [Óscar García]
+ */
 class RolServiceJpaTest {
+    /**
+     * Repositorio de roles simulado.
+     */
     @Mock
     private IRolService rolService;
+    /**
+     * Servicio de roles simulado.
+     */
     @InjectMocks
     private RolServiceJpa rolServiceJpa;
+    /**
+     * Repositorio de roles simulado.
+     */
     @Mock
     private RolRepository rolRepository;
 
+    /**
+     * Inicializa los mocks antes de cada prueba.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this); // Inicializa los mocks
     }
-    
+    /**
+     * Prueba unitaria para el método guardarRol.
+     * Verifica que se llame al método save del repositorio con el rol correcto.
+     */
     @Test
     void testGuardarRol() {
         // Arrange
@@ -49,7 +70,10 @@ class RolServiceJpaTest {
         // Assert
         verify(rolRepository).save(rol);
     }
-
+    /**
+     * Prueba unitaria para el método eliminarRol.
+     * Verifica que se llame al método deleteById del repositorio si el rol existe.
+     */
     @Test
     void testEliminarRol_Existe() {
         // Arrange
@@ -62,7 +86,10 @@ class RolServiceJpaTest {
         // Assert
         verify(rolRepository).deleteById(idRol);
     }
-
+    /**
+     * Prueba unitaria para el método eliminarRol.
+     * Verifica que se lanza una excepción si el rol no existe.
+     */
     @Test
     void testEliminarRol_NoExiste() {
         // Arrange
@@ -77,7 +104,10 @@ class RolServiceJpaTest {
         assertEquals("Rol no encontrado con ID: " + idRol, exception.getMessage());
         verify(rolRepository, never()).deleteById(any());
     }
-
+    /**
+     * Prueba unitaria para el método buscarRolPorId.
+     * Verifica que se devuelve el rol correcto si existe.
+     */
     @Test
     void testBuscarRolPorId_Existe() {
         // Arrange
@@ -96,7 +126,10 @@ class RolServiceJpaTest {
         assertEquals(idRol, result.getId());
         assertEquals("ADMIN", result.getName());
     }
-
+    /**
+     * Prueba unitaria para el método buscarRolPorId.
+     * Verifica que se lanza una excepción si el rol no existe.
+     */
     @Test
     void testBuscarRolPorId_NoExiste() {
         // Arrange
@@ -110,7 +143,10 @@ class RolServiceJpaTest {
 
         assertEquals("Rol no encontrado con ID: " + idRol, exception.getMessage());
     }
-
+    /**
+     * Prueba unitaria para el método buscarTodos.
+     * Verifica que se devuelven todos los roles correctamente.
+     */
     @Test
     void testBuscarTodos() {
         // Arrange

@@ -20,16 +20,38 @@ import ies.ruizgijon.gestorincidencias.repository.UsuarioRepository;
 import ies.ruizgijon.gestorincidencias.util.Validaciones;
 import jakarta.transaction.Transactional;
 
+/**
+ * Implementación de {@link IUsuarioService} que gestiona la lógica de negocio
+ * relacionada con los usuarios en el sistema.
+ * 
+ * Proporciona métodos para crear, modificar, eliminar, buscar usuarios,
+ * así como gestionar la autenticación y recuperación de contraseñas.
+ * 
+ * Autor: Óscar García
+ */
 @Service
 public class UsuarioServiceJpa implements IUsuarioService {
-    // Aquí se implementan los métodos de la interfaz IUsuarioService utilizando el
-    // repositorio de usuarios
 
+    /**
+     * Repositorio para acceder a los usuarios en la base de datos.
+     */
     private final UsuarioRepository usuarioRepository;
+    /**
+     * Repositorio para acceder a los tokens de restablecimiento de contraseña.
+     */
     private final BCryptPasswordEncoder passwordEncoder;
+    /**
+     * Repositorio para acceder a los tokens de restablecimiento de contraseña.
+     */
     private final PasswordResetTokenRepository tokenRepository;
 
-    // Constructor para la inyección de dependencias
+    /**
+     * Constructor para la inyección de dependencias.
+     * 
+     * @param usuarioRepository Repositorio para acceder a usuarios.
+     * @param passwordEncoder Codificador de contraseñas.
+     * @param tokenRepository Repositorio para tokens de recuperación de contraseña.
+     */
     @Autowired
     public UsuarioServiceJpa(UsuarioRepository usuarioRepository, BCryptPasswordEncoder passwordEncoder,
             PasswordResetTokenRepository tokenRepository) {
@@ -38,7 +60,16 @@ public class UsuarioServiceJpa implements IUsuarioService {
         this.tokenRepository = tokenRepository; // Inicializa el repositorio de tokens de restablecimiento de contraseña
     }
 
-    // Método para guardar un usuario en la base de datos
+    /**
+     * Guarda un nuevo usuario en la base de datos.
+     * 
+     * Valida el usuario, comprueba que el correo no esté registrado, y codifica
+     * la contraseña antes de guardar.
+     * 
+     * @param usuario Usuario a guardar.
+     * @throws UsuarioNoValidoException si el usuario no es válido.
+     * @throws IllegalArgumentException si el correo electrónico ya está registrado.
+     */
     @Override
     public void guardarUsuario(Usuario usuario) {
         comprobarCorreoExistente(usuario);
@@ -55,7 +86,16 @@ public class UsuarioServiceJpa implements IUsuarioService {
         usuarioRepository.save(usuario);
     }
 
-    // Método para modificar un usuario en la base de datos
+    /**
+     * Modifica un usuario existente.
+     * 
+     * Valida el usuario, verifica su existencia y codifica la contraseña antes de
+     * guardar.
+     * 
+     * @param usuario Usuario a modificar.
+     * @throws UsuarioNoValidoException si el usuario no es válido.
+     * @throws IllegalArgumentException si el usuario no existe.
+     */
     @Override
     public void modificarUsuario(Usuario usuario) {
         // Verifica si el usuario es válido antes de modificarlo
@@ -74,7 +114,15 @@ public class UsuarioServiceJpa implements IUsuarioService {
         }
     }
 
-    // Método para eliminar un usuario por su ID
+    
+
+    /**
+     * Elimina un usuario por su ID.
+     * 
+     * @param idUsuario ID del usuario a eliminar.
+     * @throws IllegalArgumentException si el usuario no existe.
+     */
+
     @Override
     public void eliminarUsuario(Integer idUsuario) {
         // Verifica si el usuario existe antes de eliminarlo
@@ -85,7 +133,13 @@ public class UsuarioServiceJpa implements IUsuarioService {
         }
     }
 
-    // Método para buscar un usuario por su ID
+    /**
+     * Busca un usuario por su ID.
+     * 
+     * @param idUsuario ID del usuario.
+     * @return Usuario encontrado.
+     * @throws IllegalArgumentException si el usuario no existe.
+     */
     @Override
     public Usuario buscarUsuarioPorId(Integer idUsuario) {
         // Busca el usuario por su ID y devuelve el resultado
@@ -93,7 +147,13 @@ public class UsuarioServiceJpa implements IUsuarioService {
                 .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + idUsuario));
     }
 
-    // Método para buscar un usuario por su nombre
+    /**
+     * Busca un usuario por su nombre de usuario.
+     * 
+     * @param nombreUsuario Nombre de usuario.
+     * @return Usuario encontrado.
+     * @throws IllegalArgumentException si el usuario no existe.
+     */
     @Override
     public Usuario buscarUsuarioPorNombre(String nombreUsuario) {
         Usuario usuario = usuarioRepository.findByNombre(nombreUsuario).orElse(null);
@@ -105,19 +165,33 @@ public class UsuarioServiceJpa implements IUsuarioService {
         return usuario;
     }
 
-    // Método para buscar todos los usuarios
+    /**
+     * Obtiene todos los usuarios.
+     * 
+     * @return Lista con todos los usuarios.
+     */
     @Override
     public List<Usuario> buscarTodos() {
         // Devuelve todos los usuarios de la base de datos
         return usuarioRepository.findAll();
     }
 
-    // Método para buscar un usuario por su correo electrónico
+    /**
+     * Busca un usuario por correo electrónico.
+     * 
+     * @param mail Correo electrónico.
+     * @return Usuario encontrado o null si no existe.
+     */
     @Override
     public Usuario buscarUsuarioPorMail(String mail) {
         return usuarioRepository.findByMail(mail).orElse(null);
     }
-
+    /**
+     * Comprueba si el correo electrónico de un usuario ya está registrado.
+     * 
+     * @param usuario Usuario a comprobar.
+     * @throws UsuarioNoValidoException si el correo electrónico ya está registrado.
+     */
     private void comprobarCorreoExistente(Usuario usuario) {
         if (usuarioRepository.findByMail(usuario.getMail()).isPresent()) {
             List<String> errores = new ArrayList<>();
@@ -126,6 +200,11 @@ public class UsuarioServiceJpa implements IUsuarioService {
         }
     }
 
+    /**
+     * Obtiene el usuario actualmente autenticado.
+     * 
+     * @return Usuario autenticado o null si no hay ninguno.
+     */
     @Override
     public Usuario getCurrentUser() {
         // Obtiene el contexto de seguridad actual
@@ -137,6 +216,16 @@ public class UsuarioServiceJpa implements IUsuarioService {
         return usuarioRepository.findByMail(correo).orElse(null);
     }
 
+    /**
+     * Cambia la contraseña de un usuario.
+     * 
+     * Valida el usuario y codifica la nueva contraseña antes de guardarla.
+     * 
+     * @param id ID del usuario.
+     * @param contrasena Nueva contraseña.
+     * @throws IllegalArgumentException si el usuario no existe.
+     * @throws UsuarioNoValidoException si el usuario no es válido.
+     */
     @Override
     public void cambiarContrasena(Integer id, String contrasena) {
         // Busca el usuario por su ID
@@ -160,6 +249,14 @@ public class UsuarioServiceJpa implements IUsuarioService {
         // Guarda el usuario modificado en la base de datos
         usuarioRepository.save(usuario);
     }
+    /**
+     * Guarda un token de recuperación de contraseña para un usuario.
+     * 
+     * Elimina cualquier token anterior asociado al usuario antes de guardar el nuevo.
+     * 
+     * @param usuario Usuario al que se le asigna el token.
+     * @param token Token de recuperación.
+     */
 
     @Override
     @Transactional
@@ -172,6 +269,12 @@ public class UsuarioServiceJpa implements IUsuarioService {
         tokenRepository.save(prt);
     }
 
+    /**
+     * Valida si un token de recuperación es válido y no ha expirado.
+     * 
+     * @param token Token a validar.
+     * @return true si es válido, false en caso contrario.
+     */
     @Override
     public boolean validarToken(String token) {
         return tokenRepository.findByToken(token)
@@ -179,6 +282,17 @@ public class UsuarioServiceJpa implements IUsuarioService {
                 .orElse(false);
     }
 
+    /**
+     * Actualiza la contraseña de un usuario utilizando un token de recuperación.
+     * 
+     * Valida el token y al usuario antes de actualizar la contraseña y elimina el token.
+     * 
+     * @param token Token de recuperación.
+     * @param nuevaPassword Nueva contraseña.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     * @throws UsuarioNoValidoException si el usuario no es válido.
+     * @throws IllegalArgumentException si el token no existe o ha expirado.
+     */
     @Override
     @Transactional
     public boolean actualizarPasswordConToken(String token, String nuevaPassword) {
@@ -202,7 +316,12 @@ public class UsuarioServiceJpa implements IUsuarioService {
         return false;
     }
 
-    // Método para buscar usuarios por example
+    /**
+     * Busca usuarios que coincidan con un ejemplo dado.
+     * 
+     * @param example Ejemplo con criterios de búsqueda.
+     * @return Lista de usuarios que cumplen con el ejemplo.
+     */
     @Override
     public List<Usuario> buscarByExample(Example<Usuario> example) {
         return usuarioRepository.findAll(example);

@@ -8,17 +8,47 @@ import org.springframework.stereotype.Service;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 
+/**
+ * Servicio para el envío de correos electrónicos.
+ * Este servicio se encarga de enviar correos electrónicos de recuperación de contraseña
+ * a los usuarios que lo solicitan.
+ * 
+ * @author [Óscar García]
+ */
 @Service
 public class EmailService {
 
+    /**
+     * Enviador de correos electrónicos.
+     * Este objeto se utiliza para enviar correos electrónicos utilizando JavaMailSender.
+     */
     private final JavaMailSender mailSender;
 
-    // Constructor para la inyección de dependencias
+    /**
+     * Constructor del servicio EmailService.
+     * 
+     * @param mailSender Enviador de correos electrónicos.
+     * Este constructor utiliza la inyección de dependencias para inicializar el objeto
+     * JavaMailSender, que se utiliza para enviar correos electrónicos.
+     */
     @Autowired
     public EmailService(JavaMailSender mailSender) {
         this.mailSender = mailSender; // Inicializa el JavaMailSender
     }
-
+    /**
+     * Envía un correo electrónico de recuperación de contraseña al usuario.
+     *
+     * @param email  Correo electrónico del destinatario.
+     * @param enlace Enlace para restablecer la contraseña.
+     *
+     * Este método crea un mensaje MIME en formato HTML utilizando la clase
+     * MimeMessageHelper y lo envía al correo electrónico proporcionado.
+     * El mensaje incluye un botón con el enlace para restablecer la contraseña
+     * y una advertencia de que el enlace es válido por 1 hora.
+     *
+     * Si ocurre un error al crear o enviar el mensaje, se imprime la traza del error
+     * en la consola, pero no se lanza ninguna excepción.
+     */
     public void enviarRecuperacion(String email, String enlace) {
         MimeMessage message = mailSender.createMimeMessage();
 

@@ -24,16 +24,40 @@ import ies.ruizgijon.gestorincidencias.service.INotaService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 import ies.ruizgijon.gestorincidencias.util.GConstants;
 
+/**
+ * Controlador para la gestión de incidencias.
+ * 
+ * Gestiona operaciones relacionadas con la visualización, búsqueda,
+ * y gestión de incidencias según su estado (pendiente, en progreso, resuelta).
+ * También interactúa con usuarios y notas asociadas.
+ * 
+ * Autor: Óscar García
+ */
 @Controller
 @RequestMapping(value="/incidencias")
 public class IncidenciasController {
     
-
+    /**
+     * Servicio para operaciones relacionadas con incidencias.
+     */
     private final IIncidenciasService incidenciasService; 
+    /**
+     * Servicio para operaciones relacionadas con usuarios.
+     */
     private final IUsuarioService usuarioService; 
+
+    /**
+     * Servicio para operaciones relacionadas con notas.
+     */
     private final INotaService notaService;
 
-    // Constructor para la inyección de dependencias
+    /**
+     * Constructor para inyección de dependencias.
+     * 
+     * @param incidenciasService Servicio de incidencias
+     * @param usuarioService Servicio de usuarios
+     * @param notaService Servicio de notas
+     */
     @Autowired
     public IncidenciasController(IIncidenciasService incidenciasService, IUsuarioService usuarioService, INotaService notaService) {
         this.incidenciasService = incidenciasService;
@@ -41,8 +65,14 @@ public class IncidenciasController {
         this.notaService = notaService;
     }
 
-    // Aquí vamos a agregar métodos para manejar las solicitudes HTTP y llamar a los métodos del servicio de incidencias
-    // Método para listar incidencias pendientes
+    /**
+     * Muestra la vista con la lista de incidencias en estado PENDIENTE.
+     *
+     * @param model Modelo para pasar datos a la vista.
+     * @return Nombre de la vista que muestra incidencias pendientes.
+     *
+     * Si no hay incidencias pendientes, se añade un mensaje informativo al modelo.
+     */
     @GetMapping("/index")
     public String listarIncidenciasPendientes(Model model) {
         // Llamar al servicio para obtener la lista de incidencias y devolverla a la vista
@@ -58,8 +88,16 @@ public class IncidenciasController {
         model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIASPENDIENTES, incidenciasPendientes);
         return GConstants.VIEW_INCIDENCIASPENDIENTES; // Devuelve la vista de listar incidencias pendientes
     }
-
-    //Metodo para listar la busqueda en las incidencias pendientes 
+ 
+    /**
+     * Busca incidencias pendientes por coincidencia parcial en el título.
+     *
+     * @param busqueda Objeto de búsqueda con el campo título.
+     * @param model Modelo para pasar los resultados a la vista.
+     * @return Vista de incidencias pendientes con resultados filtrados.
+     *
+     * Se utiliza un ExampleMatcher para permitir coincidencias parciales. Si no hay resultados, se añade un mensaje informativo.
+     */
     @PostMapping("/incidenciasPendientes/buscar")
     public String buscarIncidenciasPendientes(@ModelAttribute ("search") Incidencia busqueda, Model model) {
         // Llamar al servicio para obtener la lista de incidencias pendientes que coinciden con la búsqueda
@@ -82,7 +120,14 @@ public class IncidenciasController {
         return GConstants.VIEW_INCIDENCIASPENDIENTES; // Devuelve la vista de listar incidencias pendientes
     }
 
-    // Método para listar incidencias en progreso
+/**
+     * Muestra la vista con la lista de incidencias en estado REPARACIÓN.
+     *
+     * @param model Modelo para pasar datos a la vista.
+     * @return Nombre de la vista que muestra incidencias en progreso.
+     *
+     * Si no hay incidencias en progreso, se añade un mensaje informativo al modelo.
+     */
     @GetMapping("/incidenciasProgreso")
     public String listarIncidenciasProgreso(Model model) {
         // Llamar al servicio para obtener la lista de incidencias en progreso y devolverla a la vista
@@ -99,7 +144,15 @@ public class IncidenciasController {
         return GConstants.VIEW_INCIDENCIASPROGRESO ; // Devuelve la vista de listar incidencias en progreso
     }
 
-    //Metodo para listar la busqueda en las incidencias en progreso 
+    /**
+     * Busca incidencias en reparación por coincidencia parcial en el título.
+     *
+     * @param busqueda Objeto de búsqueda con criterios de filtrado.
+     * @param model Modelo para pasar los resultados a la vista.
+     * @return Vista de incidencias en reparación filtradas por título.
+     *
+     * Se usa un ExampleMatcher con coincidencia parcial en el título. Se añade mensaje si no hay resultados.
+     */
     @PostMapping("/incidenciasProgreso/buscar")
     public String buscarIncidenciasProgreso(@ModelAttribute ("search") Incidencia busqueda, Model model) {
 
@@ -122,7 +175,15 @@ public class IncidenciasController {
         return GConstants.VIEW_INCIDENCIASPROGRESO; // Devuelve la vista de listar incidencias en progreso
     }
 
-    // Método para listar incidencias cerradas
+    /**
+     * Muestra la vista con la lista paginada de incidencias en estado RESUELTO.
+     *
+     * @param model Modelo para pasar datos a la vista.
+     * @param page Objeto de paginación.
+     * @return Nombre de la vista que muestra incidencias resueltas.
+     *
+     * Si no hay incidencias resueltas, se añade un mensaje al modelo.
+     */
     @GetMapping("/incidenciasResueltas")
     public String listarIncidenciasResueltas(Model model,Pageable page) {
         // Llamar al servicio para obtener la lista de incidencias cerradas y devolverla a la vista
@@ -139,7 +200,18 @@ public class IncidenciasController {
         return GConstants.VIEW_INCIDENCIASRESUELTAS; // Devuelve la vista de listar incidencias cerradas
     }
 
-    //Metodo para listar la busqueda en las incidencias en progreso 
+    /**
+     * Busca incidencias con estado "Resuelta" cuyo título coincida parcialmente con el proporcionado.
+     *
+     * @param busqueda Objeto con los criterios de búsqueda (título).
+     * @param model Modelo para enviar datos a la vista.
+     * @param page Información de paginación.
+     * @return Vista con la lista de incidencias resueltas.
+     *
+     * Si no se encuentran incidencias, se agrega un mensaje al modelo.
+     * Utiliza ExampleMatcher para realizar una búsqueda parcial por título.
+     */
+
     @PostMapping("/incidenciasResueltas/buscar")
     public String buscarIncidenciasResueltas(@ModelAttribute ("search") Incidencia busqueda, Model model,Pageable page) {
 
@@ -162,7 +234,13 @@ public class IncidenciasController {
         return GConstants.VIEW_INCIDENCIASRESUELTAS; // Devuelve la vista de listar incidencias resueltas
     }
 
-    // Metodo para añadir una incidencia
+    /**
+     * Muestra el formulario de creación de una nueva incidencia.
+     *
+     * @param model Modelo para enviar datos a la vista.
+     * @return Vista del formulario de creación de incidencias.
+     */
+
     @GetMapping("/crearIncidencia")
     public String crearIncidencia(Model model) {
         // Crear una nueva instancia de Incidencia y agregarla al modelo
@@ -173,7 +251,17 @@ public class IncidenciasController {
         return "crearIncidenciaForm"; // Devuelve la vista para crear una nueva incidencia
     }
 
-    // Método para guardar una nueva incidencia
+    /**
+     * Guarda una nueva incidencia con estado "Pendiente".
+     *
+     * @param incidencia Incidencia a guardar.
+     * @param attributes Atributos para mensajes flash al redirigir.
+     * @return Redirección a la vista de lista de incidencias.
+     *
+     * El usuario gestor se establece como null por defecto.
+     * Se muestra un mensaje de confirmación al guardar.
+     */
+
     @PostMapping("/creaIncidencia/save")
     public String guardarIncidencia(Incidencia incidencia, RedirectAttributes attributes) {
         //Usuario gestor null por defecto al crear la incidencia Pendiente.
@@ -188,7 +276,14 @@ public class IncidenciasController {
         return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de guardar
     }
 
-    // Método para cambiar el estado de una incidencia a "En Progreso"
+    /**
+     * Cambia el estado de una incidencia a "En Progreso" y la asigna al usuario autenticado.
+     *
+     * @param idIncidencia ID de la incidencia a asignar.
+     * @param attributes Atributos para mensajes flash al redirigir.
+     * @return Redirección a la lista de incidencias en progreso.
+     */
+
     @GetMapping("/incidencia/asignar/{id}")
     public String cambiarEstadoIncidenciaProgreso(@PathVariable("id") int idIncidencia, RedirectAttributes attributes) {
 
@@ -206,7 +301,14 @@ public class IncidenciasController {
         return "redirect:/incidencias/incidenciasProgreso"; // Redirigir a la lista de incidencias en progreso
     }
 
-    // Método para desasignar una incidencia (cambiar su estado a "Pendiente")
+    /**
+     * Cambia el estado de una incidencia a "Pendiente", desasignándola.
+     *
+     * @param idIncidencia ID de la incidencia a desasignar.
+     * @param attributes Atributos para mensajes flash al redirigir.
+     * @return Redirección a la lista general de incidencias.
+     */
+
     @GetMapping("/incidencia/desasignar/{id}")
     public String desasignarIncidencia(@PathVariable("id") int idIncidencia, RedirectAttributes attributes) {
         // Llamar al servicio para desasignar la incidencia (cambiar su estado a "Pendiente")
@@ -218,7 +320,14 @@ public class IncidenciasController {
         return "redirect:/incidencias/index"; // Redirigir a la lista de incidencias después de desasignar
     }
 
-    // Método para cambiar el estado de una incidencia a "Resuelta"
+    /**
+     * Cambia el estado de una incidencia a "Resuelta".
+     *
+     * @param idIncidencia ID de la incidencia a resolver.
+     * @param attributes Atributos para mensajes flash al redirigir.
+     * @return Redirección a la lista de incidencias resueltas.
+     */
+
     @GetMapping("/incidencia/resolver/{id}")
     public String cambiarEstadoIncidenciaResuelta(@PathVariable("id") int idIncidencia, RedirectAttributes attributes) {
         // Llamar al servicio para cambiar el estado de la incidencia a "Resuelta"
@@ -230,7 +339,14 @@ public class IncidenciasController {
         return "redirect:/incidencias/incidenciasResueltas"; // Redirigir a la lista de incidencias resueltas
     }
 
-    // Metodo para crear una nota en la incidencia
+    /**
+     * Muestra el formulario para agregar una nueva nota a una incidencia.
+     *
+     * @param idIncidencia ID de la incidencia asociada.
+     * @param model Modelo para enviar datos a la vista.
+     * @return Vista para agregar y visualizar notas de una incidencia.
+     */
+
     @GetMapping("/incidencia/crearNota/{id}")
     public String crearNota(@PathVariable("id") int idIncidencia, Model model) {
         // Crear una nueva instancia de Nota y agregarla al modelo
@@ -246,7 +362,14 @@ public class IncidenciasController {
         return "verNotas"; // Devuelve la vista para crear una nueva nota
     }
 
-    // Método para guardar una nueva nota en la incidencia
+    /**
+     * Guarda una nueva nota asociada a una incidencia.
+     *
+     * @param nota Nota a guardar.
+     * @param attributes Atributos para mensajes flash al redirigir.
+     * @return Redirección a la vista de notas de la incidencia correspondiente.
+     */
+
     @PostMapping("/incidencia/crearNota/save")
     public String guardarNota(@ModelAttribute("nuevaNota") Nota nota, RedirectAttributes attributes) {
         // Obtener el ID del usuario que está creando la nota (esto debería ser parte de la sesión o contexto actual)
@@ -265,6 +388,14 @@ public class IncidenciasController {
 
         return "redirect:/incidencias/incidencia/crearNota/" + idIncidencia; // Redirigir a la vista de notas de la incidencia
     }
+
+    /**
+     * Elimina una nota de una incidencia, si el usuario es el autor o tiene rol de administrador.
+     *
+     * @param idNota ID de la nota a eliminar.
+     * @param attributes Atributos para mensajes flash al redirigir.
+     * @return Redirección a la vista de notas de la incidencia asociada.
+     */
 
     @GetMapping("/incidencia/eliminarNota/{id}")
     public String eliminarNota(@PathVariable("id") int idNota, RedirectAttributes attributes) {
@@ -296,9 +427,17 @@ public class IncidenciasController {
         attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Nota eliminada con éxito.");
         return "redirect:/incidencias/incidencia/crearNota/" + idIncidencia;
     }
+    /**
+     * Agrega datos comunes al modelo para todas las vistas del controlador.
+     *
+     * @param model Modelo para las vistas.
+     *
+     * Incluye:
+     * - Usuario autenticado actual.
+     * - Lista de usuarios.
+     * - Objeto de búsqueda de incidencias.
+     */
 
-
-    
     @ModelAttribute()
     public void setGenericos(Model model) {
         Incidencia incidenciaSearch = new Incidencia();

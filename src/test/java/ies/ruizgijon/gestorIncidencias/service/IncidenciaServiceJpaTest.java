@@ -37,22 +37,43 @@ import ies.ruizgijon.gestorincidencias.repository.UsuarioRepository;
 import ies.ruizgijon.gestorincidencias.service.IncidenciaServiceJpa;
 import ies.ruizgijon.gestorincidencias.util.Validaciones;
 
+/**
+ * Clase de prueba para la clase IncidenciaServiceJpa.
+ * Esta clase contiene pruebas unitarias para los métodos de la clase
+ * IncidenciaServiceJpa.
+ */
 class IncidenciaServiceJpaTest {
 
+    /**
+     * Repositorio de incidencias simulado.
+     */
     @Mock
     private IncidenciasRepository incidenciasRepository;
 
+    /**
+     * Repositorio de usuarios simulado.
+     */
     @Mock
     private UsuarioRepository usuarioRepository;
 
+    /**
+     * Servicio de incidencias que se va a probar.
+     */
     @InjectMocks
     private IncidenciaServiceJpa incidenciaServiceJpa;
 
+    /**
+     * Inicializa los mocks antes de cada prueba.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this); // Inicializa los mocks
     }
 
+    /**
+     * Prueba unitaria para el método guardarIncidencia.
+     * Verifica que se guarda una incidencia válida en el repositorio.
+     */
     @Test
     void testGuardarIncidenciaValida() {
         // Arrange prepara los datos necesarios para el test
@@ -81,6 +102,10 @@ class IncidenciaServiceJpaTest {
         }
     }
 
+    /**
+     * Prueba unitaria para el método guardarIncidencia.
+     * Verifica que se lanza una excepción si la incidencia es inválida.
+     */
     @Test
     void testGuardarIncidencia_Invalida() {
         // Arrange
@@ -100,7 +125,10 @@ class IncidenciaServiceJpaTest {
             verify(incidenciasRepository, never()).save(any());
         }
     }
-
+    /**
+     * Prueba unitaria para el método eliminarIncidencia.
+     * Verifica que se elimina una incidencia existente en el repositorio.
+     */
     @Test
     void testEliminarIncidencia_Existe() {
         // Arrange
@@ -114,6 +142,10 @@ class IncidenciaServiceJpaTest {
         verify(incidenciasRepository).deleteById(idIncidencia);
     }
 
+    /**
+     * Prueba unitaria para el método eliminarIncidencia.
+     * Verifica que se lanza una excepción si la incidencia no existe.
+     */
     @Test
     void testEliminarIncidencia_NoExiste() {
         // Arrange
@@ -129,6 +161,10 @@ class IncidenciaServiceJpaTest {
         verify(incidenciasRepository, never()).deleteById(any());
     }
 
+    /**
+     * Prueba unitaria para el método buscarIncidenciaPorId.
+     * Verifica que se busca una incidencia por su ID en el repositorio.
+     */
     @Test
     void testBuscarIncidenciaPorId_Existe() {
         // Arrange
@@ -146,6 +182,10 @@ class IncidenciaServiceJpaTest {
         assertEquals(idIncidencia, resultado.getId());
     }
 
+    /**
+     * Prueba unitaria para el método buscarIncidenciaPorId.
+     * Verifica que se lanza una excepción si la incidencia no existe.
+     */
     @Test
     void testBuscarIncidenciaPorId_NoExiste() {
         // Arrange
@@ -160,6 +200,10 @@ class IncidenciaServiceJpaTest {
         assertEquals("Incidencia no encontrada con ID: " + idIncidencia, exception.getMessage());
     }
 
+    /**
+     * Prueba unitaria para el método buscarIncidenciasPorUsuario.
+     * Verifica que se buscan incidencias por usuario en el repositorio.
+     */
     @Test
     void testAsignarIncidencia_ExisteIncidenciaYUsuario() {
         // Arrange
@@ -184,6 +228,10 @@ class IncidenciaServiceJpaTest {
         verify(incidenciasRepository).save(incidencia);
     }
 
+    /**
+     * Prueba unitaria para el método asignarIncidencia.
+     * Verifica que se lanza una excepción si la incidencia no existe.
+     */
     @Test
     void testAsignarIncidencia_IncidenciaONoExiste() {
         // Arrange
@@ -202,6 +250,10 @@ class IncidenciaServiceJpaTest {
         verify(incidenciasRepository, never()).save(any());
     }
 
+    /**
+     * Prueba unitaria para el método asignarIncidencia.
+     * Verifica que se lanza una excepción si el usuario no existe.
+     */
     @Test
     void testAsignarIncidencia_UsuarioNoExiste() {
         // Arrange
@@ -219,7 +271,10 @@ class IncidenciaServiceJpaTest {
         assertEquals("Incidencia no encontrada con ID: " + idIncidencia, exception.getMessage());
         verify(incidenciasRepository, never()).save(any());
     }
-
+    /**
+     * Prueba unitaria para el método desasignarIncidencia.
+     * Verifica que se desasigna una incidencia existente en el repositorio.
+     */
     @Test
     void testDesasignarIncidencia_Existe() {
         // Arrange
@@ -240,7 +295,10 @@ class IncidenciaServiceJpaTest {
         assertEquals(EstadoIncidencia.PENDIENTE, incidencia.getEstado());
         verify(incidenciasRepository).save(incidencia);
     }
-
+    /**
+     * Prueba unitaria para el método desasignarIncidencia.
+     * Verifica que se lanza una excepción si la incidencia no existe.
+     */
     @Test
     void testDesasignarIncidencia_NoExiste() {
         // Arrange
@@ -255,7 +313,10 @@ class IncidenciaServiceJpaTest {
         assertEquals("Incidencia no encontrada con ID: " + idIncidencia, exception.getMessage());
         verify(incidenciasRepository, never()).save(any());
     }
-
+    /**
+     * Prueba unitaria para el método cerrarIncidencia.
+     * Verifica que se cierra una incidencia existente en el repositorio.
+     */
     @Test
     void testCerrarIncidencia_Existe() {
         // Arrange
@@ -273,7 +334,10 @@ class IncidenciaServiceJpaTest {
         assertEquals(EstadoIncidencia.RESUELTA, incidencia.getEstado());
         verify(incidenciasRepository).save(incidencia);
     }
-
+    /**
+     * Prueba unitaria para el método cerrarIncidencia.
+     * Verifica que se lanza una excepción si la incidencia no existe.
+     */
     @Test
     void testCerrarIncidencia_NoExiste() {
         // Arrange
@@ -288,7 +352,10 @@ class IncidenciaServiceJpaTest {
         assertEquals("Incidencia no encontrada con ID: " + idIncidencia, exception.getMessage());
         verify(incidenciasRepository, never()).save(any());
     }
-
+    /**
+     * Prueba unitaria para el método buscarIncidenciasPorEstado.
+     * Verifica que se buscan incidencias por estado en el repositorio.
+     */
     @Test
     void testBuscarByExample() {
         // Arrange
@@ -305,7 +372,10 @@ class IncidenciaServiceJpaTest {
         assertEquals(2, incidencias.size());
         verify(incidenciasRepository).findAll(example);
     }
-
+    /**
+     * Prueba unitaria para el método buscarIncidenciasPorEstado.
+     * Verifica que se buscan incidencias por estado en el repositorio.
+     */
     @Test
     void testBuscarIncidenciasPaginadas() {
         // Arrange
@@ -320,7 +390,10 @@ class IncidenciaServiceJpaTest {
         assertNotNull(result);
         verify(incidenciasRepository).findAll(pageable);
     }
-
+    /**
+     * Prueba unitaria para el método buscarIncidenciasPorEstado.
+     * Verifica que se buscan incidencias por estado en el repositorio.
+     */
     @Test
     void testBuscarIncidenciasPorEstadoPaginadas() {
         // Arrange
@@ -336,7 +409,10 @@ class IncidenciaServiceJpaTest {
         assertNotNull(result);
         verify(incidenciasRepository).findByEstado(estado, pageable);
     }
-
+    /**
+     * Prueba unitaria para el método buscarIncidenciasByExamplePaginadas.
+     * Verifica que se buscan incidencias por ejemplo y se devuelven paginadas.
+     */
     @Test
     void testBuscarIncidenciasByExamplePaginadas() {
         // Arrange

@@ -34,25 +34,44 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+/**
+ * Clase de prueba para la clase UsuarioServiceJpa.
+ * Esta clase contiene pruebas unitarias para los métodos de la clase UsuarioServiceJpa.
+ * 
+ * @author [Óscar García]
+ */
 class UsuarioServiceJpaTest {
-
+    /**
+     * Repositorio de usuarios simulado.
+     */
     @Mock
     private UsuarioRepository usuarioRepository;
-
+    /**
+     * Servicio de usuarios simulado.
+     */
     @Mock
     private BCryptPasswordEncoder passwordEncoder;
-
+    /**
+     * Servicio de usuarios simulado.
+     */
     @InjectMocks
     private UsuarioServiceJpa usuarioServiceJpa;
-
+    /**
+     * Repositorio de tokens de restablecimiento de contraseña simulado.
+     */
     @Mock
     private PasswordResetTokenRepository tokenRepository;
-
+    /**
+     * Repositorio de roles simulado.
+     */
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this); // Inicializa los mocks
     }
-
+    /**
+     * Prueba unitaria para el método guardarUsuario.
+     * Verifica que se llame al método save del repositorio con el usuario correcto.
+     */
     @Test
     void testGuardarUsuario() {
         Usuario usuario = new Usuario();
@@ -103,7 +122,10 @@ class UsuarioServiceJpaTest {
         assertEquals("juan.perez@example.com", result.getMail()); // Verificamos que el correo del nuevo usuario coincida con el correo registrado
         verify(usuarioRepository, times(1)).save(usuario); // Verificamos que se haya llamado a save en el repositorio
     }
-
+    /**
+     * Prueba unitaria para el método guardarUsuario.
+     * Verifica que se lanza una excepción si el correo ya existe en la base de datos.
+     */
     @Test
     void testRegistrarUsuarioConCorreoExistente() {
         // Arrange
@@ -117,7 +139,10 @@ class UsuarioServiceJpaTest {
             usuarioServiceJpa.guardarUsuario(usuario);
         });
     }
-
+    /**
+     * Prueba unitaria para el metodo getCurrentUser.
+     * Verifica que se devuelve el usuario correcto si está autenticado.
+     */
     @Test
     void testGetCurrentUser() {
         // Arrange
@@ -143,7 +168,10 @@ class UsuarioServiceJpaTest {
         assertEquals(email, result.getMail());
         verify(usuarioRepository, times(1)).findByMail(email); // Verificamos que se haya llamado al método del repositorio
     }
-
+    /**
+     * Prueba unitaria para el método getCurrentUser.
+     * Verifica que se devuelve null si no hay usuario autenticado.
+     */
     @Test
     void testGetCurrentUserSinUsuarioAutenticado() {
 
@@ -159,6 +187,13 @@ class UsuarioServiceJpaTest {
         assertNull(result, "Se espera que el resultado sea null cuando no hay usuario autenticado");
     }
 
+    /**
+     * Prueba unitaria para el método cambiarContraseña.
+     * Verifica que se llame al método save del repositorio con el usuario correcto.
+     * Verifica que la contraseña se codifique correctamente.
+     * Verifica que la contraseña no sea null.
+     * Verifica que la contraseña sea la correcta.
+     */
     @Test
     void testcambiarContrasena() {
         // Arrange
@@ -186,6 +221,9 @@ class UsuarioServiceJpaTest {
         verify(usuarioRepository, times(1)).save(usuario); // Verificamos que se haya llamado a save en el repositorio
     }
 
+    /**
+     * Prueba unitaria para el método guardarTokenDeRecuperacion.
+     */
     @Test
     void testGuardarTokenDeRecuperacion() {
         // Arrange
@@ -211,7 +249,11 @@ class UsuarioServiceJpaTest {
         assertTrue(savedToken.getFechaExpiracion().isAfter(expectedExpirationLowerBound) &&
                 savedToken.getFechaExpiracion().isBefore(expectedExpirationUpperBound));
     }
-
+    /**
+     * Prueba unitaria para el método actualizarPasswordConToken.
+     * Verifica que se llame al método save del repositorio con el usuario correcto.
+     * Verifica que se llame al método delete del repositorio de tokens.
+     */
     @Test
     void testActualizarPasswordConToken_TokenValidoYUsuarioValido() {
         // Arrange
@@ -245,7 +287,7 @@ class UsuarioServiceJpaTest {
             verify(tokenRepository).delete(prt);
         }
     }
-
+    
     @Test
     void testValidarToken_TokenValido() {
         // Arrange

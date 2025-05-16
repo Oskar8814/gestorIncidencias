@@ -13,24 +13,58 @@ import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 import ies.ruizgijon.gestorincidencias.util.GConstants;
 
+/**
+ * Controlador encargado de manejar la vista de inicio de sesión y el cambio de contraseña
+ * de los usuarios autenticados.
+ * 
+ * Proporciona funcionalidades para:
+ * <ul>
+ *   <li>Mostrar la página de inicio de sesión</li>
+ *   <li>Acceder al formulario para cambiar la contraseña</li>
+ *   <li>Procesar el cambio de contraseña</li>
+ * </ul>
+ * 
+ * Utiliza {@link IUsuarioService} para acceder y modificar datos del usuario.
+ * 
+ * @author Óscar García
+ */
 @Controller
 public class HomeController {
 
-	private final IUsuarioService usuarioService; // Inyección de dependencias para el servicio de usuarios
+    /**
+     * Servicio encargado de operaciones relacionadas con los usuarios.
+     */
+	private final IUsuarioService usuarioService;
 
-	// Constructor para la inyección de dependencias
+	/**
+	 * Constructor que inyecta el servicio de usuario.
+	 *
+	 * @param usuarioService Servicio encargado de operaciones sobre usuarios.
+	 */
 	@Autowired
 	public HomeController(IUsuarioService usuarioService) {
 		this.usuarioService = usuarioService; // Inicializa el servicio de usuarios
 	}
 
-    // Método para mostrar la página de inicio de sesión
+	/**
+	 * Muestra la vista de inicio de sesión de la aplicación.
+	 * 
+	 * @return Nombre de la plantilla de login (login.html).
+	 */
     @GetMapping("/")
 	public String showLogin() {
 		return "login"; // Retorna la vista de inicio de sesión.
 	}
 
-	//Metodo para modificar la contraseña
+
+    /**
+     * Muestra el formulario para modificar la contraseña del usuario autenticado.
+     * 
+     * Si no hay un usuario en sesión, se redirige a la página de login.
+     *
+     * @param model Objeto para pasar atributos a la vista.
+     * @return Nombre de la vista de cambio de contraseña, o redirección al login si no hay sesión activa.
+     */
     @GetMapping("/modificarContrasena")
     public String modificarContrasena(Model model) {
         // Obtener el usuario actualmente logeado
@@ -44,7 +78,18 @@ public class HomeController {
         return "modificarContrasena"; // Devuelve la vista para modificar la contraseña
     }
 
-	// Metodo para guardar la nueva contraseña
+    /**
+     * Procesa la solicitud para cambiar la contraseña del usuario autenticado.
+     *
+     * Valida que el correo electrónico recibido coincida con el del usuario autenticado. 
+     * En caso contrario, redirige al login. Si es correcto, actualiza la contraseña 
+     * mediante el servicio correspondiente y muestra un mensaje de éxito.
+     *
+     * @param mail        Correo electrónico del usuario autenticado.
+     * @param contrasena  Nueva contraseña a establecer.
+     * @param attributes  Atributos flash para mostrar mensajes tras la redirección.
+     * @return Redirección a la vista de login tras completar el cambio o en caso de error.
+     */
 	@PostMapping("/cambiarContrasena/save")
 	public String cambiarContrasena (@RequestParam("mailLogeado") String mail, @RequestParam("password") String contrasena, RedirectAttributes attributes) {
 		// Obtener el usuario actualmente logeado
@@ -66,6 +111,13 @@ public class HomeController {
 		return GConstants.REDIRECT_LOGIN; 
 	}
 
+    /**
+     * Agrega el usuario autenticado al modelo antes de procesar cualquier petición del controlador.
+     * 
+     * Esto permite que la información del usuario esté disponible en todas las vistas renderizadas.
+     *
+     * @param model Modelo compartido con la vista.
+     */
 	@ModelAttribute()
     public void setGenericos(Model model) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado

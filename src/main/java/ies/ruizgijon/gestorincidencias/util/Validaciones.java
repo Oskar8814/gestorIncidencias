@@ -7,8 +7,17 @@ import java.util.regex.Pattern;
 import ies.ruizgijon.gestorincidencias.model.Incidencia;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 
+/**
+ * Clase que contiene métodos de validación para objetos de tipo Usuario e
+ * Incidencia.
+ * 
+ * @author [Óscar García]
+ */
 public class Validaciones {
 
+	/**
+	 * Constructor privado para evitar la instanciación de la clase utilitaria.
+	 */
 	private Validaciones() {
 		// Constructor privado para evitar la instanciación
 	}
@@ -63,6 +72,7 @@ public class Validaciones {
 	 * 
 	 * @param incidencia El objeto Incidencia a validar.
 	 * @return Una lista de errores de validación. Si la lista está vacía, la incidencia es valida
+	 * 
 	 */
 
 	public static List<String> obtenerErroresValidacionIncidencia(Incidencia incidencia) {
@@ -117,6 +127,12 @@ public class Validaciones {
 		return valor != null && !valor.trim().isEmpty() && valor.length() <= maxLength;
 	}
 
+	/**
+	 * Valida si una contraseña es válida según los criterios establecidos.
+	 * 
+	 * @param pass La contraseña a validar.
+	 * @return true si la contraseña es válida, false en caso contrario.
+	 */
 	public static boolean esPasswordValida(String pass) {
 		return pass != null && PATRON_CONTRASENA.matcher(pass).matches();
 	}
