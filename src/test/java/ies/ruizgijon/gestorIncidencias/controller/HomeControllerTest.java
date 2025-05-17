@@ -18,6 +18,7 @@ import ies.ruizgijon.gestorIncidencias.GConstants;
 import ies.ruizgijon.gestorincidencias.controller.HomeController;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 
 class HomeControllerTest {
 
@@ -29,6 +30,9 @@ class HomeControllerTest {
 
     @Mock
     private Model model; // Mock del modelo
+
+    @Mock
+    private HttpServletRequest request;
 
     private HomeController homeController; // Instancia del controlador a probar
 
@@ -102,7 +106,7 @@ class HomeControllerTest {
     @Test
     void testSetGenericos() {
         // Llama al método a probar
-        homeController.setGenericos(model);
+        homeController.setGenericos(model, request);
 
         Usuario usuario = usuarioService.getCurrentUser(); // Simula la obtención del usuario actual
 

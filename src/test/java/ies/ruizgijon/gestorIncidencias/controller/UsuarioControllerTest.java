@@ -19,6 +19,7 @@ import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IRolService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 
 class UsuarioControllerTest {
 
@@ -33,6 +34,9 @@ class UsuarioControllerTest {
 
     @Mock
     private Model model; // Mock del modelo
+
+    @Mock
+    private HttpServletRequest request; // Mock del request
 
     private UsuarioController usuarioController; // Instancia del controlador a probar
 
@@ -253,7 +257,7 @@ class UsuarioControllerTest {
     @Test
     void testSetGenericos() {
         // Llama al método a probar
-        usuarioController.setGenericos(model);
+        usuarioController.setGenericos(model, request);
 
         Usuario usuario = usuarioService.getCurrentUser(); // Simula la obtención del usuario actual
 

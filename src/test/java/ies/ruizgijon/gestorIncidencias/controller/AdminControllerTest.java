@@ -22,6 +22,7 @@ import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 
 class AdminControllerTest {
 
@@ -33,6 +34,9 @@ class AdminControllerTest {
 
     @Mock
     private RedirectAttributes redirectAttributes; // Mock de RedirectAttributes
+
+    @Mock
+    private HttpServletRequest request;
 
     @Mock
     private Model model; // Mock del modelo
@@ -183,7 +187,7 @@ class AdminControllerTest {
     @Test
     void testSetGenericos(){
         // Llama al método a probar
-        adminController.setGenericos(model);
+        adminController.setGenericos(model, request);
         
         Usuario usuario = usuarioService.getCurrentUser(); //Simula la obtención del usuario actual 
 

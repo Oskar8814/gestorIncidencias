@@ -19,6 +19,7 @@ import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IRolService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 import ies.ruizgijon.gestorincidencias.util.GConstants;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Controlador para la gestión de usuarios.
@@ -214,15 +215,17 @@ public class UsuarioController {
      * Incluye el usuario actual logueado y el objeto de búsqueda.
      * 
      * @param model Modelo para pasar datos a las vistas.
+     * @param request Objeto de solicitud HTTP para obtener información adicional.
      */
 
     @ModelAttribute()
-    public void setGenericos(Model model) {
+    public void setGenericos(Model model, HttpServletRequest request) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
         Usuario usuarioSearch = new Usuario();
 
         model.addAttribute("search", usuarioSearch); // Agregar el objeto de búsqueda al modelo para la vista
         model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
+        model.addAttribute("currentUrl", request.getRequestURI()); // Agregar la URL actual al modelo
     }
 
 }

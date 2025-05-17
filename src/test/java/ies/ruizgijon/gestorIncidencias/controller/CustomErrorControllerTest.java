@@ -111,7 +111,7 @@ class CustomErrorControllerTest {
     @Test
     void testSetGenericos() {
         // Llama al método a probar
-        customErrorController.setGenericos(model);
+        customErrorController.setGenericos(model, request);
 
         Usuario usuario = usuarioService.getCurrentUser(); // Simula la obtención del usuario actual
 

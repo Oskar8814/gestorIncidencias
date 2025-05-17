@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 import ies.ruizgijon.gestorincidencias.util.GConstants;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Controlador encargado de manejar la vista de inicio de sesión y el cambio de contraseña
@@ -117,11 +118,13 @@ public class HomeController {
      * Esto permite que la información del usuario esté disponible en todas las vistas renderizadas.
      *
      * @param model Modelo compartido con la vista.
+	 * @param request Objeto de solicitud HTTP para obtener información adicional, como la URL actual.
      */
 	@ModelAttribute()
-    public void setGenericos(Model model) {
+    public void setGenericos(Model model, HttpServletRequest request) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
 
         model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
+		model.addAttribute("currentUrl", request.getRequestURI()); // Agregar la URL actual al modelo
     }
 }

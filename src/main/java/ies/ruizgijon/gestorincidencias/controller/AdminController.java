@@ -16,6 +16,7 @@ import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 import ies.ruizgijon.gestorincidencias.util.GConstants;
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**
@@ -162,12 +163,14 @@ public class AdminController {
      * (como el nombre o el rol).
      * 
      * @param model Objeto de modelo compartido con todas las vistas del controlador.
+     * @param request Objeto de solicitud HTTP para obtener información adicional, como la URL actual.
      */
     @ModelAttribute()
-    public void setGenericos(Model model) {
+    public void setGenericos(Model model, HttpServletRequest request) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
 
         model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
+        model.addAttribute("currentUrl", request.getRequestURI());
     }
 
 }

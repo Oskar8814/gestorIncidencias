@@ -99,12 +99,14 @@ public class CustomErrorController implements ErrorController {
      * el usuario esté disponible como atributo en todas las vistas, incluso en la de error.
      *
      * @param model Modelo de datos para la vista.
+     * @param request Objeto `HttpServletRequest` para obtener información adicional.
      */
     @ModelAttribute()
-    public void setGenericos(Model model) {
+    public void setGenericos(Model model, HttpServletRequest request) {
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
 
         model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
+        model.addAttribute("currentUrl", request.getRequestURI()); // Agregar la URL actual al modelo
     }
 }
 

@@ -1,19 +1,20 @@
 <!-- CABECERA -->
 <div th:fragment="header" class="py-5 d-flex justify-content-around align-items-center bg-primary">
     <div>
-        <img th:src="@{/img/logo_RG_180_mono_new_nohalo.png}" class="img-fluid" alt="logo ies ruiz gijón">
+        <img th:src="@{/img/logo_RG_180_mono_new_nohalo.png}" class="img-fluid" th:alt="#{header.logoAlt}">
     </div>
     <div class="text-center mt-2 text-white">
-        <h1 class="fw-bolder">Incidencias <span class="text-amarillo">Informáticas</span></h1>
+        <h1 class="fw-bolder" th:text="#{header.titulo} + ' '">
+            Incidencias <span class="text-amarillo" th:text="#{header.informatica}">Informáticas</span>
+        </h1>
 
         <!-- Si el usuario existe -->
         <p th:if="${currentUser != null}">
-            Bienvenido [[${currentUser.nombre}]]&nbsp;[[${currentUser.apellido1}]]
+            <span th:text="#{header.bienvenido}">Bienvenido</span>
+            [[${currentUser.nombre}]]&nbsp;[[${currentUser.apellido1}]]
         </p>
 
         <!-- Si el usuario no existe -->
-        <p th:unless="${currentUser != null}">
-            Bienvenido invitado
-        </p>
+        <p th:unless="${currentUser != null}" th:text="#{header.bienvenidoInvitado}">Bienvenido invitado</p>
     </div>
 </div>

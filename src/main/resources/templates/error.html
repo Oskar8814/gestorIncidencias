@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Error [[${statusCode}]]</title>
+    <title th:text="#{error.titulo} + ' ' + ${statusCode}">Error [[${statusCode}]]</title>
     <link rel="icon" href="/img/logo_RG_180_mono_new_nohalo.ico" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" th:href="@{/css/customStyles.css}">
@@ -19,16 +19,18 @@
     <div class="container text-center my-5">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <h1 class="display-1 fw-bold text-danger" th:text="'Error ' + ${statusCode}">Error</h1>
-                <p class="fs-4" th:text="${errorMessage}">Algo no salió como esperábamos.</p>
+                <h1 class="display-1 fw-bold text-danger" th:text="#{error.titulo} + ' ' + ${statusCode}">Error</h1>
+                <p class="fs-4" th:text="${errorMessage} ?: #{error.mensajePorDefecto}">Algo no salió como esperábamos.
+                </p>
 
                 <div class="alert alert-danger text-start mt-4" th:if="${errores}">
-                    <h5 class="mb-2">Detalles del error:</h5>
+                    <h5 class="mb-2" th:text="#{error.detalles}">Detalles del error:</h5>
                     <ul class="mb-0 ps-4">
                         <li th:each="error : ${errores}" th:text="${error}"></li>
                     </ul>
                 </div>
-                <a th:href="@{/incidencias/index}" class="btn btn-primary mt-4">Volver al inicio</a>
+                <a th:href="@{/incidencias/index}" class="btn btn-primary mt-4"
+                    th:text="#{error.volverInicio}">Volver al inicio</a>
             </div>
         </div>
     </div>

@@ -4,7 +4,7 @@
         <div class="row justify-content-around">
             <!-- columna 1 del footer -->
             <div class="col-md-4 mb-4">
-                <h3 class="fw-bolder mb-4">Ubicación</h3>
+                <h3 class="fw-bolder mb-4" th:text="#{footer.ubicacion}">Ubicación</h3>
                 <div>
                     <iframe
                     src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3178.607183125538!2d-5.777595923664024!3d37.18580524586757!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd127fa80bd7d143%3A0x9fa974b82c133ef6!2sInstituto%20de%20Educaci%C3%B3n%20Secundaria%20Ruiz%20Gij%C3%B3n!5e0!3m2!1ses!2ses!4v1740846708459!5m2!1ses!2ses"
@@ -15,13 +15,13 @@
         </div>
         <!-- columna 2 del footer -->
         <div class="col-md-4 mb-4">
-            <h3 class="fw-bolder mb-4">Contacto</h3>
+            <h3 class="fw-bolder mb-4" th:text="#{footer.contacto}">Contacto</h3>
             <ul class="d-flex flex-column">
-                <p>IES Ruiz Gijón</p>
-                <p>C/ Paseo de Consolación nº 1 - 41710 Utrera (Sevilla)</p>
-                <p>Tlfno.: 95 583 95 73</p>
-                <p>Email: 41007898.edu@juntadeandalucia.es</p>
-                <p>Fax: 95 583 95 79</p>
+                <p th:text="#{footer.nombreCentro}">IES Ruiz Gijón</p>
+                <p th:text="#{footer.direccion}">C/ Paseo de Consolación nº 1 - 41710 Utrera (Sevilla)</p>
+                <p th:text="#{footer.telefono}">Tlfno.: 95 583 95 73</p>
+                <p th:text="#{footer.email}">Email: 41007898.edu@juntadeandalucia.es</p>
+                <p th:text="#{footer.fax}">Fax: 95 583 95 79</p>
             </ul>
             <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" fill="currentColor" class="bi bi-facebook ms-4" viewBox="0 0 16 16">
                 <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951"/>

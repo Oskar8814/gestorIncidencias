@@ -33,6 +33,7 @@ import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
 import ies.ruizgijon.gestorincidencias.service.INotaService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
+import jakarta.servlet.http.HttpServletRequest;
 
 class IncidenciasControllerTest {
 
@@ -50,6 +51,9 @@ class IncidenciasControllerTest {
 
     @Mock
     private Model model; // Mock del modelo
+
+    @Mock
+    private HttpServletRequest request; // Mock del request
 
     private IncidenciasController incidenciasController; // Instancia del controlador a probar
 
@@ -448,7 +452,7 @@ class IncidenciasControllerTest {
         when(usuarioService.buscarTodos()).thenReturn(listaUsuarios);
 
         // Llamar al método que estamos probando
-        incidenciasController.setGenericos(model);
+        incidenciasController.setGenericos(model, request);
 
         // Verificar que el modelo ha sido actualizado correctamente
         verify(model).addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuarioLogueado); // Verificar que el usuario logueado se haya agregado al modelo

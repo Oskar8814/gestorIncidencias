@@ -23,6 +23,7 @@ import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
 import ies.ruizgijon.gestorincidencias.service.INotaService;
 import ies.ruizgijon.gestorincidencias.service.IUsuarioService;
 import ies.ruizgijon.gestorincidencias.util.GConstants;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Controlador para la gestión de incidencias.
@@ -431,15 +432,17 @@ public class IncidenciasController {
      * Agrega datos comunes al modelo para todas las vistas del controlador.
      *
      * @param model Modelo para las vistas.
+     * @param request Objeto de solicitud HTTP para obtener información adicional.
      *
      * Incluye:
      * - Usuario autenticado actual.
      * - Lista de usuarios.
      * - Objeto de búsqueda de incidencias.
+     * - URL actual.
      */
 
     @ModelAttribute()
-    public void setGenericos(Model model) {
+    public void setGenericos(Model model, HttpServletRequest request) {
         Incidencia incidenciaSearch = new Incidencia();
         List<Usuario> usuarios = usuarioService.buscarTodos(); // Obtener la lista de usuarios para el formulario
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
@@ -447,5 +450,6 @@ public class IncidenciasController {
         model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
         model.addAttribute("search", incidenciaSearch); // Agregar el objeto de búsqueda al modelo para la vista
         model.addAttribute(GConstants.ATTRIBUTE_USUARIOS, usuarios); // Agregar la lista de usuarios al modelo para el formulario
+        model.addAttribute("currentUrl", request.getRequestURI()); // Agregar la URL actual al modelo
     }
 }
