@@ -21,3 +21,6 @@
     height: 500px;
     object-fit: cover; /*Recorta la imagen si es necesario */
 }
+.text-amarillo{
+    color: #fab443;
+}

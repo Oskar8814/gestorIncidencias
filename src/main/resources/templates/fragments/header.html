@@ -4,8 +4,9 @@
         <img th:src="@{/img/logo_RG_180_mono_new_nohalo.png}" class="img-fluid" th:alt="#{header.logoAlt}">
     </div>
     <div class="text-center mt-2 text-white">
-        <h1 class="fw-bolder" th:text="#{header.titulo} + ' '">
-            Incidencias <span class="text-amarillo" th:text="#{header.informatica}">Informáticas</span>
+        <h1 class="fw-bolder">
+            <span th:text="#{header.incidencias} + ' '">Incidencias</span>
+            <span class="text-amarillo" th:text="#{header.informatica}">Informáticas</span>
         </h1>
 
         <!-- Si el usuario existe -->

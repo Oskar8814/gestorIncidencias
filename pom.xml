@@ -11,7 +11,7 @@
 	<groupId>ies.ruizgijon</groupId>
 	<artifactId>gestorIncidencias</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>gestorIncidencias</name>
 	<description>Gestor de Incidencias Informaticas</description>
 	<url/>
