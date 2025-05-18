@@ -56,8 +56,8 @@
         <ul class="list-group">
             <li class="list-group-item" th:each="nota : ${notas}">
                 <div class="d-flex justify-content-between">
-                    <strong
-                        th:text="${nota.autor != null ? nota.autor.nombre + ' ' + nota.autor.apellido1 : #{verNotas.autorDesconocido}}"></strong>
+                    <strong th:if="${nota.autor != null}" th:text="${nota.autor.nombre + ' ' + nota.autor.apellido1}"></strong>
+                    <strong th:unless="${nota.autor != null}" th:text="#{verNotas.autorDesconocido}"></strong>
                     <span class="text-muted small"
                         th:text="${#temporals.format(nota.fechaCreacion, 'dd/MM/yyyy HH:mm')}"></span>
                 </div>
