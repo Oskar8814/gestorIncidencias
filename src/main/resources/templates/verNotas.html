@@ -14,8 +14,9 @@
         class="navbar navbar-expand-lg border-top border-bottom py-4 bg-body-secondary fw-bolder"></nav>
 <div class="container mt-5">
 
-    <h1 class="mb-4" th:text="#{verNotas.titulo} + ' '">
-        Notas de la incidencia <span class="text-primary" th:text="${incidencia.titulo}"></span>
+    <h1 class="mb-4">
+        <span th:text="#{verNotas.titulo}">Notas de la incidencia</span>
+        <span class="text-primary" th:text="${incidencia.titulo}">Título de la incidencia</span>
     </h1>
 
     <!-- Formulario para añadir nueva nota -->
@@ -63,7 +64,7 @@
                 </div>
                 <p class="mb-0" th:text="${nota.contenido}"></p>
                 <div class="d-flex justify-content-end mt-2">
-                    <a th:if="${nota.autor != null and (nota.autor.id == currentUser.id or currentUser.rol.name == 'ADMIN')}"
+                    <a th:if="${currentUser.rol.name == 'ADMIN' or (nota.autor != null and nota.autor.id == currentUser.id)}"
                         th:href="@{/incidencias/incidencia/eliminarNota/{id}(id=${nota.id})}"
                         class="btn btn-danger btn-sm" th:text="#{verNotas.boton.eliminar}">Eliminar</a>
                 </div>

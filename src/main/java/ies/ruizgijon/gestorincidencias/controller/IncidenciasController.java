@@ -411,9 +411,10 @@ public class IncidenciasController {
         }
 
         // Verificar si el usuario es el autor o tiene rol ADMIN
-        boolean esAutor = nota.getAutor().getId().equals(usuarioActual.getId());
+        boolean esAutor = nota.getAutor() != null && nota.getAutor().getId().equals(usuarioActual.getId());
         boolean esAdmin = usuarioActual.getRol().getName().equalsIgnoreCase("ADMIN");
 
+        // Si el usuario no es el autor ni tiene rol ADMIN, redirigir con mensaje de error
         if (!esAutor && !esAdmin) {
             attributes.addFlashAttribute(GConstants.ATTRIBUTE_MESSAGEERROR, "No tienes permiso para eliminar esta nota.");
             return "redirect:/incidencias/incidencia/crearNota/" + nota.getIncidencia().getId();
