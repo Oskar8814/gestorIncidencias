@@ -28,6 +28,7 @@ import ies.ruizgijon.gestorIncidencias.GConstants;
 import ies.ruizgijon.gestorincidencias.controller.IncidenciasController;
 import ies.ruizgijon.gestorincidencias.model.EstadoIncidencia;
 import ies.ruizgijon.gestorincidencias.model.Incidencia;
+import ies.ruizgijon.gestorincidencias.model.Nota;
 import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
@@ -327,8 +328,9 @@ class IncidenciasControllerTest {
         incidencia.setUsuario(null); // Establece el usuario de prueba
         incidencia.setCreador(usuario); // Establece el creador de la incidencia de prueba
         incidencia.setEstado(EstadoIncidencia.PENDIENTE); // Establece el estado de la incidencia de prueba
-        
+        incidencia.setNotas(List.of()); // Inicializa la lista de notas como vacía
 
+        when(incidenciasService.buscarIncidenciaPorId(id)).thenReturn(null);
         // Llamar al método a probar
         String vista = incidenciasController.guardarIncidencia(incidencia, redirectAttributes);
         
@@ -348,6 +350,20 @@ class IncidenciasControllerTest {
         Incidencia incidencia = new Incidencia();
         incidencia.setId(1); // Suponiendo que ya existe una incidencia con este ID
         incidencia.setTitulo("Incidencia modificada");
+
+        Nota notas = new Nota();
+        List<Nota> listaNotas = List.of(notas);
+
+        notas.setId(1);
+        notas.setContenido("Notas originales");
+
+        // Simular la incidencia original con notas
+        Incidencia original = new Incidencia();
+        original.setId(1);
+        original.setNotas(listaNotas); // Asignar las notas originales a la incidencia
+
+        // Simular el comportamiento del servicio al buscar la incidencia original por ID
+        when(incidenciasService.buscarIncidenciaPorId(1)).thenReturn(original);
 
         // Llamar al método a probar
         String vista = incidenciasController.guardarIncidencia(incidencia, redirectAttributes);

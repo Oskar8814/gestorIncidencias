@@ -271,9 +271,12 @@ public class IncidenciasController {
         // Obtener la incidencia original para mantener las notas
         if (incidencia.getId() != null) {
             Incidencia original = incidenciasService.buscarIncidenciaPorId(incidencia.getId()); 
-            // Mantener las notas originales
-            incidencia.setNotas(original.getNotas());
+            // Mantener las notas originales solo si existe la incidencia original
+            if (original != null) {
+                incidencia.setNotas(original.getNotas());
+            }
         }
+
 
         // Llamar al servicio para guardar la nueva incidencia
         incidenciasService.guardarIncidencia(incidencia);

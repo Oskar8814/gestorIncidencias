@@ -18,6 +18,7 @@ import ies.ruizgijon.gestorIncidencias.GConstants;
 import ies.ruizgijon.gestorincidencias.controller.AdminController;
 import ies.ruizgijon.gestorincidencias.model.EstadoIncidencia;
 import ies.ruizgijon.gestorincidencias.model.Incidencia;
+import ies.ruizgijon.gestorincidencias.model.Nota;
 import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.service.IIncidenciasService;
@@ -169,19 +170,42 @@ class AdminControllerTest {
 
     @Test
     void testEditarIncidenciaPost() {
-        // Crea una incidencia de prueba
-        Incidencia incidencia = new Incidencia();
+        // Crea una incidencia original con notas
+        Incidencia original = new Incidencia();
+        Nota notas = new Nota();
+        List<Nota> listaNotas = List.of(notas);
+
+        notas.setId(1);
+        notas.setContenido("Notas originales");
+
+        original.setId(1);
+        original.setNotas(listaNotas);
+
+        // Crea una incidencia editada (simulando los datos del formulario)
+        Incidencia incidenciaEditada = new Incidencia();
+        incidenciaEditada.setId(1);
+        incidenciaEditada.setNotas(listaNotas);
+
+        // Simula el comportamiento del servicio al buscar la incidencia original por ID
+        when(incidenciasService.buscarIncidenciaPorId(1)).thenReturn(original);
+
         // Llama al método a probar
-        String result = adminController.editarIncidencia(incidencia, redirectAttributes);
-        
-        // Verifica que el método del servicio fue llamado para guardar la incidencia editada
-        verify(incidenciasService).guardarIncidencia(incidencia);
-        
-        // Verifica que se agregó el mensaje de confirmación a los atributos de redirección
-        verify(redirectAttributes).addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Incidencia editada con éxito.");
+        String result = adminController.editarIncidencia(incidenciaEditada, redirectAttributes);
+
+        // Verifica que las notas originales se mantienen en la incidencia editada
+        assertEquals(listaNotas, incidenciaEditada.getNotas());
+
+        // Verifica que el método del servicio fue llamado para guardar la incidencia
+        // editada
+        verify(incidenciasService).guardarIncidencia(incidenciaEditada);
+
+        // Verifica que se agregó el mensaje de confirmación a los atributos de
+        // redirección
+        verify(redirectAttributes).addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION,
+                "Incidencia editada con éxito.");
 
         // Verifica que se redirige a la URL correcta
-        assertEquals("redirect:/incidencias/index", result); // Verifica la redirección
+        assertEquals("redirect:/incidencias/index", result);
     }
     
     @Test
