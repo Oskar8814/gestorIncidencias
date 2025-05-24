@@ -125,9 +125,13 @@ public class AdminController {
         // Obtener la lista de usuarios para el formulario de edición
         List<Usuario> usuarios = usuarioService.buscarTodos();
 
+        // Obtener la lista de usuarios con rol de administrador técnico
+        List<Usuario> usuariosAdminTec = usuarioService.buscarUsuariosPorRolAdminTecnico();
         // Agregar la incidencia y la lista de usuarios al modelo para la vista de edición
         model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIA, incidencia);
         model.addAttribute(GConstants.ATTRIBUTE_USUARIOS, usuarios); // Agregar la lista de usuarios al modelo para el formulario
+        model.addAttribute(GConstants.ATTRIBUTE_USUARIOS_ADMIN_TEC, usuariosAdminTec); // Agregar la lista de usuarios administradores y técnicos al modelo para el formulario
+
         return "editarIncidenciaForm"; // Devuelve la vista para editar una incidencia existente
     }
 

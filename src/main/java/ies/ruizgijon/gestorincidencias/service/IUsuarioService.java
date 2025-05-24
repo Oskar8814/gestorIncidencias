@@ -110,4 +110,11 @@ public interface IUsuarioService {
      * @return Lista de usuarios que coinciden con el ejemplo.
      */
     List<Usuario> buscarByExample(Example<Usuario> example);
+    
+    /**
+     * Busca usuarios con rol de administrador o técnico.
+     * 
+     * @return Lista de usuarios con rol de administrador o técnico.
+     */
+    public List<Usuario> buscarUsuariosPorRolAdminTecnico();
 } 

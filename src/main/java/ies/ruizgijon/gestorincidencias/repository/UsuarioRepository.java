@@ -1,7 +1,10 @@
 package ies.ruizgijon.gestorincidencias.repository;
 
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 
 /**
@@ -26,4 +29,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
      * @return Un objeto Optional que contiene el usuario encontrado, o vacío si no se encuentra.
      */
     Optional<Usuario> findByMail(String mail);
+
+    /**
+     * Método para buscar usuarios por su rol.
+     * 
+     * @param rol El rol de los usuarios a buscar.
+     * @return Una lista de usuarios que tienen el rol especificado.
+     */
+    List<Usuario> findByRol(Rol rol);
 }

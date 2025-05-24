@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import ies.ruizgijon.gestorincidencias.exceptions.UsuarioNoValidoException;
 import ies.ruizgijon.gestorincidencias.model.PasswordResetToken;
+import ies.ruizgijon.gestorincidencias.model.Rol;
 import ies.ruizgijon.gestorincidencias.model.Usuario;
 import ies.ruizgijon.gestorincidencias.repository.PasswordResetTokenRepository;
 import ies.ruizgijon.gestorincidencias.repository.UsuarioRepository;
@@ -325,6 +326,26 @@ public class UsuarioServiceJpa implements IUsuarioService {
     @Override
     public List<Usuario> buscarByExample(Example<Usuario> example) {
         return usuarioRepository.findAll(example);
+    }
+
+    /**
+     * Busca usuarios por su rol (Administrador y Tecnicos).
+     * 
+     * @return Lista de usuarios que tienen el rol Administrador o Tecnico.
+     */
+    @Override
+    public List<Usuario> buscarUsuariosPorRolAdminTecnico() {
+        // Busca usuarios por su rol
+        Rol rolAdm = new Rol();
+        rolAdm.setId(1); // Asignamos el ID del rol de administrador
+        List<Usuario> usuarios = usuarioRepository.findByRol(rolAdm);
+
+        Rol rolTec = new Rol();
+        rolTec.setId(2); // Asignamos el ID del rol de técnico
+        usuarios.addAll(usuarioRepository.findByRol(rolTec));
+        
+        // Devuelve la lista de usuarios que tienen el rol de administrador o técnico
+        return usuarios;
     }
 
 }

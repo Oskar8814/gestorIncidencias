@@ -50,6 +50,8 @@ public class GConstants {
     public static final String ATTRIBUTE_MESSAGENOPROGRESO = "mensajeNoProgreso";
     /** Atributo para mensaje cuando no hay incidencias resueltas. */
     public static final String ATTRIBUTE_MESSAGENORESUELTA = "mensajeNoResueltas";
+    /** Atributo que contiene una lista de usuarios con roles de administrador y técnico. */
+    public static final String ATTRIBUTE_USUARIOS_ADMIN_TEC = "usuariosAdminTec";
 
     /**
      * Constantes de configuración de roles de usuario.
