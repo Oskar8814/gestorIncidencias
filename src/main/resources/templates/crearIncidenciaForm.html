@@ -19,7 +19,7 @@
 
                 <h1 class="text-center my-3 p-2 bg-body-secondary rounded opacity-75" th:text="#{crearIncidenciaForm.titulo}">Formulario de Incidencias</h1>
                 <!-- Formulario  -->
-                <form th:action="@{/incidencias/creaIncidencia/save}" class=" bg-white p-3 rounded needs-validation" th:object="${incidencia}" method="post" novalidate>
+                <form th:action="@{/incidencias/crearIncidencia/save}" class=" bg-white p-3 rounded needs-validation" th:object="${incidencia}" method="post" novalidate>
 
                     <div>
                         <a th:href="@{/incidencias/index}" class="d-flex justify-content-center"><img

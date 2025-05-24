@@ -77,9 +77,13 @@ public class SecurityConfig {
 				// 3) Endpoints privados
 				.requestMatchers("/usuario/**").hasRole(GConstants.ROLE_ADMIN)
 				.requestMatchers("/admin/**").hasRole(GConstants.ROLE_ADMIN)
-				.requestMatchers("/incidencias/crearIncidencia/**").hasAnyRole(GConstants.ROLE_TECNICO, GConstants.ROLE_ADMIN,GConstants.ROLE_AUXILIAR) //Al ser mas especifica que la posterior Auxiliar solo se le permite crear incidecias
+				.requestMatchers("/incidencias/crearIncidencia/**").hasAnyRole(GConstants.ROLE_TECNICO, GConstants.ROLE_ADMIN,GConstants.ROLE_USUARIO) //Al ser mas especifica que la posterior Auxiliar solo se le permite crear incidecias
+				.requestMatchers("/incidencias/index").hasAnyRole(GConstants.ROLE_TECNICO, GConstants.ROLE_ADMIN,GConstants.ROLE_USUARIO)
+				.requestMatchers("/incidencias/incidenciasResueltas").hasAnyRole(GConstants.ROLE_TECNICO, GConstants.ROLE_ADMIN,GConstants.ROLE_USUARIO)
+				.requestMatchers("/incidencias/incidenciasResueltas/buscar").hasAnyRole(GConstants.ROLE_TECNICO, GConstants.ROLE_ADMIN,GConstants.ROLE_USUARIO)
+				.requestMatchers("/incidencias/incidenciasPendientes/buscar").hasAnyRole(GConstants.ROLE_TECNICO, GConstants.ROLE_ADMIN,GConstants.ROLE_USUARIO)
 				.requestMatchers("/incidencias/**").hasAnyRole(GConstants.ROLE_TECNICO, GConstants.ROLE_ADMIN)
-				.requestMatchers("/modificarContrasena/**").hasAnyRole(GConstants.ROLE_ADMIN,GConstants.ROLE_TECNICO,GConstants.ROLE_AUXILIAR)
+				.requestMatchers("/modificarContrasena/**").hasAnyRole(GConstants.ROLE_ADMIN,GConstants.ROLE_TECNICO,GConstants.ROLE_USUARIO)
 				.requestMatchers("/error").permitAll()
             	.anyRequest().authenticated()
 

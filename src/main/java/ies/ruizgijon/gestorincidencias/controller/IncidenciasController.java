@@ -263,10 +263,17 @@ public class IncidenciasController {
      * Se muestra un mensaje de confirmación al guardar.
      */
 
-    @PostMapping("/creaIncidencia/save")
+    @PostMapping("/crearIncidencia/save")
     public String guardarIncidencia(Incidencia incidencia, RedirectAttributes attributes) {
         //Usuario gestor null por defecto al crear la incidencia Pendiente.
         incidencia.setUsuario(null);
+
+        // Obtener la incidencia original para mantener las notas
+        if (incidencia.getId() != null) {
+            Incidencia original = incidenciasService.buscarIncidenciaPorId(incidencia.getId()); 
+            // Mantener las notas originales
+            incidencia.setNotas(original.getNotas());
+        }
 
         // Llamar al servicio para guardar la nueva incidencia
         incidenciasService.guardarIncidencia(incidencia);

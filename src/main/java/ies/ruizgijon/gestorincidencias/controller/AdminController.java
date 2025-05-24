@@ -122,7 +122,6 @@ public class AdminController {
     public String editarIncidenciaProgreso(@PathVariable("id") int id, Model model) {
         // Llamar al servicio para obtener la incidencia por su ID
         Incidencia incidencia = incidenciasService.buscarIncidenciaPorId(id);
-        
         // Obtener la lista de usuarios para el formulario de edición
         List<Usuario> usuarios = usuarioService.buscarTodos();
 
@@ -146,6 +145,11 @@ public class AdminController {
      */
     @PostMapping("/admin/incidencia/edit")
     public String editarIncidencia(Incidencia incidencia, RedirectAttributes attributes) {
+
+        //Obtener la incidencia original para mantener las notas
+        Incidencia original = incidenciasService.buscarIncidenciaPorId(incidencia.getId()); 
+        // Mantener las notas originales
+        incidencia.setNotas(original.getNotas()); 
         // Llamar al servicio para guardar la incidencia editada
         incidenciasService.guardarIncidencia(incidencia);
 

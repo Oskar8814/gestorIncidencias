@@ -59,7 +59,7 @@ public class GConstants {
     /** Rol de usuario técnico. */
     public static final String ROLE_TECNICO = "TECNICO";
     /** Rol de usuario auxiliar. */
-    public static final String ROLE_AUXILIAR = "AUXILIAR";
+    public static final String ROLE_USUARIO = "USUARIO";
 
     /**
      * Constantes de configuración de vistas.
