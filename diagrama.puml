@@ -1,0 +1,171 @@
+@startuml diagrama
+skinparam classAttributeIconSize 0
+
+package "ies.ruizgijon.gestorincidencias.model" {
+
+  enum EstadoIncidencia {
+    PENDIENTE
+    REPARACION
+    RESUELTA
+  }
+
+  class Rol {
+    - id : Integer
+    - name : String
+    + getAuthority() : String
+  }
+
+  class Usuario {
+    - id : Integer
+    - nombre : String
+    - apellido1 : String
+    - apellido2 : String
+    - mail : String
+    - password : String
+    - rol : Rol
+    + getAuthorities() : Collection<GrantedAuthority>
+    + getUsername() : String
+    + getPassword() : String
+    + isAccountNonExpired() : boolean
+    + isAccountNonLocked() : boolean
+    + isCredentialsNonExpired() : boolean
+    + isEnabled() : boolean
+  }
+
+  class Incidencia {
+    - id : Integer
+    - titulo : String
+    - fecha : LocalDate
+    - descripcion : String
+    - aula : String
+    - imagen : String
+    - estado : EstadoIncidencia
+    - usuario : Usuario
+    - creador : Usuario
+    - notas : List<Nota>
+  }
+
+  class Nota {
+    - id : Integer
+    - contenido : String
+    - fechaCreacion : LocalDateTime
+    - autor : Usuario
+    - incidencia : Incidencia
+  }
+
+  class PasswordResetToken {
+    - id : Long
+    - token : String
+    - usuario : Usuario
+    - fechaExpiracion : LocalDateTime
+    + isExpirado() : boolean
+  }
+}
+
+package "ies.ruizgijon.gestorincidencias.repository" {
+
+  interface UsuarioRepository {
+    + findByNombre(String nombreUsuario) : Optional<Usuario>
+    + findByMail(String mail) : Optional<Usuario>
+    + findByRol(Rol rol) : List<Usuario>
+    + findAll() : List<Usuario>
+    + findById(Integer id) : Optional<Usuario>
+    + save(Usuario usuario) : Usuario
+    + deleteById(Integer id)
+    + delete(Usuario usuario)
+    + existsById(Integer id) : boolean
+    + count() : long
+  }
+
+  interface RolRepository {
+    + findAll() : List<Rol>
+    + findById(Integer id) : Optional<Rol>
+    + save(Rol rol) : Rol
+    + deleteById(Integer id)
+    + delete(Rol rol)
+    + existsById(Integer id) : boolean
+    + count() : long
+  }
+
+  interface IncidenciasRepository {
+    + findByEstado(EstadoIncidencia estado) : List<Incidencia>
+    + findByEstado(EstadoIncidencia estado, Pageable pageable) : Page<Incidencia>
+    + findAll() : List<Incidencia>
+    + findById(Integer id) : Optional<Incidencia>
+    + save(Incidencia incidencia) : Incidencia
+    + deleteById(Integer id)
+    + delete(Incidencia incidencia)
+    + existsById(Integer id) : boolean
+    + count() : long
+  }
+
+  interface NotaRepository {
+    + findAllByIncidenciaId(Integer idIncidencia) : List<Nota>
+    + findAll() : List<Nota>
+    + findById(Integer id) : Optional<Nota>
+    + save(Nota nota) : Nota
+    + deleteById(Integer id)
+    + delete(Nota nota)
+    + existsById(Integer id) : boolean
+    + count() : long
+  }
+
+  interface PasswordResetTokenRepository {
+    + findByToken(String token) : Optional<PasswordResetToken>
+    + deleteByUsuario(Usuario usuario)
+    + findAll() : List<PasswordResetToken>
+    + findById(Long id) : Optional<PasswordResetToken>
+    + save(PasswordResetToken token) : PasswordResetToken
+    + deleteById(Long id)
+    + delete(PasswordResetToken token)
+    + existsById(Long id) : boolean
+    + count() : long
+  }
+}
+
+package "ies.ruizgijon.gestorincidencias.security" {
+
+  class CustomUserDetailsService {
+    - usuarioRepository : UsuarioRepository
+    + loadUserByUsername(String) : UserDetails
+  }
+
+  interface UserDetailsService {
+    + loadUserByUsername(String) : UserDetails
+  }
+
+  interface UserDetails {
+    + getUsername() : String
+    + getPassword() : String
+    + getAuthorities() : Collection<GrantedAuthority>
+    + isEnabled() : boolean
+  }
+
+  interface GrantedAuthority {
+    + getAuthority() : String
+  }
+}
+
+' Relaciones de entidades
+Usuario --> "1" Rol : rol
+Incidencia --> "0..1" Usuario : usuario (gestor)
+Incidencia --> "0..1" Usuario : creador
+Incidencia --> "0..*" Nota : notas
+Nota --> "0..1" Usuario : autor
+Nota --> "0..1" Incidencia : incidencia
+PasswordResetToken --> "1" Usuario : usuario
+
+' Repositorio -> Entidad
+UsuarioRepository --> Usuario
+RolRepository --> Rol
+IncidenciasRepository --> Incidencia
+NotaRepository --> Nota
+PasswordResetTokenRepository --> PasswordResetToken
+
+' Seguridad
+CustomUserDetailsService ..|> UserDetailsService
+CustomUserDetailsService --> UsuarioRepository
+Usuario ..|> UserDetails
+Rol ..|> GrantedAuthority
+
+@enduml
