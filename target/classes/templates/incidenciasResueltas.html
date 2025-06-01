@@ -58,6 +58,7 @@
                     <!-- CONTENIDO -->
                     <h3 id="tittleModal" class="px-4 " th:text="#{incidenciasResueltas.modal.titulo}"></h3>
                     <p id="descripcionModal" class="px-4" th:text="#{incidenciasResueltas.modal.descripcion}"></p>
+                    <p id="creadorIncidenciaModal" class="px-4" th:text="#{incidenciasResueltas.modal.creadorIncidencia}"></p>
                 </div>
             </div>
         </div>
@@ -83,7 +84,8 @@
                     <td th:text="${#temporals.format(incidencia.fecha, 'dd/MM/yyyy')}"></td>
                     <td>
                         <a href="#" data-bs-toggle="modal" data-bs-target="#modal-imagen"
-                            th:attr="data-bs-imagen=${incidencia.imagen}, data-bs-descripcion=${incidencia.descripcion}">
+                            th:attr="data-bs-imagen=${incidencia.imagen}, data-bs-descripcion=${incidencia.descripcion},
+                            data-bs-creadorIncidencia=${incidencia.creador != null ? incidencia.creador.nombre + ' ' + incidencia.creador.apellido1 : ''}">
                             <img th:src="@{${incidencia.imagen}}" class="img-fluid img-custom-s"
                                 th:alt="#{incidenciasResueltas.tabla.imagen.alt}">
                         </a>
