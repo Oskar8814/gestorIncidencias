@@ -247,6 +247,7 @@ public class IncidenciasController {
         // Crear una nueva instancia de Incidencia y agregarla al modelo
         Incidencia nuevaIncidencia = new Incidencia();
 
+        nuevaIncidencia.setCreador(usuarioService.getCurrentUser()); // Establecer el creador de la incidencia como el usuario actual
         model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIA, nuevaIncidencia);
 
         return "crearIncidenciaForm"; // Devuelve la vista para crear una nueva incidencia

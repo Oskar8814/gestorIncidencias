@@ -106,9 +106,6 @@ public class UsuarioServiceJpa implements IUsuarioService {
         }
         // Verifica si el usuario ya existe en la base de datos antes de modificarlo
         if (usuarioRepository.existsById(usuario.getId())) {
-            // Codifica la contraseña del usuario antes de guardarlo
-            String contrasenaCodificada = passwordEncoder.encode(usuario.getPassword());
-            usuario.setPassword(contrasenaCodificada);
             usuarioRepository.save(usuario);
         } else {
             throw new IllegalArgumentException("Usuario no encontrado con ID: " + usuario.getId());

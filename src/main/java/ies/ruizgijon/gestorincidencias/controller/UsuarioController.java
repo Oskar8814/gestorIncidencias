@@ -171,6 +171,7 @@ public class UsuarioController {
         // Verificar si el usuario se encuentra en la base de datos
         Usuario usuarioExistente = usuarioService.buscarUsuarioPorMail(usuario.getMail());
         if (usuarioExistente != null) {
+            
             usuarioService.modificarUsuario(usuario); // Modificar el usuario existente
             // Agregar un mensaje de éxito al redirigir a la página después de modificar el usuario
             attributes.addFlashAttribute(GConstants.ATTRIBUTE_CONFIRMACION, "Usuario modificado con éxito.");

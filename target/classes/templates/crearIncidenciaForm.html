@@ -30,10 +30,11 @@
                         <label class="form-label fw-bold" for="input-creador" th:text="#{crearIncidenciaForm.datosIncidencia}">Datos de la Incidencia</label>
                         <!-- id de la incidencia -->
                         <input type="hidden" th:field="*{id}">
+                        <input type="hidden" th:field="*{creador}"> 
                         <div class="row">
                             <div class="col">
                                 <label class="form-label fw-bold" for="select-creador" th:text="#{crearIncidenciaForm.creador}">Creador de la Incidencia</label>
-                                <select class="form-select" name="select-creador" id="select-creador" th:field="*{creador}" required>
+                                <select class="form-select" name="select-creador" id="select-creador" th:field="*{creador}" required disabled>
                                     <option class="is-invalid" value="" disabled selected th:text="#{crearIncidenciaForm.seleccioneUsuario}">Seleccione un usuario</option>
                                     <option th:each="usuario : ${usuarios}" th:value="${usuario.id}" th:text="|${usuario.nombre} ${usuario.apellido1}|"></option>
                                 </select>
