@@ -337,6 +337,16 @@ class UsuarioServiceJpaTest {
         Integer idUsuario = 1;
         when(usuarioRepository.existsById(idUsuario)).thenReturn(true);
 
+        Usuario usuario = new Usuario();
+        usuario.setId(1);
+        Rol rol = new Rol();
+        rol.setId(1);
+        rol.setName("ADMIN");
+        usuario.setRol(rol);
+
+        when(usuarioRepository.findById(1)).thenReturn(Optional.of(usuario));
+        when(usuarioRepository.countByRol_Name("ADMIN")).thenReturn(2L); // o el número que corresponda
+
         // Act
         usuarioServiceJpa.eliminarUsuario(idUsuario);
 

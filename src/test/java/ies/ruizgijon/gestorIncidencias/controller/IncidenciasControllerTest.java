@@ -2,6 +2,7 @@ package ies.ruizgijon.gestorIncidencias.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -292,13 +293,24 @@ class IncidenciasControllerTest {
 
     @Test
     void testCrearIncidencia() {
-        // Simular un modelo
+        // Simula el usuario actual
+        Usuario usuarioActual = new Usuario();
+        usuarioActual.setId(1);
+        usuarioActual.setNombre("Usuario");
+        // Añade más campos si tu equals los usa
+
+        when(usuarioService.getCurrentUser()).thenReturn(usuarioActual);
+
         String vista = incidenciasController.crearIncidencia(model);
 
-        // Verificar que el modelo contenga un atributo 'incidencia' que es una nueva instancia de Incidencia
-        verify(model).addAttribute(GConstants.ATTRIBUTE_INCIDENCIA, new Incidencia());
+        verify(model).addAttribute(eq(GConstants.ATTRIBUTE_INCIDENCIA),
+            argThat(incidencia ->
+                incidencia != null &&
+                GConstants.IMAGE_DEFAULTURL.equals(((Incidencia)incidencia).getImagen()) &&
+                usuarioActual.equals(((Incidencia)incidencia).getCreador())
+            )
+        );
 
-        // Verificar que la vista correcta es devuelta
         assertEquals("crearIncidenciaForm", vista);
     }
 
@@ -431,7 +443,7 @@ class IncidenciasControllerTest {
         // Llamar al método que estamos probando
         String result = incidenciasController.cambiarEstadoIncidenciaResuelta(idIncidencia, redirectAttributes);
 
-        // Verificar que el servicio 'cerrarIncidencia' fue llamado con el ID correcto
+        // Verificar que el servicio 'cerrarIncidencia' fue llamado with el ID correcto
         verify(incidenciasService).cerrarIncidencia(idIncidencia);
 
         // Verificar que se agregó el mensaje de confirmación al 'RedirectAttributes'

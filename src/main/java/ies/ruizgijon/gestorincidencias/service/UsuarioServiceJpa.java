@@ -366,6 +366,13 @@ public class UsuarioServiceJpa implements IUsuarioService {
         return usuarios;
     }
 
+    /**
+     * Cuenta el número de usuarios que tienen un rol específico.
+     * 
+     * @param rol Rol a contar.
+     * @return Número de usuarios con el rol especificado.
+     *
+     */
     @Override
     public long contarUsuariosPorRol(String rol) {
         if (rol == null) {

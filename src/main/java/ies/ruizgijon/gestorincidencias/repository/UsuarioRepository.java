@@ -41,7 +41,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     /**
      * Método para contar el número de usuarios con un rol específico.
      * 
-     * @param rol El rol de los usuarios a contar.
+     * @param name El rol de los usuarios a contar.
      * @return El número de usuarios que tienen el rol especificado.
      */
     long countByRol_Name(String name);
