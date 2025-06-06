@@ -30,3 +30,16 @@ document.addEventListener("DOMContentLoaded", function () {
         this.classList.toggle("text-primary");
     });
 });
+
+// Inicializamos el DataTable para la tabla de incidencias
+$(document).ready(function () {
+    $("#tabla-incidencias").DataTable({
+        language: {
+            url: "https://cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json",
+            info: "Incidencias _START_ a _END_ de un total de _TOTAL_",
+            lengthMenu: "Mostrar _MENU_ incidencias por página"
+        },
+        searching: false,
+        paging: false // Desactiva la paginación
+    });
+});

@@ -104,6 +104,20 @@ public class UsuarioServiceJpa implements IUsuarioService {
         if (!errores.isEmpty()) {
             throw new UsuarioNoValidoException(errores);
         }
+
+        // Recupera el usuario original de la base de datos
+        Usuario usuarioOriginal = usuarioRepository.findById(usuario.getId())
+            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + usuario.getId()));
+
+        // Si el usuario original es admin y el nuevo rol NO es admin, comprobar si es el último admin
+        if (usuarioOriginal.getRol() != null && usuarioOriginal.getRol().getId() == 1
+            && (usuario.getRol() == null || usuario.getRol().getId() != 1)) {
+            long count = contarUsuariosPorRol("ADMIN");
+            if (count <= 1) {
+                throw new IllegalArgumentException("No se puede eliminar el último usuario administrador.");
+            }
+        }
+
         // Verifica si el usuario ya existe en la base de datos antes de modificarlo
         if (usuarioRepository.existsById(usuario.getId())) {
             usuarioRepository.save(usuario);
@@ -124,11 +138,18 @@ public class UsuarioServiceJpa implements IUsuarioService {
     @Override
     public void eliminarUsuario(Integer idUsuario) {
         // Verifica si el usuario existe antes de eliminarlo
-        if (usuarioRepository.existsById(idUsuario)) {
-            usuarioRepository.deleteById(idUsuario);
-        } else {
-            throw new IllegalArgumentException("Usuario no encontrado con ID: " + idUsuario);
+        Usuario usuario = usuarioRepository.findById(idUsuario)
+            .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + idUsuario));
+
+        // Si el usuario es admin, comprobar si es el último admin
+        if (usuario.getRol() != null && usuario.getRol().getId() == 1) {
+            long count = contarUsuariosPorRol("ADMIN");
+            if (count <= 1) {
+                throw new IllegalArgumentException("No se puede eliminar el último usuario administrador.");
+            }
         }
+
+        usuarioRepository.deleteById(idUsuario);
     }
 
     /**
@@ -343,6 +364,14 @@ public class UsuarioServiceJpa implements IUsuarioService {
         
         // Devuelve la lista de usuarios que tienen el rol de administrador o técnico
         return usuarios;
+    }
+
+    @Override
+    public long contarUsuariosPorRol(String rol) {
+        if (rol == null) {
+            throw new IllegalArgumentException("El rol no puede ser nulo");
+        }
+        return usuarioRepository.countByRol_Name(rol);
     }
 
 }

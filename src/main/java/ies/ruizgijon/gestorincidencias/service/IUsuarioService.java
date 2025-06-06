@@ -117,4 +117,12 @@ public interface IUsuarioService {
      * @return Lista de usuarios con rol de administrador o técnico.
      */
     public List<Usuario> buscarUsuariosPorRolAdminTecnico();
+
+    /**
+     * Cuenta la cantidad de usuarios con un rol específico.
+     * 
+     * @param rol El rol a contar.
+     * @return La cantidad de usuarios con el rol especificado.
+     */
+    public long contarUsuariosPorRol(String rol);
 } 
