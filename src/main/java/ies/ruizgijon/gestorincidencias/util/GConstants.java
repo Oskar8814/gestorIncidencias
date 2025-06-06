@@ -53,6 +53,8 @@ public class GConstants {
     /** Atributo que contiene una lista de usuarios con roles de administrador y técnico. */
     public static final String ATTRIBUTE_USUARIOS_ADMIN_TEC = "usuariosAdminTec";
 
+    public static final String ATTRIBUTE_IMAGE_DEFAULT= "imageDefault";
+
     /**
      * Constantes de configuración de roles de usuario.
      */
@@ -74,5 +76,7 @@ public class GConstants {
     public static final String VIEW_INCIDENCIASRESUELTAS = "incidenciasResueltas";
     /** Nombre del campo 'título' utilizado en formularios. */
     public static final String FIELD_TITULO = "titulo";
+
+    public static final String IMAGE_DEFAULTURL = "https://res.cloudinary.com/dakrekb58/image/upload/v1741031374/ai-generated-9004516_960_720_cl6s0s.jpg";
 
 }

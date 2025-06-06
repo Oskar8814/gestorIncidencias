@@ -246,7 +246,8 @@ public class IncidenciasController {
     public String crearIncidencia(Model model) {
         // Crear una nueva instancia de Incidencia y agregarla al modelo
         Incidencia nuevaIncidencia = new Incidencia();
-
+        
+        nuevaIncidencia.setImagen(GConstants.IMAGE_DEFAULTURL); // Establecer una imagen predeterminada para la nueva incidencia
         nuevaIncidencia.setCreador(usuarioService.getCurrentUser()); // Establecer el creador de la incidencia como el usuario actual
         model.addAttribute(GConstants.ATTRIBUTE_INCIDENCIA, nuevaIncidencia);
 
@@ -458,10 +459,13 @@ public class IncidenciasController {
         Incidencia incidenciaSearch = new Incidencia();
         List<Usuario> usuarios = usuarioService.buscarTodos(); // Obtener la lista de usuarios para el formulario
         Usuario usuario = usuarioService.getCurrentUser(); //Obtener el usuario actualmente logeado
+        String imagenpredeterminada = GConstants.IMAGE_DEFAULTURL;  // URL de la imagen predeterminada
+
 
         model.addAttribute(GConstants.ATTRIBUTE_CURRENTUSER, usuario); // Agregar el usuario actual al modelo para la vista
         model.addAttribute("search", incidenciaSearch); // Agregar el objeto de búsqueda al modelo para la vista
         model.addAttribute(GConstants.ATTRIBUTE_USUARIOS, usuarios); // Agregar la lista de usuarios al modelo para el formulario
         model.addAttribute("currentUrl", request.getRequestURI()); // Agregar la URL actual al modelo
+        model.addAttribute(GConstants.ATTRIBUTE_IMAGE_DEFAULT, imagenpredeterminada); // Agregar la imagen predeterminada al modelo
     }
 }
