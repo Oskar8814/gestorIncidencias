@@ -40,6 +40,9 @@ $(document).ready(function () {
             lengthMenu: "Mostrar _MENU_ incidencias por página"
         },
         searching: false,
-        paging: false // Desactiva la paginación
+        paging: false,
+        columnDefs: [
+            { type: 'date-eu', targets: 3 } // Cambiar el 3 si la columna de fecha la modificamos de lugar
+        ]
     });
 });
